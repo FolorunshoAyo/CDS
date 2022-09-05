@@ -1,0 +1,70 @@
+*, *::after, *::before{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --primary-color: #1270B0;
+    --secondary-color: #2366B5;
+    --white: #FFF;
+    --black: #000;
+    --grey: #969696;
+    --dark-grey: #828282
+}
+
+body{
+    font-family: 'Inter', sans-serif;
+}
+
+::selection{
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+/* MEDIA QUERIES FOR THE ROOT ELEMENT */
+    
+html{
+    font-size: 63.5%;
+}
+
+/* width < 1200? */
+@media only screen and (max-width: 75em){
+    html{
+        font-size: 56.25%; /* 1 rem = 9px, 9/16 * 100% = 56.25% */
+    }
+}
+
+/* width < 900? */
+@media only screen and (max-width: 56.25em){
+    html{
+        font-size: 50%; /* 1 rem = 8px, 8px/16px * 100% = 50% */
+    }
+}
+
+/* width < 400? */
+@media only screen and (max-width: 25em){
+    html{
+        font-size: 40%; /* 1rem = 6.4px, 6.4px/16 * 100% = 40%  */ 
+    }
+}
+
+/* width > 1800? */
+@media only screen and (min-width: 112.5em){
+    html{
+        font-size: 85%; /* 1 rem = 13.6px, 13.6/16  * 100% = 75%; */
+    }
+}
+
+.main-title{
+    color: var(--primary-color);
+    font-size: 6rem;
+    margin-bottom: 30px;
+}
+
+
+.sub-title{
+    color: var(--primary-color);
+    font-size: 4rem;
+    margin-bottom: 10px;
+}

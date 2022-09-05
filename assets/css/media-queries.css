@@ -1,0 +1,285 @@
+/* < 1800px */ 
+@media only screen and (max-width: 112.5em){ 
+
+} 
+
+/* < 1200px */
+@media only screen and (max-width: 75em){ 
+
+}
+
+/* < 1040px */
+@media only screen and (max-width: 65em){ 
+    .circle{
+        right: -50px;
+        bottom: -100px;
+    }
+
+    .banner-section{
+        padding: 0 4rem;
+    }
+
+    .banner-img-container{
+        margin-right: 20px;
+    }
+}
+
+/* < 900px */ 
+@media only screen and (max-width: 56.25em){
+    .logo-container{
+        flex: 0 0 25%;
+    }
+
+    .navigation-menu{
+        flex: 0 0 400px
+    }
+
+    .nav-link-item a{
+        font-size: 1.2rem;
+    }
+
+    .nav-link-item span{
+        font-size: 1.2rem;
+    }
+
+    .services-title{
+        width: 60%;
+    }
+
+    .sub-title{
+        font-size: 3rem;
+    }
+
+    .service.left .service-text, .service.right .service-text{
+        font-size: 2rem;
+    }
+
+    .text-box-title{
+        font-size: 3rem;
+        margin-bottom: 10px;
+    }
+} 
+
+/* < 750px */ 
+@media only screen and (max-width: 46.875em){ 
+    .bottom-header{
+        width: 95%;
+        padding: 2rem 1rem 0;
+    }
+
+    .product-category div span{
+        font-size: 1rem;
+    }
+
+    .product-category div{
+        width: 100%;
+    }
+    
+    .banner-section-container, .owner-message-container{
+        flex-direction: column;
+    }
+
+    .banner-img-container{
+        flex: 0 0 300px;
+        margin-bottom: 20px;
+    }
+
+    .banner-img-container img{
+        height: 300px;
+    }
+
+    .banner-text-box,
+    .owner-image-container,
+    .owner-message-textbox{
+        text-align: center;
+        margin-bottom: 70px;
+    }
+
+    .owner-message-textbox{
+        order: 1;
+    }
+
+    .owner-image-wrapper{
+        margin: 0 auto;
+    }
+} 
+
+/* < 665px */ 
+@media only screen and (max-width: 41.5625em){ 
+    .top-header{
+        display: block;
+    }
+
+    .navigation-menu{
+        width: 85%;
+        margin: 0 auto;
+    }
+
+    .bottom-header{
+        margin: 0;
+        flex-wrap: wrap;
+    }
+
+    .categories-btn-container{
+        order: 0;
+    }
+
+    .other-links-container{
+        order: 0;
+    }
+
+    .search-container{
+        flex: 0 0 80%;
+        order: 1;
+        margin: 20px auto 0;
+    }
+
+    .search-box input{
+        padding: 15px 5px;
+    }
+
+    .hero-container{
+        width: 90%;
+    }
+
+    .available-good{
+        flex: 0 0 48%;
+    }
+
+    .available-goods-text-box{
+        margin-left: 30px;
+    }
+
+    .services-offered{
+        text-align: left !important;
+    }
+
+    .service-text{
+        width: 100% !important;
+    }
+
+    .service.right{
+        text-align: left;
+    }
+
+    .services-title{
+        width: 80%;
+        font-size: 5rem;
+    }
+} 
+
+@media only screen and (max-width: 38.125em){  } /* < 610px */ 
+@media only screen and (max-width: 37.5em){  } /* < 600px */
+
+/* < 580px */ 
+@media only screen and (max-width: 36.25em){ 
+    .navigation-menu{
+        width: 95%;
+    }
+
+    .hero-text-box{
+        font-size: 2.5rem;
+    }
+    .hero-img-container{
+        flex: 0 0 65%;
+    }
+    .services-title{
+        width: 70%;
+        font-size: 4rem;
+    }
+
+    .footer-row{
+        display: block;
+    }
+
+    .footer-group.call-container{
+        margin-top: 40px;
+        width: 200px
+    }
+}
+
+
+/* < 500px */ 
+@media only screen and (max-width: 31.25em){ 
+    .logo-container{
+        margin-bottom: 10px;
+    }
+
+    .nav-link-item{
+        justify-content: center;
+    }
+
+    .nav-link-item a{
+        padding: 0;
+    }
+
+    .nav-link-item img{
+        width: 30px;
+        height: 30px;
+    }
+
+    .categories-btn-container button{
+        padding: 1rem 2rem;
+    }
+
+    .other-links-container .installment-btn{
+        padding: 1rem 2rem;
+    }
+
+    .hero-container{
+        flex-direction: column;
+    }
+    .hero-logo-container{
+        text-align: initial;
+        order: 0;
+    }
+
+    .hero-text-box{
+        order: 2;
+    }
+
+    .hero-img-container{
+        order: 1;
+    }
+
+    .available-goods{
+        display: block;
+    }
+
+    .view-all-container a{
+        width: 50%;
+    }
+
+    .owner-message-container{
+        padding: 10rem 4rem;
+    }
+}
+
+/* < 400px */
+@media only screen and (max-width: 25em){   
+    .logo-text .title{
+        font-size: 4rem;
+    }
+
+    .logo-text .title + span{
+        font-size: 1.5rem;
+    }
+
+    .search-box input{
+        padding: 10px 5px;
+        flex: 0 0 80%;
+    }
+
+    .owner-image-container{
+        margin-bottom: 10px;
+    }
+
+    .owner-image-wrapper{
+        width: 200px;
+        height: 200px;
+    }
+}
+
+
+
+ 
