@@ -166,6 +166,14 @@
         width: 80%;
         font-size: 5rem;
     }
+
+    .form-logo-container{
+        flex: 0 0 220px;
+    }
+
+    .form-container{
+        width: 100%;
+    }
 } 
 
 @media only screen and (max-width: 38.125em){  } /* < 610px */ 
@@ -195,6 +203,10 @@
     .footer-group.call-container{
         margin-top: 40px;
         width: 200px
+    }
+
+    .form-section{
+        padding: 4rem 2rem; 
     }
 }
 
@@ -253,6 +265,18 @@
     .owner-message-container{
         padding: 10rem 4rem;
     }
+
+    .form-title{
+        font-size: 3rem;
+    }
+
+    .form-text{
+        font-size: 1.5rem;
+    }
+
+    .submit-btn-container button{
+        width: 150px;
+    }
 }
 
 /* < 400px */
@@ -277,6 +301,19 @@
     .owner-image-wrapper{
         width: 200px;
         height: 200px;
+    }
+
+    .form-logo-container{
+        flex: 0 0 180px;
+    }
+
+    .form-logo-img-container{
+        flex: 0 0 40px;
+    }
+
+    .form-group.animate label{
+        font-size: 2rem;
+        top: 2.5rem;
     }
 }
 
