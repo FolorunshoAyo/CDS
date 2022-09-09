@@ -1,9 +1,16 @@
 /* < 1800px */ 
 @media only screen and (max-width: 112.5em){ 
+    .hero-container{
+        width: 1000px;
+    }
+
+    .available-good figure img{
+        height: 400px;
+    }
+
     .owner-message-container{
         justify-content: center;
     }
-
 
     .owner-message-textbox{
         margin-right: 100px;
@@ -13,8 +20,16 @@
 
 /* < 1400px */
 @media only screen and (max-width: 87.5em){
+    .hero-container{
+        width: 80%;
+    }
+
     .product-info{
         flex: 0 0 45%;
+    }
+
+    .available-good figure img{
+        height: 250px;
     }
 }
 
@@ -375,11 +390,19 @@
 
 
 @media only screen and (min-width: 112.5em){
+    .hero-container{
+        width: 1000px;
+    }
+    
     .navigation-menu{
         flex: 0 0 700px;
     }
     .start-saving-button-container button{
         width: 250px;
+    }
+
+    .available-good figure img{
+        height: 400px;
     }
 }
 

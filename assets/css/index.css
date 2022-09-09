@@ -16,9 +16,6 @@ header{
 
 .logo-image-container{
     flex: 0 0 50px;
-}
-
-.logo-image-container img{
     align-self: center;
 }
 
