@@ -397,12 +397,18 @@
     .navigation-menu{
         flex: 0 0 700px;
     }
+
     .start-saving-button-container button{
         width: 250px;
     }
 
     .available-good figure img{
         height: 400px;
+    }
+
+    .product-section-container{
+        width: 1600px;
+        margin: 0 auto;
     }
 }
 
