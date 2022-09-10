@@ -1,0 +1,122 @@
+/* < 1800px */ 
+@media only screen and (max-width: 112.5em){ 
+    
+} 
+
+/* < 1400px */
+@media only screen and (max-width: 87.5em){
+  
+}
+
+/* < 1200px */
+@media only screen and (max-width: 75em){ 
+    .dashboard-action-group figure i{
+        font-size: 6rem;
+    }
+
+    .dashboard-action-group figure figcaption{
+        font-size: 1.5rem;
+    }
+}
+
+/* < 1040px */
+@media only screen and (max-width: 65em){ 
+    .dashboard-links-wrapper{
+        flex: 0 0 300px;
+    }
+
+    .dashboard-links{
+        flex: 0 0 90%;
+    }
+}
+
+/* < 900px */ 
+@media only screen and (max-width: 56.25em){
+    .menu-icon-container{
+        display: flex;
+    }
+
+    .main-container{
+        display: block;
+        min-height: auto;
+    }
+
+    .dashboard-links-wrapper{
+        display: none;
+    }
+
+    .dashboard-main-section{
+        padding: 0 5rem;
+    }
+
+    .dashboard-main-container{
+        margin: 50px 0 0;
+    }
+
+    .dashboard-action-group figure figcaption{
+        font-size: 2rem;
+        margin-top: 20px;
+    }
+} 
+
+/* < 750px */ 
+@media only screen and (max-width: 46.875em){ 
+   
+} 
+
+/* < 665px */ 
+@media only screen and (max-width: 41.5625em){ 
+    .dashboard-actions{
+        display: block;
+    }
+
+    .dashboard-action-group{
+        flex: none;
+        display: block;
+    }
+} 
+
+@media only screen and (max-width: 38.125em){  } /* < 610px */ 
+@media only screen and (max-width: 37.5em){  } /* < 600px */
+
+/* < 580px */ 
+@media only screen and (max-width: 36.25em){ 
+    
+}
+
+
+/* < 500px */ 
+@media only screen and (max-width: 31.25em){ 
+    .dash-header-container{
+        padding: 2rem;
+    }
+
+    .header-navigation-container{
+        flex: 0 0 250px;
+    }
+
+    .header-navigation-container div .header-link{
+        font-size: 1.5rem;
+    }
+}
+
+/* < 400px */
+@media only screen and (max-width: 25em){   
+    .header-navigation-container{
+        flex: 0 0 180px;
+    }
+}
+
+
+@media only screen and (min-width: 112.5em){
+    .header-navigation-container{
+        flex: 0 0 450px;
+    }
+
+    .dashboard-links-wrapper{
+        flex: 0 0 500px;
+    }
+}
+
+
+ 

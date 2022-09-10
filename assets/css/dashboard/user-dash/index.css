@@ -1,0 +1,45 @@
+.dashboard-main-container{
+    margin: 200px 0 0;
+}
+
+.dashboard-main-title{
+    font-weight: bold;
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.dashboard-main-text{
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+.dashboard-actions{
+    display: flex;
+    justify-content: space-between;
+}
+
+.dashboard-action-group{
+    flex: 0 0 31%;
+    background-color: var(--secondary-color);
+    text-align: center;
+    color: var(--white);
+    border-radius: 20px;
+    text-decoration: none;
+}
+
+.dashboard-action-group figure{
+    padding: 3rem;
+}
+
+.dashboard-action-group figure i{
+    font-size: 8rem;
+}
+
+.dashboard-action-group figure figcaption{
+    font-size: 2rem;
+    margin-top: 40px;
+}
+
+.dashboard-action-group:hover{
+    color: var(--white);
+}
