@@ -35,6 +35,8 @@
 .available-good{
     flex: 0 0 31%;
     margin-bottom: 30px;
+    text-decoration: none;
+    color: var(--black);
 }
 
 .available-good figure img{
