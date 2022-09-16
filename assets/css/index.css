@@ -10,6 +10,7 @@ header{
 }
 
 .logo-container{
+    text-decoration: none;
     display: flex;
     flex: 0 0 20%;
 }

@@ -11,14 +11,20 @@
       integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
       crossorigin="anonymous"
     />
+    <!-- DATATABLES CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css"
+    />
     <!-- Custom Fonts (Inter) -->
     <link rel="stylesheet" href="../assets/fonts/fonts.css" />
     <!-- BASE CSS -->
     <link rel="stylesheet" href="../assets/css/base.css" />
     <!-- DASHBOARD MENU CSS -->
     <link rel="stylesheet" href="../assets/css/dashboard/user-dash-menu.css" />
-    <!-- USER DASHBOARD STYLESHEET -->
-    <link rel="stylesheet" href="../assets/css/dashboard/user-dash/index.css" />
+    <!-- ITEMS PAGE STYLESHEET -->
+    <link rel="stylesheet" href="../assets/css/dashboard/user-dash/items.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link
       rel="stylesheet"
@@ -31,16 +37,16 @@
     <aside class="mobile-menu">
       <div class="cross-icon-wrapper">
         <div class="cross-icon-container">
-            <i class="fa fa-times"></i>
+          <i class="fa fa-times"></i>
         </div>
       </div>
       <div class="nav-link-container">
         <ul class="nav-links">
           <li class="nav-link-item">
-            <a href="#" class="nav-link active"> Dashboard </a>
+            <a href="#" class="nav-link"> Dashboard </a>
           </li>
           <li class="nav-link-item">
-            <a href="#" class="nav-link"> Items picked </a>
+            <a href="#" class="nav-link active"> Items picked </a>
           </li>
           <li class="nav-link-item">
             <a href="#" class="nav-link"> Address </a>
@@ -57,7 +63,7 @@
     <header>
       <div class="dash-header-container">
         <div class="menu-icon-container">
-            <i class="fa fa-bars"></i>
+          <i class="fa fa-bars"></i>
         </div>
         <div class="header-navigation-container">
           <div class="dropdown">
@@ -91,10 +97,10 @@
           <div class="dashboard-links">
             <ul class="dashboard-nav-links">
               <li class="title">My Profile</li>
-              <li class="dashboard-nav-link active">
+              <li class="dashboard-nav-link">
                 <a href="#">Dashboard</a>
               </li>
-              <li class="dashboard-nav-link">
+              <li class="dashboard-nav-link active">
                 <a href="#">Items-picked</a>
               </li>
               <li class="dashboard-nav-link">
@@ -111,34 +117,81 @@
         </div>
         <div class="dashboard-main-section">
           <div class="dashboard-main-container">
-            <h1 class="dashboard-main-title">Dashboard</h1>
+            <h1 class="dashboard-main-title">Items Picked</h1>
 
-            <p class="dashboard-main-text">
-              Dashboard From your account dashboard you can view your recent
-              orders, manage your shipping and billing addresses, and edit your
-              password and account details.
-            </p>
-
-            <div class="dashboard-actions">
-              <a href="#" class="dashboard-action-group">
-                <figure>
-                  <i class="fa fa-shopping-bag"></i>
-                  <figcaption>Orders</figcaption>
-                </figure>
-              </a>
-              <a href="#" class="dashboard-action-group">
-                <figure>
-                  <i class="fa fa-map-marker"></i>
-                  <figcaption>Address</figcaption>
-                </figure>
-              </a>
-              <a href="#" class="dashboard-action-group">
-                <figure>
-                  <i class="fa fa-user"></i>
-                  <figcaption>Account Details</figcaption>
-                </figure>
-              </a>
+            <div class="items-table-container">
+              <table id="items-table">
+                <thead>
+                  <tr>
+                    <th>Order name</th>
+                    <th>Order ID</th>
+                    <th>Status</th>
+                    <th>QTY</th>
+                    <th>Total</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="item-name-container">
+                        <i class="fa fa-product-hunt"></i>
+                        Nikon Dsir
+                      </div>
+                    </td>
+                    <td>#2001</td>
+                    <td>Active</td>
+                    <td>1</td>
+                    <td>N230k</td>
+                    <td>
+                      <div class="action-container">
+                        <button class="details-btn">Details</button>
+                        <button class="item-badge">Tracking</button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="item-name-container">
+                        <i class="fa fa-product-hunt"></i>
+                        Toyota Rav 4
+                      </div>
+                    </td>
+                    <td>#2306</td>
+                    <td>Processing</td>
+                    <td>1</td>
+                    <td>N18.7M</td>
+                    <td>
+                      <div class="action-container">
+                        <button class="details-btn">Details</button>
+                        <button class="item-badge">In-view</button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="item-name-container">
+                        <i class="fa fa-product-hunt"></i>
+                        Hisense AC
+                      </div>
+                    </td>
+                    <td>#2001</td>
+                    <td>Completed</td>
+                    <td>1</td>
+                    <td>N170k</td>
+                    <td>
+                      <div class="action-container">
+                        <button class="details-btn">Details</button>
+                        <button class="item-badge">Delivered</button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+            <div class="view-btn-container">
+                <button class="view-savings-btn">View Savings Plan</button>
+              </div>
           </div>
         </div>
       </div>
@@ -159,7 +212,20 @@
       integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
       crossorigin="anonymous"
     ></script>
+    <!-- DATATABLES JAVASCRIPT -->
+    <script
+      type="text/javascript"
+      charset="utf8"
+      src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"
+    ></script>
     <!-- CUSTOM DASHBOARD SCRIPT -->
     <script src="../assets/js/user-dash.js"></script>
+    <script>
+      $(function () {
+        $("#items-table").DataTable({
+            "pageLength": 4,
+        });
+      });
+    </script>
   </body>
 </html>

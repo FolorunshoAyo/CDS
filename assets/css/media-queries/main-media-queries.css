@@ -229,12 +229,12 @@
         font-size: 5rem;
     }
 
-    .form-logo-container{
-        flex: 0 0 220px;
-    }
-
     .form-container{
         width: 100%;
+    }
+
+    .success-title{
+        font-size: 2.5rem;
     }
 } 
 
@@ -348,6 +348,10 @@
         width: 100%;
         margin-bottom: 50px;
     }
+
+    .success-container{
+        flex: 0 0 90%;
+    }
 }
 
 /* < 400px */
@@ -409,6 +413,18 @@
     .product-section-container{
         width: 1600px;
         margin: 0 auto;
+    }
+
+    .form-logo-container{
+        flex: 0 0 400px;
+    }
+
+    .form-logo-img-container{
+        flex: 0 0 100px;
+    }
+
+    .form-group.animate label{
+        top: 1rem;
     }
 }
 

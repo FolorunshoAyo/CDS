@@ -1,21 +1,3 @@
-.dashboard-main-container{
-    position: absolute;
-    top: 50%;
-    width: 95%;
-    transform: translateY(-50%);    
-}
-
-.dashboard-main-title{
-    font-weight: bold;
-    font-size: 4rem;
-    margin-bottom: 20px;
-}
-
-.dashboard-main-text{
-    font-size: 2rem;
-    margin-bottom: 30px;
-}
-
 .dashboard-actions{
     display: flex;
     justify-content: space-between;
@@ -23,9 +5,9 @@
 
 .dashboard-action-group{
     flex: 0 0 31%;
-    background-color: var(--secondary-color);
+    background-color: #E7F7FD;
     text-align: center;
-    color: var(--white);
+    color: #96DCF5;
     border-radius: 20px;
     text-decoration: none;
 }
@@ -41,8 +23,10 @@
 .dashboard-action-group figure figcaption{
     font-size: 2rem;
     margin-top: 40px;
+    color: var(--black);
+    font-weight: bold;
 }
 
 .dashboard-action-group:hover{
-    color: var(--white);
+    color: #96DCF5;
 }
