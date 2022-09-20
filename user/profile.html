@@ -332,11 +332,9 @@
 
                   $(".password-form-input")[index].setAttribute("type", "text");
               } else {
-                  icon.setAttribute("class", "fas fa-eye");
-
-                  if (index === 0) {
-                      $(".password-form-input")[index].setAttribute("type", "password");
-                  }
+                icon.setAttribute("class", "fas fa-eye");
+                  
+                $(".password-form-input")[index].setAttribute("type", "password");
               }
           });
       });
