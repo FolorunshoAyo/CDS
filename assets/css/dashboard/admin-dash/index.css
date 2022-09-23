@@ -1,0 +1,218 @@
+.card-widgets{
+    margin: 20px 0;
+    display: flex;
+}
+
+.card{
+    background-color: var(--white);
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+.today-card{
+    flex: 0 0 40%;
+    display: flex;
+}
+
+.today-card:not(:last-child){
+    margin-right: 20px;
+}
+
+.card-details{
+    flex: 0 0 70%;
+    margin-right: 10px;
+}
+
+.card-details .title{
+    font-size: 1.3rem;   
+    font-weight: 600;
+}
+
+.card-details .card-figure{
+    display: block;
+    margin: 10px 0;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.card-details .card-more-info{
+    font-size: 1.3rem;
+}
+
+.card-graph{
+    flex: 1;
+}
+
+.total-revenue-card{
+    flex: 0 0 60%;
+    margin-right: 10px;
+}
+
+.title-and-keys-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.title-and-keys-container .title-container .title{
+    font-size: 1.3rem;
+    font-weight: 400;
+}
+
+.keys-container{
+    flex: 0 0 100px;
+    display: flex;
+    align-items: center;
+}
+
+.key{
+    display: flex;
+    align-items: center;
+}
+
+.key-1{
+    margin-right: 10px;
+}
+
+.key .key-dot{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    vertical-align: center;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.key-dot.blue{
+    background-color: var(--primary-color);
+}
+
+.key-dot.grey{
+    background-color: #d1cdcd;
+}
+
+.card-figure-container{
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+}
+
+.card-figure-container .card-figure{
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.card-figure-container .comparison-factor{
+    font-size: 1.5rem;
+}
+
+.card-figure-container .comparison-factor.success{
+    color: var(--success);
+}
+
+.card-figure-container .comparison-factor.danger{
+    color: var(--danger);
+}
+
+.top-categories-card{
+    flex: 1;
+}
+
+.top-categories-card .title{
+    font-size: 1.3rem;
+    font-weight: 400;
+}
+
+.top-categories-container{
+    margin-top: 20px;
+}
+
+
+.top-categories-group:not(:last-child){
+    margin-bottom: 20px;
+}
+
+.top-categories-details{
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.top-categories-progress{
+    margin-top: 10px;
+}
+
+.progress-body{
+    border-radius: 20px;
+    background-color: #d1cdcd;
+    height: 10px;
+    overflow: hidden;
+}
+
+.progress-thumb{
+    height: 100%;
+    border-radius: 20px;
+    background-color: var(--primary-color);
+    transition: .3s;
+}
+
+.payment-table-section{
+    margin-bottom: 3rem;
+}
+
+.payment-table-section .title{
+    font-size: 1.5rem;
+}
+
+.payment-table-container{
+    margin-top: 10px;
+}
+
+.payment-table-container table{
+    border-collapse: collapse;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 20px;
+    border: 2px solid #d0d0d0;
+}
+
+table thead{
+    background-color:#F2F4FF;
+}
+
+table thead tr th{
+    padding: 20px 10px;
+    font-size: 1.2rem;
+}
+
+tbody tr td{
+    padding: 20px 10px;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+tbody tr td a{
+    display: inline;
+}
+
+tbody tr:nth-child(even){
+    background-color: #d1cdcd;
+}
+
+tbody tr td span.dot{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+tbody tr td span.red-dot{
+    background-color: var(--danger);
+}
+
+tbody tr td span.green-dot{
+    background-color: var(--success);
+}
