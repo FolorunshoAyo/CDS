@@ -10,7 +10,13 @@
 
 /* < 1040px */
 @media only screen and (max-width: 65em){ 
+    .today-card{
+        flex: 0 0 45%;
+    }  
 
+    .card-details{
+        flex: 0 0 60%;
+    }
 }
 
 /* < 900px */ 
@@ -22,6 +28,21 @@
 
 /* < 750px */ 
 @media only screen and (max-width: 46.875em){ 
+    .card-widgets{
+        display: block;
+    }
+
+    .card{
+        margin-bottom: 20px;
+    }
+
+    .today-card:not(:last-child){
+        margin-right: 0px;
+    }
+
+    .total-revenue-card{
+        margin-right: 0px;
+    }
 } 
 
 /* < 665px */ 
@@ -47,8 +68,18 @@
     }
 } 
 
-@media only screen and (max-width: 38.125em){  } /* < 610px */ 
-@media only screen and (max-width: 37.5em){  } /* < 600px */
+@media only screen and (max-width: 38.125em){  } /* < 610px */
+
+/* < 600px */
+@media only screen and (max-width: 37.5em){ 
+    .payment-table-container{
+        overflow-x: scroll;
+    }
+
+    .payment-table-container table{
+        width: 510px;
+    }
+}
 
 /* < 580px */ 
 @media only screen and (max-width: 36.25em){ 
@@ -68,6 +99,21 @@
 
 /* < 500px */ 
 @media only screen and (max-width: 31.25em){ 
+    .welcome-message{
+        font-size: 2rem;
+    }  
+
+    .select-container{
+        flex: 0 0 150px;
+    }
+
+    #selected-date{
+        padding: 5px;
+    }
+
+    .dash-header{
+        padding: 5px 15px;
+    }
 }
 
 /* < 400px */
@@ -75,6 +121,20 @@
     .form-group.animate label{
         font-size: 12px;
         top: 2.5rem;
+    }
+
+    .dash-header{
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 5px;
+    }
+
+    .select-container{
+        flex: initial;
+    }
+
+    .welcome-message{
+        margin-bottom: 10px;
     }
 }
 
