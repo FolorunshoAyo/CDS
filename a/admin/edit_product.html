@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Custom Fonts (Inter) -->
+    <link rel="stylesheet" href="../../assets/fonts/fonts.css" />
+    <!-- BASE CSS -->
+    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <!-- FORM CSS -->
+    <link rel="stylesheet" href="../../assets/css/form.css" />
+    <!-- ADMIN DASHBOARD MENU CSS -->
+    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash-menu.css" />
+    <!-- ADMIN PRODUCTS CSS -->
+    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/add-products.css">
+    <!-- DASHHBOARD MEDIA QUERIES -->
+    <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
+    <title>Products - CDS</title>
+</head>
+
+<body style="background-color: #fafafa">
+    <div class="dash-wrapper">
+        <div class="mobile-backdrop"></div>
+        <aside class="dash-menu">
+            <div class="logo">
+                <div class="menu-icon">
+                    <i class="fa fa-bars"></i>
+                    <i class="fa fa-times"></i>
+                </div>
+                <a href="#" class="logo">
+                    <i class="fa fa-home"></i>
+                    <span> CDS ADMIN </span>
+                </a>
+            </div>
+            <ul class="side-menu" id="side-menu">
+                <li class="nav-item">
+                    <a href="index.html">
+                        <i class="fa fa-tachometer"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fa fa-signal"></i>
+                        <span>Statistics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fa fa-usd"></i>
+                        <span>Payments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fa fa-recycle"></i>
+                        <span>Shipping</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="products.html">
+                        <i class="fa fa-shopping-bag"></i>
+                        <span>Products</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fa fa-users"></i>
+                        <span>Team</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fa fa-commenting-o"></i>
+                        <span>Messages</span>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="side-menu-bottom">
+                <li class="nav-tem">
+                    <a href="#">
+                        <i class="fa fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item logout">
+                    <a href="#">
+                        <i class="fa fa-sign-out"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        <section class="page-wrapper">
+            <header class="dash-header">
+                <a href="products.html" class="back-link">
+                    <i class="fa fa-arrow-left"></i>
+                </a>
+            </header>
+            <div class="product-form-wrapper">
+                <h2 class="product-form-title">Edit Product Details</h2>
+
+                <div class="product-form-container">
+                    <form id="product-upload-form">
+                        <div class="form-groupings">
+                            <div class="form-group-container">
+                                <div class="form-group-container">
+                                    <div class="form-group animate">
+                                        <input type="text" name="pname" id="pname" class="form-input" placeholder=" "
+                                            required value="Iphone 14 pro max" />
+                                        <label for="pname">Product Name</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-container">
+                                    <div class="form-group animate">
+                                        <input type="text" name="pprice" id="pprice" class="form-input format"
+                                            placeholder=" " required value="500000" />
+                                        <label for="pprice">Price</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-container">
+                                    <div class="form-group animate">
+                                        <input type="text" name="daily_payment" id="daily_payment"
+                                            class="form-input format" placeholder=" " required value="1000" />
+                                        <label for="daily_payment">Daily Payment</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-container">
+                                    <div class="form-group animate">
+                                        <input type="number" name="duration" id="duration" class="form-input"
+                                            placeholder=" " required value="10" />
+                                        <label for="duration">Duration in months</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-container">
+                                    <div class="form-group textarea animate">
+                                        <textarea name="pdesc" id="pdesc" class="form-input" placeholder=" " required>
+                                            Some details of the products in this content area
+                                        </textarea>
+                                        <label for="pdesc">Enter product details here</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-container">
+                                    <div class="form-group animate">
+                                        <input type="file" multiple name="pimages" id="pimages" class="form-input"
+                                            placeholder=" " required />
+                                        <label for="pimages">Upload media</label>
+                                    </div>
+                                </div>
+
+                                <div class="submit-btn-container">
+                                    <button type="submit" class="admin-submit-btn">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- FONT AWESOME JIT SCRIPT-->
+    <script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
+    <!-- JQUERY SCRIPT -->
+    <script src="../../assets/js/jquery/jquery-3.6.min.js"></script>
+    <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
+    <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
+    <!-- METIS MENU JS -->
+    <script src="../../assets/js/metismenujs/metismenujs.js"></script>
+    <!-- DASHBOARD SCRIPT -->
+    <script src="../../assets/js/admin-dash.js"></script>
+    <script>
+        // CHANGE DEFAULT NUMBER TO READABLE FORM 
+        $("input.format").val(function (index, value) {
+            return value
+                .replace(/\D/g, "")
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        });
+
+        // COVERT NUMBER TO READABLE FORM
+        $('input.format').keyup(function (event) {
+            // skip for arrow keys
+            if (event.which >= 37 && event.which <= 40) return;
+
+            // format number
+            $(this).val(function (index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            });
+        });
+
+        //FORM VALIDATION WITH VALIDATE.JS
+
+        const validation = new JustValidate("#product-upload-form", {
+            errorFieldCssClass: "is-invalid",
+        });
+
+        validation
+            .addField("#pname", [
+                {
+                    rule: "required",
+                    errorMessage: "Field is required",
+                },
+            ])
+            .addField("#pprice", [
+                {
+                    rule: "required",
+                    errorMessage: "Field is required",
+                },
+            ])
+            .addField("#daily_payment", [
+                {
+                    rule: "required",
+                    errorMessage: "Field is required",
+                },
+            ])
+            .addField("#duration", [
+                {
+                    rule: "required",
+                    errorMessage: "Field is required",
+                },
+            ])
+            .addField("#pdesc", [
+                {
+                    rule: "required",
+                    errorMessage: "Field is required",
+                },
+            ])
+            .addField("#pimages", [
+                {
+                    rule: 'minFilesCount',
+                    value: 1,
+                },
+                {
+                    rule: 'maxFilesCount',
+                    value: 3,
+                },
+                {
+                    rule: 'files',
+                    value: {
+                        files: {
+                            extensions: ['jpeg', 'png'],
+                            maxSize: 3000000,
+                            minSize: 1000,
+                            types: ['image/jpeg', 'image/png'],
+                        },
+                    },
+                },
+            ])
+            .onSuccess((event) => {
+                const form = document.getElementById("product-upload-form");
+
+                // GATHERING FORM DATA
+                const formData = new FormData(form);
+                formData.append("submit", true);
+
+                // CONVERTING FORMATTED(HUMAN READABLE) FIELDS BACK TO NUMBER 
+                const formatedFields = [];
+
+                for (let [key, value] of formData.entries()) {
+                    if (key === "daily_payment" || key === "pprice") {
+                        formatedFields.push(value);
+                    }
+                }
+
+                const modifiedFormatedFields = formatedFields.map(value => value.replace(/,/g, ""));
+
+                formData.set("pprice", modifiedFormatedFields[0]);
+                formData.set("daily_payment", modifiedFormatedFields[1]);
+
+                for (let [key, value] of formData.entries()) {
+                    console.log(`${key}: ${value}`);
+                }
+
+                //SENDING FORM DATA TO THE SERVER
+                $.ajax({
+                    type: "post",
+                    url: "controllers/add_product.php",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    enctype: "multipart/form-data",
+                    processData: false,
+                    dataType: "json",
+                    beforeSend: function () {
+                        $(".submit-btn-container button").html("Adding...");
+                        $(".submit-btn-container button").setAttr("disabled", true);
+                    },
+                    success: function (response) {
+                        setTimeout(() => {
+                            if (response.success === 1) {
+                                // ALERT USER UPON SUCCESSFUL UPLOAD
+                                Swal.fire({
+                                    title: "Product Added",
+                                    icon: "success",
+                                    text: `You've added ${response.product_name} successfully`,
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                    confirmButtonColor: '#2366B5',
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.href = "products"
+                                    }
+                                })
+                            } else {
+                                $(".submit-btn-container button").setAttr("disabled", false);
+                                $(".submit-btn-container button").html("Register");
+
+                                if (response.error_title === "fatal") {
+                                    // REFRESH CURRENT PAGE
+                                    location.reload();
+                                } else {
+                                    // ALERT USER
+                                    Swal.fire({
+                                        title: response.error_title,
+                                        icon: "error",
+                                        text: response.error_message,
+                                        allowOutsideClick: false,
+                                        allowEscapeKey: false,
+                                    });
+                                }
+                            }
+                        }, 1500);
+                    },
+                });
+            });
+    </script>
+</body>
+
+</html>

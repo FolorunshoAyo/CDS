@@ -5,8 +5,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- W2ui Table CSS -->
-    <link rel="stylesheet" href="http://w2ui.com/src/w2ui-1.5.min.css" />
+    <!-- JQUERY DATATABLES CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    <!-- DROP DOWN MENU CSS -->
+    <link rel="stylesheet" href="../../assets/css/dropdown.css" />
     <!-- Custom Fonts (Inter) -->
     <link rel="stylesheet" href="../../assets/fonts/fonts.css" />
     <!-- BASE CSS -->
@@ -14,7 +16,7 @@
     <!-- ADMIN DASHBOARD MENU CSS -->
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash-menu.css" />
     <!-- ADMIN PRODUCTS CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/">
+    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/products.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
     <title>Products - CDS</title>
@@ -98,274 +100,314 @@
             <div class="products-table-wrapper">
                 <h2 class="products-table-title">All Products</h2>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <td>
-                                Product Details
-                            </td>
-                            <td>
-                                Product ID
-                            </td>
-                            <td>
-                                Date added
-                            </td>
-                            <td>
-                                Status
-                            </td>
-                            <td>
+                <div class="products-table-container">
+                    <table id="products-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Product Details
+                                </th>
+                                <th>
+                                    Product ID
+                                </th>
+                                <th>
+                                    Date added
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>
 
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="product-details-container">
-                                    <div class="product-img-container">
-                                        <img src="#" alt="#">
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="product-details-container">
+                                        <div class="product-img-container">
+                                            <img src="../../assets/images/4-runner.jpg" alt="Product Image">
+                                        </div>
+                                        <div class="product-details">
+                                            <span class="product-title">Toyota RAV 4</span>
+                                            <span class="product-span">Added a month ago</span>
+                                        </div>
                                     </div>
-                                    <div class="product-details">
-                                        <span class="product-title">Toyota RAV 4</span>
-                                        <span class="product-span">Added a month ago</span>
+                                </td>
+                                <td>
+                                    <div class="productid-container">
+                                        <span class="id-number">#09878</span>
+                                        <span class="productid-date">Aug 19 2022</span>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="productid-container">
-                                    <span class="id-number">#09878</span>
-                                    <span class="productid-date">Aug 19 2022</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="date-added-container">
-                                    <span class="date-added">Aug 19, 2022</span>
-                                    <span class="time-added">6:30PM</span>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="status-badge danger">OFS</span>
-                            </td>
-                            <td>
-                                <div class="burger-menu-container">
-                                    <div class="line line1"></div>
-                                    <div class="line line2"></div>
-                                    <div class="line line3"></div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="product-details-container">
-                                    <div class="product-img-container">
-                                        <img src="#" alt="#">
+                                </td>
+                                <td>
+                                    <div class="date-added-container">
+                                        <span class="date-added">Aug 19, 2022</span>
+                                        <span class="time-added">6:30PM</span>
                                     </div>
-                                    <div class="product-details">
-                                        <span class="product-title">Toyota RAV 4</span>
-                                        <span class="product-span">Added a month ago</span>
+                                </td>
+                                <td>
+                                    <span class="status-badge danger">OFS</span>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="dropdown-toggle" data-dd-target="1"
+                                            aria-label="Dropdown Menu">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </button>
+                                        <div class="dropdown-menu" data-dd-path="1">
+                                            <a class="dropdown-menu__link" href="#">Edit product</a>
+                                            <a class="dropdown-menu__link" href="#">Delete product</a>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="productid-container">
-                                    <span class="id-number">#09878</span>
-                                    <span class="productid-date">Aug 19 2022</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="date-added-container">
-                                    <span class="date-added">Aug 19, 2022</span>
-                                    <span class="time-added">6:30PM</span>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="status-badge danger">OFS</span>
-                            </td>
-                            <td>
-                                <div class="burger-menu-container">
-                                    <div class="line line1"></div>
-                                    <div class="line line2"></div>
-                                    <div class="line line3"></div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="product-details-container">
-                                    <div class="product-img-container">
-                                        <img src="#" alt="#">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="product-details-container">
+                                        <div class="product-img-container">
+                                            <img src="../../assets/images/4-runner.jpg" alt="Product Image">
+                                        </div>
+                                        <div class="product-details">
+                                            <span class="product-title">Toyota RAV 4</span>
+                                            <span class="product-span">Added a month ago</span>
+                                        </div>
                                     </div>
-                                    <div class="product-details">
-                                        <span class="product-title">Toyota RAV 4</span>
-                                        <span class="product-span">Added a month ago</span>
+                                </td>
+                                <td>
+                                    <div class="productid-container">
+                                        <span class="id-number">#09878</span>
+                                        <span class="productid-date">Aug 19 2022</span>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="productid-container">
-                                    <span class="id-number">#09878</span>
-                                    <span class="productid-date">Aug 19 2022</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="date-added-container">
-                                    <span class="date-added">Aug 19, 2022</span>
-                                    <span class="time-added">6:30PM</span>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="status-badge danger">OFS</span>
-                            </td>
-                            <td>
-                                <div class="burger-menu-container">
-                                    <div class="line line1"></div>
-                                    <div class="line line2"></div>
-                                    <div class="line line3"></div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="product-details-container">
-                                    <div class="product-img-container">
-                                        <img src="#" alt="#">
+                                </td>
+                                <td>
+                                    <div class="date-added-container">
+                                        <span class="date-added">Aug 19, 2022</span>
+                                        <span class="time-added">6:30PM</span>
                                     </div>
-                                    <div class="product-details">
-                                        <span class="product-title">Toyota RAV 4</span>
-                                        <span class="product-span">Added a month ago</span>
+                                </td>
+                                <td>
+                                    <span class="status-badge danger">OFS</span>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="dropdown-toggle" data-dd-target="2"
+                                            aria-label="Dropdown Menu">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </button>
+                                        <div class="dropdown-menu" data-dd-path="2">
+                                            <a class="dropdown-menu__link" href="#">Edit product</a>
+                                            <a class="dropdown-menu__link" href="#">Delete product</a>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="productid-container">
-                                    <span class="id-number">#09878</span>
-                                    <span class="productid-date">Aug 19 2022</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="date-added-container">
-                                    <span class="date-added">Aug 19, 2022</span>
-                                    <span class="time-added">6:30PM</span>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="status-badge danger">OFS</span>
-                            </td>
-                            <td>
-                                <div class="burger-menu-container">
-                                    <div class="line line1"></div>
-                                    <div class="line line2"></div>
-                                    <div class="line line3"></div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="product-details-container">
-                                    <div class="product-img-container">
-                                        <img src="#" alt="#">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="product-details-container">
+                                        <div class="product-img-container">
+                                            <img src="../../assets/images/4-runner.jpg" alt="Product Image">
+                                        </div>
+                                        <div class="product-details">
+                                            <span class="product-title">Toyota RAV 4</span>
+                                            <span class="product-span">Added a month ago</span>
+                                        </div>
                                     </div>
-                                    <div class="product-details">
-                                        <span class="product-title">Toyota RAV 4</span>
-                                        <span class="product-span">Added a month ago</span>
+                                </td>
+                                <td>
+                                    <div class="productid-container">
+                                        <span class="id-number">#09878</span>
+                                        <span class="productid-date">Aug 19 2022</span>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="productid-container">
-                                    <span class="id-number">#09878</span>
-                                    <span class="productid-date">Aug 19 2022</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="date-added-container">
-                                    <span class="date-added">Aug 19, 2022</span>
-                                    <span class="time-added">6:30PM</span>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="status-badge danger">OFS</span>
-                            </td>
-                            <td>
-                                <div class="burger-menu-container">
-                                    <div class="line line1"></div>
-                                    <div class="line line2"></div>
-                                    <div class="line line3"></div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="product-details-container">
-                                    <div class="product-img-container">
-                                        <img src="#" alt="#">
+                                </td>
+                                <td>
+                                    <div class="date-added-container">
+                                        <span class="date-added">Aug 19, 2022</span>
+                                        <span class="time-added">6:30PM</span>
                                     </div>
-                                    <div class="product-details">
-                                        <span class="product-title">Toyota RAV 4</span>
-                                        <span class="product-span">Added a month ago</span>
+                                </td>
+                                <td>
+                                    <span class="status-badge danger">OFS</span>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="dropdown-toggle" data-dd-target="3"
+                                            aria-label="Dropdown Menu">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </button>
+                                        <div class="dropdown-menu" data-dd-path="3">
+                                            <a class="dropdown-menu__link" href="#">Edit product</a>
+                                            <a class="dropdown-menu__link" href="#">Delete product</a>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="productid-container">
-                                    <span class="id-number">#09878</span>
-                                    <span class="productid-date">Aug 19 2022</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="date-added-container">
-                                    <span class="date-added">Aug 19, 2022</span>
-                                    <span class="time-added">6:30PM</span>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="status-badge danger">OFS</span>
-                            </td>
-                            <td>
-                                <div class="burger-menu-container">
-                                    <div class="line line1"></div>
-                                    <div class="line line2"></div>
-                                    <div class="line line3"></div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="product-details-container">
-                                    <div class="product-img-container">
-                                        <img src="#" alt="#">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="product-details-container">
+                                        <div class="product-img-container">
+                                            <img src="../../assets/images/4-runner.jpg" alt="Product Image">
+                                        </div>
+                                        <div class="product-details">
+                                            <span class="product-title">Toyota RAV 4</span>
+                                            <span class="product-span">Added a month ago</span>
+                                        </div>
                                     </div>
-                                    <div class="product-details">
-                                        <span class="product-title">Toyota RAV 4</span>
-                                        <span class="product-span">Added a month ago</span>
+                                </td>
+                                <td>
+                                    <div class="productid-container">
+                                        <span class="id-number">#09878</span>
+                                        <span class="productid-date">Aug 19 2022</span>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="productid-container">
-                                    <span class="id-number">#09878</span>
-                                    <span class="productid-date">Aug 19 2022</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="date-added-container">
-                                    <span class="date-added">Aug 19, 2022</span>
-                                    <span class="time-added">6:30PM</span>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="status-badge danger">OFS</span>
-                            </td>
-                            <td>
-                                <div class="burger-menu-container">
-                                    <div class="line line1"></div>
-                                    <div class="line line2"></div>
-                                    <div class="line line3"></div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                </td>
+                                <td>
+                                    <div class="date-added-container">
+                                        <span class="date-added">Aug 19, 2022</span>
+                                        <span class="time-added">6:30PM</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="status-badge danger">OFS</span>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="dropdown-toggle" data-dd-target="4"
+                                            aria-label="Dropdown Menu">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </button>
+                                        <div class="dropdown-menu" data-dd-path="4">
+                                            <a class="dropdown-menu__link" href="#">Edit product</a>
+                                            <a class="dropdown-menu__link" href="#">Delete product</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="product-details-container">
+                                        <div class="product-img-container">
+                                            <img src="../../assets/images/4-runner.jpg" alt="Product Image">
+                                        </div>
+                                        <div class="product-details">
+                                            <span class="product-title">Toyota RAV 4</span>
+                                            <span class="product-span">Added a month ago</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="productid-container">
+                                        <span class="id-number">#09878</span>
+                                        <span class="productid-date">Aug 19 2022</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="date-added-container">
+                                        <span class="date-added">Aug 19, 2022</span>
+                                        <span class="time-added">6:30PM</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="status-badge danger">OFS</span>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="dropdown-toggle" data-dd-target="5"
+                                            aria-label="Dropdown Menu">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </button>
+                                        <div class="dropdown-menu" data-dd-path="5">
+                                            <a class="dropdown-menu__link" href="#">Edit product</a>
+                                            <a class="dropdown-menu__link" href="#">Delete product</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="product-details-container">
+                                        <div class="product-img-container">
+                                            <img src="../../assets/images/4-runner.jpg" alt="Product Image">
+                                        </div>
+                                        <div class="product-details">
+                                            <span class="product-title">Toyota RAV 4</span>
+                                            <span class="product-span">Added a month ago</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="productid-container">
+                                        <span class="id-number">#09878</span>
+                                        <span class="productid-date">Aug 19 2022</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="date-added-container">
+                                        <span class="date-added">Aug 19, 2022</span>
+                                        <span class="time-added">6:30PM</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="status-badge danger">OFS</span>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="dropdown-toggle" data-dd-target="6"
+                                            aria-label="Dropdown Menu">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </button>
+                                        <div class="dropdown-menu" data-dd-path="6">
+                                            <a class="dropdown-menu__link" href="#">Edit product</a>
+                                            <a class="dropdown-menu__link" href="#">Delete product</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="product-details-container">
+                                        <div class="product-img-container">
+                                            <img src="../../assets/images/4-runner.jpg" alt="Product Image">
+                                        </div>
+                                        <div class="product-details">
+                                            <span class="product-title">Toyota RAV 4</span>
+                                            <span class="product-span">Added a month ago</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="productid-container">
+                                        <span class="id-number">#09878</span>
+                                        <span class="productid-date">Aug 19 2022</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="date-added-container">
+                                        <span class="date-added">Aug 19, 2022</span>
+                                        <span class="time-added">6:30PM</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="status-badge danger">OFS</span>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="dropdown-toggle" data-dd-target="7"
+                                            aria-label="Dropdown Menu">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </button>
+                                        <div class="dropdown-menu" data-dd-path="7">
+                                            <a class="dropdown-menu__link" href="#">Edit product</a>
+                                            <a class="dropdown-menu__link" href="#">Delete product</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="add-products-container">
+                    <a href="add_product.html">Add Product</a>
+                </div>
             </div>
         </section>
     </div>
@@ -378,29 +420,15 @@
     <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!-- METIS MENU JS -->
     <script src="../../assets/js/metismenujs/metismenujs.js"></script>
-    <script src="http://w2ui.com/src/w2ui-1.5.min.js"></script>
+    <!-- JQUERY DATATABLE SCRIPT -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+    <!-- DROP DOWN JS -->
+    <script type="text/javascript" src="../../assets/js/dropdown/dropdown.min.js"></script>
     <!-- DASHBOARD SCRIPT -->
     <script src="../../assets/js/admin-dash.js"></script>
     <script>
-        $('#myGrid').w2grid({
-            name: 'myGrid',
-            columns: [
-                { field: 'fname', text: 'First Name', size: '30%' },
-                { field: 'lname', text: 'Last Name', size: '30%' },
-                { field: 'email', text: 'Email', size: '40%' },
-                { field: 'sdate', text: 'Start Date', size: '120px' },
-            ],
-            records: [
-                { recid: 1, fname: 'John', lname: 'Doe', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-                { recid: 2, fname: 'Stuart', lname: 'Motzart', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-                { recid: 3, fname: 'Jin', lname: 'Franson', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-                { recid: 4, fname: 'Susan', lname: 'Ottie', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-                { recid: 5, fname: 'Kelly', lname: 'Silver', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-                { recid: 6, fname: 'Francis', lname: 'Gatos', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-                { recid: 7, fname: 'Mark', lname: 'Welldo', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-                { recid: 8, fname: 'Thomas', lname: 'Bahh', email: 'jdoe@gmail.com', sdate: '4/3/2012' },
-                { recid: 9, fname: 'Sergei', lname: 'Rachmaninov', email: 'jdoe@gmail.com', sdate: '4/3/2012' }
-            ]
+        $(function () {
+            $("#products-table").DataTable()
         });
     </script>
 </body>

@@ -83,6 +83,10 @@ header{
     background-color: none;
 }
 
+input[type="file"]#pimages{
+    font-size: 14px;
+}
+
 
 .form-group.animate input{
     position: absolute;
@@ -103,7 +107,8 @@ header{
 }
 
 .form-group.animate input:focus + label,
-.form-group.animate select:focus + label{
+.form-group.animate select:focus + label,
+.form-group.animate textarea:focus + label{
     top: -.5rem;
     left: .8rem;
     color: var(--primary-color);
@@ -119,6 +124,10 @@ header{
     font-weight: bold;
 }
 
+.form-group.textarea .just-validate-error-label{
+    bottom: -170px;
+}
+
 .form-group select{
     font: inherit;
     font-size: 1.5rem;
@@ -130,9 +139,26 @@ header{
     outline: none;
 }
 
+.form-group textarea{
+    font: inherit;
+    font-size: 1.5rem;
+    width: 100%;
+    height: 200px;
+    border-radius: 5px;
+    border: 1px solid var(--primary-color);
+    padding: 2rem;
+    outline: none;
+}
+
+.form-group.textarea{
+    margin-bottom: 180px;
+}
+
+
 .form-group select + label{
     opacity: 0;
 }
+
 
 .form-input:not(:placeholder-shown).form-input:not(:focus) + label{
     top: -.5rem;
@@ -142,7 +168,7 @@ header{
     font-weight: 500;
 }
 
-.form-input:focus, .form-group select:focus, .password-form-group-container.focused{
+.form-input:focus, .form-group select:focus, .form-group textarea:focus, .password-form-group-container.focused{
     border: 2px solid  var(--primary-color);
 }
 
