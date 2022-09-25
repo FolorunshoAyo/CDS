@@ -25,11 +25,11 @@
         flex: 0 0 75%;
     }
 
-    .products-table-container{
+    .table-container{
         overflow-x: auto;
     }
 
-    #products-table{
+    .main-table{
         width: 700px;
     }
 } 

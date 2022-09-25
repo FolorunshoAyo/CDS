@@ -106,6 +106,15 @@ input[type="file"]#pimages{
     z-index: 2;
 }
 
+.form-group.animate select + label{
+    top: -.5rem;
+    left: .8rem;
+    color: var(--primary-color);
+    background-color: var(--white);
+    font-weight: 500;
+    opacity: 1;
+} 
+
 .form-group.animate input:focus + label,
 .form-group.animate select:focus + label,
 .form-group.animate textarea:focus + label{

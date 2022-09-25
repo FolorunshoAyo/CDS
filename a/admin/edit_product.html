@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/add-products.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
-    <title>Products - CDS</title>
+    <title>Edit --product-name- - CDS ADMIN</title>
 </head>
 
 <body style="background-color: #fafafa">
@@ -156,6 +156,17 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group-container">
+                                    <div class="form-group animate">
+                                       <select name="active" id="active">
+                                        <option value="">Choose option</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="yes">No</option>
+                                       </select>
+                                        <label for="active">Active</label>
+                                    </div>
+                                </div>
+
                                 <div class="submit-btn-container">
                                     <button type="submit" class="admin-submit-btn">Save Changes</button>
                                 </div>
@@ -230,6 +241,12 @@
                 },
             ])
             .addField("#pdesc", [
+                {
+                    rule: "required",
+                    errorMessage: "Field is required",
+                },
+            ])
+            .addField("#active", [
                 {
                     rule: "required",
                     errorMessage: "Field is required",

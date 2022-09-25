@@ -62,11 +62,17 @@
         font-size: 2rem;
         margin-top: 20px;
     }
+
+    .current-balance-container{
+        width: 80%;
+    }
 } 
 
 /* < 750px */ 
 @media only screen and (max-width: 46.875em){ 
-   
+    .plan-infos{
+        width: 100%;
+    } 
 } 
 
 /* < 665px */ 
@@ -104,6 +110,10 @@
     .dataTables_wrapper .dataTables_paginate{
         padding-top: 0.25em;
     }
+
+    .plan-summary-container{
+        flex: 0 0 90%;
+    }
 } 
 
 @media only screen and (max-width: 38.125em){  } /* < 610px */ 
@@ -138,6 +148,10 @@
 
     .dashboard-main-section{
         padding: 0 2rem;
+    }
+
+    .current-balance-container{
+        width: 200px;
     }
 }
 
