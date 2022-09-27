@@ -342,3 +342,12 @@ input[type="file"]#pimages{
     position: static;
     padding: 1rem;
 }
+
+.static-label{
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.static-email{
+    font-size: 1.5rem;
+}

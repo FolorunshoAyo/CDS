@@ -22,15 +22,6 @@
     font-weight: bold;
 }
 
-.static-label{
-    font-size: 1.5rem;
-    color: var(--primary-color);
-}
-
-.static-email{
-    font-size: 1.5rem;
-}
-
 .submit-btn-container{
     margin-bottom: 30px;
 }
