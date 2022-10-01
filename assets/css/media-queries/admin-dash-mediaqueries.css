@@ -32,6 +32,14 @@
     .main-table{
         width: 700px;
     }
+
+    .generic-table{
+        width: 800px;
+    }
+
+    .main-table.wallet-table{
+        width: 900px
+    }
 } 
 
 /* < 750px */ 

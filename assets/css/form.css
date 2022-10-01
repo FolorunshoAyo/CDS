@@ -304,6 +304,7 @@ input[type="file"]#pimages{
     background-color: var(--primary-color);
     border: 0;
     font-size: 1.5rem;
+    cursor: pointer;
 }
 
 .existing-account-block{
@@ -348,6 +349,6 @@ input[type="file"]#pimages{
     color: var(--primary-color);
 }
 
-.static-email{
+.static-value{
     font-size: 1.5rem;
 }

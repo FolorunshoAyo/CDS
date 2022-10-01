@@ -102,7 +102,7 @@ table.dataTable tbody td{
     padding-right: 5%;
 }
 
-.add-container a{
+.add-container a, .no-wallet-container a{
     display: inline-block;
     text-decoration: none;
     color: var(--white);
@@ -112,4 +112,5 @@ table.dataTable tbody td{
     padding: 10px 5px;
     border-radius: 10px;
     font-size: 1.2rem;
+    cursor: pointer;
 }
