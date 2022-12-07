@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -12,8 +13,12 @@
     <link rel="stylesheet" href="../../assets/css/form.css" />
     <!-- ADMIN DASHBOARD MENU CSS -->
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash-menu.css" />
+    <!-- ADMIN TABLE CSS -->
+    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/admin-table.css">
+     <!-- ADMIN FORM CSS -->
+     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/admin-form.css">
     <!-- ADMIN PRODUCTS CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/add-products.css">
+    <!-- <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/add-product.css"> -->
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
     <title>Add a new product - CDS ADMIN</title>
@@ -35,7 +40,7 @@
             </div>
             <ul class="side-menu" id="side-menu">
                 <li class="nav-item">
-                    <a href="index.html">
+                    <a href="./">
                         <i class="fa fa-tachometer"></i>
                         <span>Dashboard</span>
                     </a>
@@ -59,7 +64,7 @@
                     </a>
                 </li>
                 <li class="nav-item active">
-                    <a href="products.html">
+                    <a href="products">
                         <i class="fa fa-shopping-bag"></i>
                         <span>Products</span>
                     </a>
@@ -86,7 +91,7 @@
                     </a>
                 </li>
                 <li class="nav-item logout">
-                    <a href="#">
+                    <a href="../logout">
                         <i class="fa fa-sign-out"></i>
                         <span>Logout</span>
                     </a>
@@ -148,7 +153,7 @@
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <input type="file" multiple name="pimages" id="pimages" class="form-input"
+                                        <input type="file" multiple name="pimages[]" id="pimages" class="form-input"
                                             placeholder=" " required />
                                         <label for="pimages">Upload media</label>
                                     </div>
@@ -156,11 +161,11 @@
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                       <select name="active" id="active">
-                                        <option value="">Choose option</option>
-                                        <option value="yes">Yes</option>
-                                        <option value="yes">No</option>
-                                       </select>
+                                        <select name="active" id="active">
+                                            <option value="">Choose option</option>
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
                                         <label for="active">Active</label>
                                     </div>
                                 </div>
@@ -184,6 +189,8 @@
     <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!-- METIS MENU JS -->
     <script src="../../assets/js/metismenujs/metismenujs.js"></script>
+    <!-- SWEET ALERT PLUGIN -->
+    <script src="../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
     <!-- JUST VALIDATE LIBRARY -->
     <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
     <!-- DASHBOARD SCRIPT -->
@@ -200,6 +207,32 @@
                     .replace(/\D/g, "")
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             });
+        });
+
+
+        //RESET TEXTAREA CURSOR
+        function setSelectionRange(input, selectionStart, selectionEnd) {
+            if (input.setSelectionRange) {
+                input.focus();
+                input.setSelectionRange(selectionStart, selectionEnd);
+            }
+            else if (input.createTextRange) {
+                var range = input.createTextRange();
+                range.collapse(true);
+                range.moveEnd('character', selectionEnd);
+                range.moveStart('character', selectionStart);
+                range.select();
+            }
+        }
+
+        function setCaretToPos (input, pos) {
+            setSelectionRange(input, pos, pos);
+        }
+
+        $("#pdesc").on("click", function(){
+            if($("#pdesc").val().trim().length === 0) {
+                setCaretToPos(document.getElementById("pdesc"));
+            }
         });
 
         //FORM VALIDATION WITH VALIDATE.JS
@@ -258,7 +291,7 @@
                     rule: 'files',
                     value: {
                         files: {
-                            extensions: ['jpeg', 'png'],
+                            extensions: ['jpeg', 'png', 'jpg'],
                             maxSize: 3000000,
                             minSize: 1000,
                             types: ['image/jpeg', 'image/png'],
@@ -303,7 +336,7 @@
                     dataType: "json",
                     beforeSend: function () {
                         $(".submit-btn-container button").html("Adding...");
-                        $(".submit-btn-container button").setAttr("disabled", true);
+                        $(".submit-btn-container button").attr("disabled", true);
                     },
                     success: function (response) {
                         setTimeout(() => {
@@ -322,7 +355,7 @@
                                     }
                                 })
                             } else {
-                                $(".submit-btn-container button").setAttr("disabled", false);
+                                $(".submit-btn-container button").attr("disabled", false);
                                 $(".submit-btn-container button").html("Register");
 
                                 if (response.error_title === "fatal") {

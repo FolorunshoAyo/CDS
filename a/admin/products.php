@@ -40,7 +40,7 @@
             </div>
             <ul class="side-menu" id="side-menu">
                 <li class="nav-item">
-                    <a href="index.html">
+                    <a href="./">
                         <i class="fa fa-tachometer"></i>
                         <span>Dashboard</span>
                     </a>
@@ -64,7 +64,7 @@
                     </a>
                 </li>
                 <li class="nav-item active">
-                    <a href="products.html">
+                    <a href="products">
                         <i class="fa fa-shopping-bag"></i>
                         <span>Products</span>
                     </a>
@@ -91,7 +91,7 @@
                     </a>
                 </li>
                 <li class="nav-item logout">
-                    <a href="#">
+                    <a href="../logout">
                         <i class="fa fa-sign-out"></i>
                         <span>Logout</span>
                     </a>
@@ -408,7 +408,7 @@
                     </table>
                 </div>
                 <div class="add-container">
-                    <a href="add_product.html">Add Product</a>
+                    <a href="add_product">Add Product</a>
                 </div>
             </div>
         </section>

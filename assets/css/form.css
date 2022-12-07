@@ -1,3 +1,11 @@
+@keyframes rotate{
+    from{
+        transform: rotate(0deg);
+    }to{
+        transform: rotate(360deg);
+    }
+}
+
 .form-page-wrapper{
     margin: 30px auto 60px;
     width: 90%;
@@ -305,6 +313,14 @@ input[type="file"]#pimages{
     border: 0;
     font-size: 1.5rem;
     cursor: pointer;
+}
+
+.submit-btn-container button i{
+    font-size: 2rem;
+}
+
+.submit-btn-container button i.rotate{
+    animation: rotate .5s linear infinite;
 }
 
 .existing-account-block{

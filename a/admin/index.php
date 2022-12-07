@@ -1,3 +1,26 @@
+<?php 
+  require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+  AdminAuth::User("a/login");
+  $admin_id = $_SESSION['admin_id'];
+  //==================================================================
+  //Check users last saving date
+
+  $date_time = $db->query("SELECT NOW() AS nowdate");
+  $row = $date_time->fetch_assoc();
+  $dated = $row['nowdate'];
+  $now = strtotime($dated);
+  // $time = date("M d Y, h:i A", $now);
+
+  $current_date = date('Y-m-d');
+  $str_current_date = strtotime(date('Y-m-d'));
+
+  $admin_sql = $db->query("SELECT * FROM admin WHERE admin_id={$admin_id}");
+  if($admin_sql->num_rows == 1){
+      $row_admin = $admin_sql->fetch_assoc();
+  }else{
+      header("Location: ../login");
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -62,7 +85,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#">
+            <a href="products">
               <i class="fa fa-shopping-bag"></i>
               <span>Products</span>
             </a>
@@ -89,7 +112,7 @@
             </a>
           </li>
           <li class="nav-item logout">
-            <a href="#">
+            <a href="../logout">
               <i class="fa fa-sign-out"></i>
               <span>Logout</span>
             </a>
@@ -98,7 +121,7 @@
       </aside>
       <section class="page-wrapper">
         <header class="dash-header">
-          <h1 class="welcome-message">Welcome Admin,</h1>
+          <h1 class="welcome-message">Welcome <?php echo(ucfirst($row_admin['first_name'])); ?>,</h1>
           <div class="select-container">
             <form id="selected-date-form" action="#" method="GET">
               <select id="selected-date" name="selected-date">
