@@ -1,3 +1,8 @@
+<?php 
+    require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+
+    $admin_id = $_SESSION['admin_id'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -161,6 +166,23 @@
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
+                                        <select name="category" id="category">
+                                            <option value="">Choose option</option>
+                                            <?php 
+                                                $sql_categories = $db->query("SELECT * FROM product_categories");
+                                                while($row_category = $sql_categories->fetch_assoc()){
+                                            ?>
+                                                <option value="<?php echo($row_category['category_id']); ?>"><?php echo($row_category['category_name']); ?></option>
+                                            <?php
+                                                }
+                                            ?>
+                                        </select>
+                                        <label for="active">Category</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-container">
+                                    <div class="form-group animate">
                                         <select name="active" id="active">
                                             <option value="">Choose option</option>
                                             <option value="1">Yes</option>
@@ -190,7 +212,7 @@
     <!-- METIS MENU JS -->
     <script src="../../assets/js/metismenujs/metismenujs.js"></script>
     <!-- SWEET ALERT PLUGIN -->
-    <script src="../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
+    <script src="../../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
     <!-- JUST VALIDATE LIBRARY -->
     <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
     <!-- DASHBOARD SCRIPT -->
@@ -267,6 +289,12 @@
                 },
             ])
             .addField("#pdesc", [
+                {
+                    rule: "required",
+                    errorMessage: "Field is required",
+                },
+            ])
+            .addField("#category", [
                 {
                     rule: "required",
                     errorMessage: "Field is required",
@@ -366,7 +394,7 @@
                                     Swal.fire({
                                         title: response.error_title,
                                         icon: "error",
-                                        text: response.error_message,
+                                        text: response.error_msg,
                                         allowOutsideClick: false,
                                         allowEscapeKey: false,
                                     });

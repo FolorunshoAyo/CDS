@@ -2,7 +2,7 @@
 require(dirname(dirname(dirname(__DIR__))) . '/auth-library/resources.php');
      
 if(isset($_POST['submit'])){ 
-    // File upload configuration 
+    $productID =  $db->real_escape_string($_POST['product_id']);
     $productName = $db->real_escape_string($_POST['pname']);
 	$productPrice = $db->real_escape_string($_POST['pprice']);
     $dailyPaymentPrice = $db->real_escape_string($_POST['daily_payment']);
@@ -11,6 +11,7 @@ if(isset($_POST['submit'])){
     $category = $db->real_escape_string($_POST['category']);
     $active = $db->real_escape_string($_POST['active']);
 
+    // File upload configuration 
     $targetDir = "../images/"; 
     $allowTypes = array('jpg','png','jpeg'); 
      
@@ -47,31 +48,39 @@ if(isset($_POST['submit'])){
         } 
 
         // CHECK IF FORM DATA WAS PASSED
-        if(empty($productName) || empty($productPrice) || empty($dailyPaymentPrice) || empty($durationInMonths) || empty($productDesc)){
-            echo json_encode(array('success' => 0, 'error_title' => 'Product Upload', 'error_msg' => 'Some field(s) were not filled'));
+        if(empty($productID) || empty($productName) || empty($productPrice) || empty($dailyPaymentPrice) || empty($durationInMonths) || empty($productDesc)){
+            echo json_encode(array('success' => 0, 'error_title' => 'Product Edit', 'error_msg' => 'Some field(s) were not filled'));
             exit();
         }
-        
-        if(count($errors) === 0){ 
-            // Insert product details into database
-            $insert = $db->query("INSERT INTO products (name, price, pictures, details, active, category) VALUES ('$productName', '$productPrice', '$images', '$productDesc', '$active', '$category')"); 
-            if($insert){ 
-                $productID = $db->insert_id;
-                $insertProductMeta = $db->query("INSERT INTO product_meta (daily_payment, duration_in_months, product_id) VALUES ('$dailyPaymentPrice', '$durationInMonths', '$productID')");
 
-                if($insertProductMeta){
+        if(count($errors) === 0){ 
+            // DELETE EXISTING FILES
+            // $sql_former_images = $db->query("SELECT pictures FROM products WHERE product_id={$productID}");
+
+            // $pictures = explode(",", $sql_former_images->fetch_assoc()['pictures']);
+            // foreach($pictures as $picture){
+            //     unlink("../images/" . $picture);
+            // }
+
+            // Update product details in database
+            $updateProduct = $db->query("UPDATE products SET name = '$productName', price = '$productPrice', pictures='$images', details='$productDesc', active='$active', category='$category'
+            WHERE product_id = '$productID';"); 
+            if($updateProduct){ 
+                $updateProductMeta = $db->query("UPDATE product_meta SET daily_payment='$dailyPaymentPrice', duration_in_months='$durationInMonths' WHERE product_id = '$productID';");
+
+                if($updateProductMeta){
                     echo json_encode(array('success' => 1, 'product_name' => $productName));
                 }else{
-                    echo json_encode(array('success' => 0, 'error_title' => 'Product Upload', 'error_msg' => '(errno: 1) There was an error uploading the product'));
+                    echo json_encode(array('success' => 0, 'error_title' => 'Product Edit', 'error_msg' => '(errno: 1) There was an error editing the product'));
                 }
             }else{ 
-               echo json_encode(array('success' => 0, 'error_title' => 'Product Upload', 'error_msg' => '(errno: 2) There was an error uploading the product'));
+               echo json_encode(array('success' => 0, 'error_title' => 'Product Edit', 'error_msg' => '(errno: 2) There was an error editing the product'));
             } 
         }else{ 
-            echo json_encode(array('success' => 0, 'error_title' => 'Product Upload', 'error_msg' => '(errNo: 3) There was an error uploading the product'));
+            echo json_encode(array('success' => 0, 'error_title' => 'Product Edit', 'error_msg' => '(errNo: 3) There was an error editing the product'));
         } 
     }else{ 
-       echo json_encode(array('success' => 0, 'error_title' => 'Image Upload', 'error_msg' => 'No Images were uploaded'));
+       echo json_encode(array('success' => 0, 'error_title' => 'Image Edit', 'error_msg' => 'No Images were uploaded'));
     } 
 } 
  

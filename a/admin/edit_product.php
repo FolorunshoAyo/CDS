@@ -1,3 +1,18 @@
+<?php
+  require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+
+  if(isset($_GET['pid']) && !empty($_GET['pid'])){
+    $pid = $_GET['pid'];
+
+    $sql_product = $db->query("SELECT * FROM products WHERE product_id={$pid}");
+    $sql_product_meta = $db->query("SELECT * FROM product_meta WHERE product_id={$pid}");
+
+    $product_details = $sql_product->fetch_assoc();
+    $product_meta_details = $sql_product_meta->fetch_assoc();
+  }else{
+    header("Location: ./products");
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +32,7 @@
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash-menu.css" />
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
-    <title>Edit --product-name- - CDS ADMIN</title>
+    <title>Edit <?php echo($product_details['name']); ?> - CDS ADMIN</title>
 </head>
 
 <body style="background-color: #fafafa">
@@ -36,7 +51,7 @@
             </div>
             <ul class="side-menu" id="side-menu">
                 <li class="nav-item">
-                    <a href="index.html">
+                    <a href="./">
                         <i class="fa fa-tachometer"></i>
                         <span>Dashboard</span>
                     </a>
@@ -60,7 +75,7 @@
                     </a>
                 </li>
                 <li class="nav-item active">
-                    <a href="products.html">
+                    <a href="products">
                         <i class="fa fa-shopping-bag"></i>
                         <span>Products</span>
                     </a>
@@ -87,7 +102,7 @@
                     </a>
                 </li>
                 <li class="nav-item logout">
-                    <a href="#">
+                    <a href="../logout">
                         <i class="fa fa-sign-out"></i>
                         <span>Logout</span>
                     </a>
@@ -96,7 +111,7 @@
         </aside>
         <section class="page-wrapper">
             <header class="dash-header">
-                <a href="products.html" class="back-link">
+                <a href="products" class="back-link">
                     <i class="fa fa-arrow-left"></i>
                 </a>
             </header>
@@ -110,7 +125,7 @@
                                 <div class="form-group-container">
                                     <div class="form-group animate">
                                         <input type="text" name="pname" id="pname" class="form-input" placeholder=" "
-                                            required value="Iphone 14 pro max" />
+                                            required value="<?php echo($product_details['name']); ?>" />
                                         <label for="pname">Product Name</label>
                                     </div>
                                 </div>
@@ -118,7 +133,7 @@
                                 <div class="form-group-container">
                                     <div class="form-group animate">
                                         <input type="text" name="pprice" id="pprice" class="form-input format"
-                                            placeholder=" " required value="500000" />
+                                            placeholder=" " required value="<?php echo(round(intval($product_details['price']), 0)); ?>" />
                                         <label for="pprice">Price</label>
                                     </div>
                                 </div>
@@ -126,7 +141,7 @@
                                 <div class="form-group-container">
                                     <div class="form-group animate">
                                         <input type="text" name="daily_payment" id="daily_payment"
-                                            class="form-input format" placeholder=" " required value="1000" />
+                                            class="form-input format" placeholder=" " required value="<?php echo($product_meta_details['daily_payment']); ?>" />
                                         <label for="daily_payment">Daily Payment</label>
                                     </div>
                                 </div>
@@ -134,23 +149,21 @@
                                 <div class="form-group-container">
                                     <div class="form-group animate">
                                         <input type="number" name="duration" id="duration" class="form-input"
-                                            placeholder=" " required value="10" />
+                                            placeholder=" " required value="<?php echo($product_meta_details['duration_in_months']); ?>" />
                                         <label for="duration">Duration in months</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group-container">
                                     <div class="form-group textarea animate">
-                                        <textarea name="pdesc" id="pdesc" class="form-input" placeholder=" " required>
-                                            Some details of the products in this content area
-                                        </textarea>
+                                        <textarea name="pdesc" id="pdesc" class="form-input" placeholder=" " required><?php echo($product_details['details']); ?></textarea>
                                         <label for="pdesc">Enter product details here</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <input type="file" multiple name="pimages" id="pimages" class="form-input"
+                                        <input type="file" multiple name="pimages[]" id="pimages" class="form-input"
                                             placeholder=" " required />
                                         <label for="pimages">Upload media</label>
                                     </div>
@@ -158,10 +171,30 @@
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
+                                        <select name="category" id="category">
+                                            <option value="">Choose category</option>
+                                            <?php 
+                                                $sql_categories = $db->query("SELECT * FROM product_categories");
+                                                while($row_category = $sql_categories->fetch_assoc()){
+                                            ?>
+                                                <option <?php echo($product_details['category'] === $row_category['category_id']? "selected" : "");?> value="<?php echo($row_category['category_id']); ?>"><?php echo($row_category['category_name']); ?></option>
+                                            <?php
+                                                }
+                                            ?>
+                                        </select>
+                                        <label for="active">Active</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-container">
+                                    <div class="form-group animate">
                                        <select name="active" id="active">
                                         <option value="">Choose option</option>
-                                        <option value="yes">Yes</option>
-                                        <option value="yes">No</option>
+                                        <?php
+                                            $isProductActive = $product_details['active'];
+                                        ?>
+                                        <option <?php echo($isProductActive == 1? "selected" : ""); ?> value="1">Yes</option>
+                                        <option <?php echo($isProductActive == 0? "selected" : ""); ?> value="0">No</option>
                                        </select>
                                         <label for="active">Active</label>
                                     </div>
@@ -186,6 +219,10 @@
     <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!-- METIS MENU JS -->
     <script src="../../assets/js/metismenujs/metismenujs.js"></script>
+    <!-- SWEET ALERT PLUGIN -->
+    <script src="../../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
+    <!-- JUST VALIDATE LIBRARY -->
+    <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
     <!-- DASHBOARD SCRIPT -->
     <script src="../../assets/js/admin-dash.js"></script>
     <script>
@@ -207,6 +244,31 @@
                     .replace(/\D/g, "")
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             });
+        });
+
+        //RESET TEXTAREA CURSOR
+        function setSelectionRange(input, selectionStart, selectionEnd) {
+            if (input.setSelectionRange) {
+                input.focus();
+                input.setSelectionRange(selectionStart, selectionEnd);
+            }
+            else if (input.createTextRange) {
+                var range = input.createTextRange();
+                range.collapse(true);
+                range.moveEnd('character', selectionEnd);
+                range.moveStart('character', selectionStart);
+                range.select();
+            }
+        }
+
+        function setCaretToPos (input, pos) {
+            setSelectionRange(input, pos, pos);
+        }
+
+        $("#pdesc").on("click", function(){
+            if($("#pdesc").val().trim().length === 0) {
+                setCaretToPos(document.getElementById("pdesc"));
+            }
         });
 
         //FORM VALIDATION WITH VALIDATE.JS
@@ -265,7 +327,7 @@
                     rule: 'files',
                     value: {
                         files: {
-                            extensions: ['jpeg', 'png'],
+                            extensions: ['jpeg', 'png', "jpg"],
                             maxSize: 3000000,
                             minSize: 1000,
                             types: ['image/jpeg', 'image/png'],
@@ -279,6 +341,7 @@
                 // GATHERING FORM DATA
                 const formData = new FormData(form);
                 formData.append("submit", true);
+                formData.append("product_id", <?php echo($product_details['product_id']); ?>)
 
                 // CONVERTING FORMATTED(HUMAN READABLE) FIELDS BACK TO NUMBER 
                 const formatedFields = [];
@@ -301,7 +364,7 @@
                 //SENDING FORM DATA TO THE SERVER
                 $.ajax({
                     type: "post",
-                    url: "controllers/add_product.php",
+                    url: "controllers/edit_product.php",
                     data: formData,
                     cache: false,
                     contentType: false,
@@ -309,17 +372,17 @@
                     processData: false,
                     dataType: "json",
                     beforeSend: function () {
-                        $(".submit-btn-container button").html("Adding...");
-                        $(".submit-btn-container button").setAttr("disabled", true);
+                        $(".submit-btn-container button").html("Editing...");
+                        $(".submit-btn-container button").attr("disabled", true);
                     },
                     success: function (response) {
                         setTimeout(() => {
                             if (response.success === 1) {
                                 // ALERT USER UPON SUCCESSFUL UPLOAD
                                 Swal.fire({
-                                    title: "Product Added",
+                                    title: "Product Edited",
                                     icon: "success",
-                                    text: `You've added ${response.product_name} successfully`,
+                                    text: `You've Edited ${response.product_name} successfully`,
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
                                     confirmButtonColor: '#2366B5',
@@ -329,8 +392,8 @@
                                     }
                                 })
                             } else {
-                                $(".submit-btn-container button").setAttr("disabled", false);
-                                $(".submit-btn-container button").html("Register");
+                                $(".submit-btn-container button").attr("disabled", false);
+                                $(".submit-btn-container button").html("Save Changes");
 
                                 if (response.error_title === "fatal") {
                                     // REFRESH CURRENT PAGE
@@ -340,7 +403,7 @@
                                     Swal.fire({
                                         title: response.error_title,
                                         icon: "error",
-                                        text: response.error_message,
+                                        text: response.error_msg,
                                         allowOutsideClick: false,
                                         allowEscapeKey: false,
                                     });
