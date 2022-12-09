@@ -267,7 +267,7 @@
                         setTimeout(() => {
                             $.post("controllers/deleteProduct.php", { pid: selectedProductId, submit: true }, function (response) {
                                 response = JSON.parse(response);
-                                
+
                                 if (response.success === 1) {
                                     // ALERT ADMIN
                                     Swal.fire({
