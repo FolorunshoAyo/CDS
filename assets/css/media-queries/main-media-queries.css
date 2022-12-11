@@ -4,8 +4,8 @@
         width: 1000px;
     }
 
-    .available-good figure img{
-        height: 400px;
+    .available-good{
+        flex: 0 0 23%;
     }
 
     .owner-message-container{
@@ -57,6 +57,10 @@
 
     .banner-section{
         padding: 0 4rem;
+    }
+
+    .available-good{
+        flex: 0 0 31%;
     }
 
     .banner-img-container{
@@ -126,6 +130,10 @@
     .bottom-header{
         width: 95%;
         padding: 2rem 1rem 0;
+    }
+
+    .available-good{
+        flex: 0 0 48%;
     }
 
     .product-category div span{
@@ -202,10 +210,6 @@
 
     .hero-container{
         width: 90%;
-    }
-
-    .available-good{
-        flex: 0 0 48%;
     }
 
     .available-goods-text-box{
@@ -324,6 +328,11 @@
         display: block;
     }
 
+    .available-good{
+        display: block;
+        margin-bottom: 30px;
+    }
+
     .view-all-container a{
         width: 50%;
     }
@@ -404,6 +413,10 @@
 
     .start-saving-button-container button{
         width: 250px;
+    }
+
+    .available-good{
+        flex: 0 0 23%;
     }
 
     .available-good figure img{

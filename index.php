@@ -1,3 +1,12 @@
+<?php
+  require(__DIR__ . '/auth-library/resources.php');
+
+  // NUMBER FORMATTER
+  // $human_readable = new \NumberFormatter(
+  //   'en_US', 
+  //   \NumberFormatter::PADDING_POSITION
+  // );
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -58,8 +67,8 @@
                 <button>Categories</button>
             </div>
             <div class="search-container">
-                <form class="search-box">
-                    <input type="text" placeholder="Search for an item">
+                <form class="search-box" action="search/">
+                    <input type="text" name="q" placeholder="Search for an item">
                     <button type="submit" class="search-icon-btn">
                         <i class="fa fa-search"></i>
                     </button>
@@ -160,66 +169,42 @@
                     <p class="available-goods-text">According to in-demand purchases, get yours now!</p>
                 </div>
                 <div class="available-goods">
-                    <a href="#" class="available-good">
+                    <?php 
+                        $recentProductsSql = $db->query("SELECT * FROM products ORDER BY product_id desc LIMIT 8");
+
+                        while($rowProduct = $recentProductsSql->fetch_assoc()){
+                            $productID = $rowProduct['product_id'];
+                            $productMetaSql = $db->query("SELECT * FROM product_meta WHERE product_id={$productID}");
+            
+                            $productMetaRecord = $productMetaSql->fetch_assoc();
+                    ?>
+                    <a href="product?pid=<?php echo($productID) ?>" class="available-good">
                         <figure>
-                            <img src="assets/images/4-runner.jpg" alt="Toyota 4 runner">
+                            <img src="a/admin/images/<?php echo(explode(",", $rowProduct['pictures'])[0]) ?>" alt="<?php echo($rowProduct['name']) ?>">
                             <figcaption>
-                                <span class="product-desc product-category-name">4-runner 2022</span>
-                                <span class="product-desc product-category-duration">N23M X 25 Months</span>
-                                <span class="product-desc product-category-price">N30000 Daily</span>
+                                <span class="product-desc product-category-name"><?php echo($rowProduct['name']) ?></span>
+                                <span class="product-desc product-category-duration">
+                                    N<?php 
+                                        // echo($human_readable->format(intval($rowProduct['price']))) 
+                                        echo($rowProduct['price'])
+                                      ?> 
+                                    X 
+                                    <?php echo($productMetaRecord['duration_in_months']) ?> 
+                                    Months
+                                </span>
+                                <span class="product-desc product-category-price">
+                                    N<?php 
+                                    // echo($human_readable->format($productMetaRecord['daily_payment']))
+                                    echo($productMetaRecord['daily_payment']) 
+                                    ?> 
+                                    Daily
+                                </span>
                             </figcaption>
                         </figure>
                     </a>
-                    <a href="#" class="available-good">
-                        <figure>
-                            <img src="assets/images/alienware.jpg" alt="Alienware 25 Gaming Monitor">
-                            <figcaption>
-                                <span class="product-desc product-category-name">4-runner 2022</span>
-                                <span class="product-desc product-category-duration">N23M X 25 Months</span>
-                                <span class="product-desc product-category-price">N30000 Daily</span>
-                            </figcaption>
-                        </figure>
-                    </a>
-                    <a href="#" class="available-good">
-                        <figure>
-                            <img src="assets/images/nikon-d90.jpg" alt="Nikon camera d90">
-                            <figcaption>
-                                <span class="product-desc product-category-name">4-runner 2022</span>
-                                <span class="product-desc product-category-duration">N23M X 25 Months</span>
-                                <span class="product-desc product-category-price">N30000 Daily</span>
-                            </figcaption>
-                        </figure>
-                    </a>
-                    <a href="#" class="available-good">
-                        <figure>
-                            <img src="assets/images/hisense-ac.jpg" alt="HiSense 1.5hp A.C">
-                            <figcaption>
-                                <span class="product-desc product-category-name">4-runner 2022</span>
-                                <span class="product-desc product-category-duration">N23M X 25 Months</span>
-                                <span class="product-desc product-category-price">N30000 Daily</span>
-                            </figcaption>
-                        </figure>
-                    </a>
-                    <a href="#" class="available-good">
-                        <figure>
-                            <img src="assets/images/iphone13-green.png" alt="Iphone 13 pro max 128gb">
-                            <figcaption>
-                                <span class="product-desc product-category-name">4-runner 2022</span>
-                                <span class="product-desc product-category-duration">N23M X 25 Months</span>
-                                <span class="product-desc product-category-price">N30000 Daily</span>
-                            </figcaption>
-                        </figure>
-                    </a>
-                    <a href="#" class="available-good">
-                        <figure>
-                            <img src="assets/images/bed-2-sraws.jpg" alt="Bed with two drawers">
-                            <figcaption>
-                                <span class="product-desc product-category-name">4-runner 2022</span>
-                                <span class="product-desc product-category-duration">N23M X 25 Months</span>
-                                <span class="product-desc product-category-price">N30000 Daily</span>
-                            </figcaption>
-                        </figure>
-                    </a>
+                    <?php 
+                        }
+                    ?>
                 </div>
                 <div class="view-all-container">
                     <a href="#">view all</a>
@@ -290,66 +275,42 @@
                     <p class="available-goods-text">According to in-demand purchases, get yours now!</p>
                 </div>
                 <div class="available-goods">
+                <?php 
+                    $recentProductsSql = $db->query("SELECT * FROM products LIMIT 8");
+
+                    while($rowProduct = $recentProductsSql->fetch_assoc()){
+                        $productID = $rowProduct['product_id'];
+                        $productMetaSql = $db->query("SELECT * FROM product_meta WHERE product_id={$productID}");
+            
+                        $productMetaRecord = $productMetaSql->fetch_assoc();
+                ?>
                     <a href="#" class="available-good">
                         <figure>
-                            <img src="assets/images/package-1.jpg" alt="Package">
+                            <img src="a/admin/images/<?php echo(explode(",", $rowProduct['pictures'])[0]) ?>" alt="<?php echo($rowProduct['name']) ?>">
+                            <figcaption>
+                                <span class="product-desc product-category-name"><?php echo($rowProduct['name']) ?></span>
+                                <span class="product-desc product-category-duration">
+                                    N<?php 
+                                        // echo($human_readable->format(intval($rowProduct['price']))) 
+                                        echo($rowProduct['price'])
+                                      ?> 
+                                    X 
+                                    <?php echo($productMetaRecord['duration_in_months']) ?> 
+                                    Months
+                                </span>
+                                <span class="product-desc product-category-price">
+                                    N<?php 
+                                    // echo($human_readable->format($productMetaRecord['daily_payment']))
+                                    echo($productMetaRecord['daily_payment']) 
+                                    ?> 
+                                    Daily
+                                </span>
+                            </figcaption>
                         </figure>
-                        <figcaption>
-                            <span class="product-desc product-category-name">4-runner 2022</span>
-                            <span class="product-desc product-category-duration">N23M X 25 Months</span>
-                            <span class="product-desc product-category-price">N30000 Daily</span>
-                        </figcaption>
                     </a>
-                    <a href="#" class="available-good">
-                        <figure>
-                            <img src="assets/images/package-2.jpg" alt="Package">
-                        </figure>
-                        <figcaption>
-                            <span class="product-desc product-category-name">4-runner 2022</span>
-                            <span class="product-desc product-category-duration">N23M X 25 Months</span>
-                            <span class="product-desc product-category-price">N30000 Daily</span>
-                        </figcaption>
-                    </a>
-                    <a href="#" class="available-good">
-                        <figure>
-                            <img src="assets/images/package-3.jpg" alt="Package">
-                        </figure>
-                        <figcaption>
-                            <span class="product-desc product-category-name">4-runner 2022</span>
-                            <span class="product-desc product-category-duration">N23M X 25 Months</span>
-                            <span class="product-desc product-category-price">N30000 Daily</span>
-                        </figcaption>
-                    </a>
-                    <a href="#" class="available-good">
-                        <figure>
-                            <img src="assets/images/package-4.jpg" alt="Package">
-                        </figure>
-                        <figcaption>
-                            <span class="product-desc product-category-name">4-runner 2022</span>
-                            <span class="product-desc product-category-duration">N23M X 25 Months</span>
-                            <span class="product-desc product-category-price">N30000 Daily</span>
-                        </figcaption>
-                    </a>
-                    <a href="#" class="available-good">
-                        <figure>
-                            <img src="assets/images/package-5.jpg" alt="Package">
-                        </figure>
-                        <figcaption>
-                            <span class="product-desc product-category-name">4-runner 2022</span>
-                            <span class="product-desc product-category-duration">N23M X 25 Months</span>
-                            <span class="product-desc product-category-price">N30000 Daily</span>
-                        </figcaption>
-                    </a>
-                    <a href="#" class="available-good">
-                        <figure>
-                            <img src="assets/images/package-5.jpg" alt="Package">
-                        </figure>
-                        <figcaption>
-                            <span class="product-desc product-category-name">4-runner 2022</span>
-                            <span class="product-desc product-category-duration">N23M X 25 Months</span>
-                            <span class="product-desc product-category-price">N30000 Daily</span>
-                        </figcaption>
-                    </a>
+                    <?php 
+                        }
+                    ?>
                 </div>
                 <div class="view-all-container">
                     <a href="#">view all</a>

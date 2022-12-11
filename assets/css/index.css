@@ -249,7 +249,7 @@ header{
 .available-goods{
     margin-top: 30px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     flex-flow: row wrap;
 }
 

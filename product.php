@@ -1,3 +1,24 @@
+<?php
+  require(__DIR__ . '/auth-library/resources.php');
+
+    // NUMBER FORMATTER
+  // $human_readable = new \NumberFormatter(
+  //   'en_US', 
+  //   \NumberFormatter::PADDING_POSITION
+  // );
+
+  if(isset($_GET['pid']) && !empty($_GET['pid'])){
+    $pid = $_GET['pid'];
+
+    $sql_product = $db->query("SELECT * FROM products WHERE product_id={$pid}");
+    $sql_product_meta = $db->query("SELECT * FROM product_meta WHERE product_id={$pid}");
+
+    $product_details = $sql_product->fetch_assoc();
+    $product_meta_details = $sql_product_meta->fetch_assoc();
+  }else{
+    header("Location: ./");
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -59,8 +80,8 @@
           <button>Categories</button>
         </div>
         <div class="search-container">
-          <form class="search-box">
-            <input type="text" placeholder="Search for an item" />
+          <form class="search-box" action="search/">
+            <input type="text" name="q" placeholder="Search for an item" />
             <button type="submit" class="search-icon-btn">
               <i class="fa fa-search"></i>
             </button>
@@ -77,42 +98,60 @@
         <div class="product-section-container">
           <div class="product-slider-container">
             <div class="product-slider">
+              <?php 
+                $productPictures = explode(",", $product_details['pictures']);
+                $count = 1;
+                foreach($productPictures as $productPicture){
+              ?>
               <div class="product-slide-item">
-                <img src="assets/images/4-runner.jpg" alt="product 1" />
+                <img src="a/admin/images/<?php echo($productPicture) ?>" alt="product <?php echo($count) ?>" />
               </div>
-              <div class="product-slide-item">
-                <img src="assets/images/4-runner.jpg" alt="product 2" />
-              </div>
-              <div class="product-slide-item">
-                <img src="assets/images/4-runner.jpg" alt="product-3" />
-              </div>
+              <?php
+               $count++;
+                }
+              ?>
             </div>
           </div>
           <div class="product-info">
-            <h1 class="product-name">4-Runner 2022</h1>
+            <h1 class="product-name">
+              <?php 
+                echo($product_details['name']) 
+              ?>
+            </h1>
             <div class="product-info-group">
               <span class="product-label"> Price: </span>
-              <span class="product-value"> N23M X 25 Months </span>
+              <span class="product-value"> 
+                N<?php 
+                  // echo($human_readable->format(intval($rowProduct['price']))) 
+                  echo($product_details['price']) 
+                ?> 
+                X
+                <?php echo($product_meta_details['duration_in_months']) ?> Months 
+              </span>
             </div>
             <div class="product-info-group">
               <span class="product-label"> Save: </span>
-              <span class="product-value"> N30,000 Daily </span>
+              <span class="product-value"> 
+                N<?php 
+                  // echo($human_readable->format(intval($rowProduct['daily_payment']))) 
+                  echo($product_meta_details['daily_payment']) 
+                ?> 
+                Daily 
+              </span>
             </div>
             <div class="product-info-group">
               <span class="product-label"> Status: </span>
-              <span class="product-value"> Available in space grey </span>
+              <span class="product-value"> <?php echo($product_details['active']? "Available" : "Unavailable") ?> </span>
             </div>
             <div class="product-info-group">
               <span class="product-label"> Details: </span><br /><br />
               <span class="product-value">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet
-                magni quae dolores minus numquam placeat dicta voluptates
-                molestiae debitis architecto pariatur rerum assumenda excepturi
-                nihil, quasi eos impedit laudantium nulla?
+                <?php echo($product_details['details']) ?>
               </span>
             </div>
             <div class="start-saving-button-container">
-              <button>Start Saving</button>
+              <button class="buy-now-btn">Buy Now</button>
+              <button class="start-saving-btn">Start Saving</button>
             </div>
           </div>
         </div>
