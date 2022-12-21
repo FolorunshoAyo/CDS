@@ -29,6 +29,9 @@ class Auth
 }
 
 class AdminAuth extends Auth{
+    /**
+     * Authentication for pages inside the admin folder
+     */
     static function Route($url)
     {
         if (isset($_SESSION['admin_id'])) {             
@@ -39,7 +42,7 @@ class AdminAuth extends Auth{
     }
 
     /**
-     * Authentication for pages inside the user folder
+     * Authentication for pages inside the admin folder
      * */
     static function  User($url)
     {

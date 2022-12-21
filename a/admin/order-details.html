@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Custom Fonts (Inter) -->
+    <link rel="stylesheet" href="../../assets/fonts/fonts.css" />
+    <!-- BASE CSS -->
+    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <!-- ADMIN DASHBOARD MENU CSS -->
+    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash-menu.css" />
+    <!-- OORDER DETAILS CSS -->
+    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/order-details.css">
+    <!-- DASHHBOARD MEDIA QUERIES -->
+    <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
+    <title>Order Details (#14214) - CDS</title>
+</head>
+
+<body style="background-color: #fafafa">
+    <div class="dash-wrapper">
+        <div class="mobile-backdrop"></div>
+        <aside class="dash-menu">
+            <div class="logo">
+                <div class="menu-icon">
+                    <i class="fa fa-bars"></i>
+                    <i class="fa fa-times"></i>
+                </div>
+                <a href="#" class="logo">
+                    <i class="fa fa-home"></i>
+                    <span> CDS ADMIN </span>
+                </a>
+            </div>
+            <ul class="side-menu" id="side-menu">
+                <li class="nav-item">
+                    <a href="index.html">
+                        <i class="fa fa-tachometer"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fa fa-signal"></i>
+                        <span>Statistics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fa fa-usd"></i>
+                        <span>Payments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fa fa-recycle"></i>
+                        <span>Shipping</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="products.html">
+                        <i class="fa fa-shopping-bag"></i>
+                        <span>Products</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="#">
+                        <i class="fa fa-users"></i>
+                        <span>Team</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fa fa-commenting-o"></i>
+                        <span>Messages</span>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="side-menu-bottom">
+                <li class="nav-tem">
+                    <a href="#">
+                        <i class="fa fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item logout">
+                    <a href="#">
+                        <i class="fa fa-sign-out"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        <section class="page-wrapper">
+            <header class="dash-header">
+                <a href="orders.html" class="back-link">
+                    <i class="fa fa-arrow-left"></i>
+                </a>
+            </header>
+            <div class="order-details-wrapper">
+                <h2 class="order-title">Shodiya Folorunsho's Order Details</h2>
+
+                <div class="order-details-container">
+                    <div class="order-meta">
+                        <h2 class="order-no">Order n<sup>o</sup> 1687165263</h2>
+                        <div class="order-product-details">
+                            <span class="product-quantity">1 item(s)</span>
+                            <span class="order-date">Placed on 26-05-2022</span>
+                            <span class="product-price">#5,800</span>
+                        </div>
+                    </div>
+
+                    <h2 class="order-details-title">Item(s) Ordered</h2>
+
+                    <div class="order-item">
+                        <span class="product-status completed">Delivered</span>
+                        <span class="product-status">non-returnable</span>
+
+                        <div class="product-info">
+                            <div class="product-image-container">
+                                <img src="../assets/images/bed-1.jpeg" alt="Product picture">
+                            </div>
+                            <div class="product-details">
+                                <span class="product-name">Camoon 60d</span>
+                                <span class="product-qty">Qty: 1</span>
+                                <span class="product-price">₦ 5,600</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-info-cards">
+                        <div class="order-info-card">
+                            <h2 class="order-card-title">
+                                Payment Information
+                            </h2>
+                            <div class="order-card-body">
+                                <div class="order-card-body-group">
+                                    <h3>Payment Method</h3>
+                                    <p>Cash on Delivery</p>
+                                </div>
+
+                                <div class="order-card-body-group">
+                                    <h3> Payment Details </h3>
+                                    <p>Item total: ₦ 5,600</p>
+                                    <p>Shipping Fee: none</p>
+                                    <p>Promotional Discount: ₦ 5,600</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="order-info-card">
+                            <h2 class="order-card-title">
+                                Delivery Information
+                            </h2>
+                            <div class="order-card-body">
+
+                                <div class="order-card-body-group">
+                                    <h3>Delivery Method</h3>
+                                    <p>Door Delivery</p>
+                                </div>
+
+                                <div class="order-card-body-group">
+                                    <h3> Shipping Address </h3>
+                                    <p>Item total: ₦ 5,600</p>
+                                    <p>Shipping Fee: none</p>
+                                    <p>Promotional Discount: ₦ 5,600</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- FONT AWESOME JIT SCRIPT-->
+    <script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
+    <!-- JQUERY SCRIPT -->
+    <script src="../../assets/js/jquery/jquery-3.6.min.js"></script>
+    <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
+    <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
+    <!-- METIS MENU JS -->
+    <script src="../../assets/js/metismenujs/metismenujs.js"></script>
+    <!-- DASHBOARD SCRIPT -->
+    <script src="../../assets/js/admin-dash.js"></script>
+</body>
+
+</html>

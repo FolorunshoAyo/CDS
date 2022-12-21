@@ -6,6 +6,13 @@
   //   'en_US', 
   //   \NumberFormatter::PADDING_POSITION
   // );
+
+  $inSession = (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) || (isset($_SESSION['user_name']) && !empty($_SESSION['user_name']));
+
+  if($inSession){
+    $user_id = $_SESSION['user_id'];
+    $user_name = $_SESSION['user_name'];
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -76,7 +83,26 @@
             </div>
             <div class="other-links-container">
                 <button class="installment-btn">Installments</button>
-                <a href="#">Account</a>
+                <div class="menu-container">
+                    <a href="javascript:void(0)"><i class="fa fa-user-o"></i> <?php echo($inSession?  explode(" ", $user_name)[0] : "Account") ?></a>
+                    <?php
+                        if(!$inSession){
+                    ?>
+                    <ul class="menu">
+                        <li><a href="login">Sign In</a></li>
+                    </ul>
+                    <?php
+                        }else{
+                    ?>
+                    <ul class="menu">
+                        <li><a href="user/">Dashboard</a></li>
+                        <li><a href="user/orders">Orders</a></li>
+                        <li><a href="logout?rd=home">Log out</a></li>
+                    </ul>
+                    <?php 
+                        }
+                    ?>
+                </div>
             </div>
         </div>
     </header>
@@ -426,6 +452,31 @@
                     }
                 ]
             });
+
+
+            const menuContainer = document.querySelector(".menu-container a");
+            menuContainer.addEventListener("click", toggle);
+
+            function toggle(e) {
+                 e.stopPropagation();
+                var link=this;
+                var menu = link.nextElementSibling;
+
+                if(!menu) return;
+                if (menu.style.display !== 'block') {
+                    menu.style.display = 'block';
+                }  else {
+                    menu.style.display = 'none';
+                }
+            };
+
+            function closeAll() {
+                menuContainer.nextElementSibling.style.display='none';
+            };
+
+            window.onclick=function(event){
+                closeAll.call(event.target);
+            };
 
             // //CHANGING THE ARROW BUTTONS TO ARROWS
             // $(".slick-next").html("<i class='fas fa-arrow-right'></i>");

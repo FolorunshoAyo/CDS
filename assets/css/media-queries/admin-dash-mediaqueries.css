@@ -110,6 +110,14 @@
     .login-container{
         flex: 0 0 85%;
     }
+
+    .order-info-cards{
+        display: block;
+    }
+
+    .order-info-card:not(:last-child){
+        margin-bottom: 20px;
+    }
 }
 
 
@@ -156,6 +164,10 @@
     .submit-btn-container button.admin-submit-btn{
         width: 100%;
         font-size: 2rem;
+    }
+
+    .product-image-container{
+        flex: 0 0 100px;
     }
 }
 

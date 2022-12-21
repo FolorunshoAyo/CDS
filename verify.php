@@ -1,3 +1,15 @@
+<?php
+require(__DIR__.'/auth-library/resources.php');
+Auth::Route("login");
+$url = strval($url);
+
+if(isset($_SESSION['verify']) && isset($_SESSION['otp_code']) && isset($_SESSION['email'])) {
+   // stay on page 
+}else{
+    //Redirect to login page
+    header("location: ./login");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -34,10 +46,15 @@
       </header>
       <section class="form-section">
         <div class="form-container">
-          <form id="verify-email-form">
+          <form id="verify-email-form" action="./authentication/verify-code" method="POST">
             <h1 class="form-title">Email Verification</h1>
-
-            <p class="form-text">We just sent your authentication code via email to <b>folushoayomide11@gmail.com</b>. Kindly check your mailbox or spam folder.</p>
+            <?php
+              $email = $_SESSION['email'];
+              $e = explode('@', $email);
+              $email = substr($e[0], 0, 3);
+              $domain = $e[1];
+            ?>
+            <p class="form-text">We just sent your authentication code via email to <b><?php echo $email."*******@".$domain; ?></b>. Kindly check your mailbox or spam folder.</p>
 
             <div class="form-groupings">
                 <div class="form-group-container">
@@ -55,5 +72,11 @@
         </div>
       </section>
     </div>
+    <?php
+      if (isset($_SESSION['isverified']) && $_SESSION['isverified'] == false) {
+          toast_msg("error", "Verification Error", "Your verification code is incorrect");
+          unset($_SESSION['isverified']);
+        }
+    ?>
   </body>
 </html>

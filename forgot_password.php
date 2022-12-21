@@ -1,3 +1,8 @@
+<?php
+  require(__DIR__.'/auth-library/resources.php');
+  Auth::Route("./user/");
+  $url = strval($url);
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -57,3 +62,15 @@
     </div>
   </body>
 </html>
+<?php
+if (isset($_SESSION['success']) && $_SESSION['success'] == 1) {
+    alert_msg_url("success", "Reset Link Sent", "A reset link has been sent to your email, Check your mail box or spam folder", "login");
+    unset($_SESSION['success']);
+}
+
+if (isset($_SESSION['error']) && $_SESSION['error'] == 1) {
+    toast_msg("error","Email Error", "Your email is incorrect, please enter the correct email and try again.");
+    unset($_SESSION['error']);
+}
+
+?>

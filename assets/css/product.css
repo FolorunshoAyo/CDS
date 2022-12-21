@@ -51,6 +51,22 @@
     font-size: 2rem;
 }
 
+.product-info-group.amount-block{
+    display: flex;
+    align-items: center;
+}
+
+.product-info-group .product-label{
+    margin-right: 10px;
+}
+
+.product-info-group form input{
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    padding: 1rem 0.5rem; 
+    width: 45px;
+}
+
 .product-label{
     margin-right: 30px;
     color: var(--primary-color);

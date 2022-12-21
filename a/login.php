@@ -73,7 +73,7 @@
   <!-- SWEET ALERT PLUGIN -->
   <script src="../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
   <!-- JUST VALIDATE LIBRARY -->
-  <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
+  <script src="../assets/js/just-validate/just-validate.js"></script>
   <script>
     const radioInputs = $("input[type='radio']");
 
@@ -127,7 +127,7 @@
         //SENDING FORM DATA TO THE SERVER
         $.ajax({
           type: "post",
-          url: 'controllers/login.php',
+          url: 'authentication/login.php',
           data: formData,
           processData: false,
           contentType: false,

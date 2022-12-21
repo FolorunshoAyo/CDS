@@ -7,6 +7,8 @@
   //   \NumberFormatter::PADDING_POSITION
   // );
 
+  $inSession = (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) || (isset($_SESSION['user_name']) && !empty($_SESSION['user_name']));
+
   if(isset($_GET['pid']) && !empty($_GET['pid'])){
     $pid = $_GET['pid'];
 
@@ -43,6 +45,9 @@
   </head>
 
   <body>
+    <div class="full-loader">
+      <div class="spinner"></div>
+    </div>
     <header>
       <div class="top-header">
         <div class="logo-container">
@@ -89,7 +94,26 @@
         </div>
         <div class="other-links-container">
           <button class="installment-btn">Installments</button>
-          <a href="#">Account</a>
+          <div class="menu-container">
+            <a href="javascript:void(0)"><i class="fa fa-user-o"></i> <?php echo($inSession?  explode(" ", $user_name)[0] : "Account") ?></a>
+            <?php
+              if(!$inSession){
+            ?>
+            <ul class="menu">
+              <li><a href="login">Sign In</a></li>
+            </ul>
+            <?php
+              }else{
+            ?>
+            <ul class="menu">
+              <li><a href="user/">Dashboard</a></li>
+              <li><a href="user/orders">Orders</a></li>
+              <li><a href="logout?rd=home">Log out</a></li>
+            </ul>
+            <?php 
+              }
+            ?>
+          </div>
         </div>
       </div>
     </header>
@@ -142,6 +166,12 @@
             <div class="product-info-group">
               <span class="product-label"> Status: </span>
               <span class="product-value"> <?php echo($product_details['active']? "Available" : "Unavailable") ?> </span>
+            </div>
+            <div class="product-info-group amount-block">
+              <span class="product-label"> Amount: </span>
+              <form id="amount">
+                <input type="number" min="1" max="50" value="1" id="amount">
+              </form>
             </div>
             <div class="product-info-group">
               <span class="product-label"> Details: </span><br /><br />
@@ -210,7 +240,7 @@
         </div>
       </div>
     </footer>
-    <!-- FONT AWESOME JIT SCRIPT-->
+    <!-- FONT AWESOME JIT SCRIPT -->
     <script
       src="https://kit.fontawesome.com/3ae896f9ec.js"
       crossorigin="anonymous"
@@ -219,11 +249,12 @@
     <script src="assets/js/jquery/jquery-3.6.min.js"></script>
     <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
     <script src="assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
+    <!-- SLICK SLIDER SCRIPT -->
     <script src="assets/js/slick/slick.js"></script>
+    <!-- SWEET ALERT SCRIPT -->
+    <script src="auth-library/vendor/dist/sweetalert2.all.min.js"></script>
     <script>
       $(function () {
-        // const burgerMenu = $(".burger-menu");
-        // const mobileNav = $(".mobile-menu");
 
         $(".product-slider").slick({
           arrows: false,
@@ -238,35 +269,72 @@
           autoplaySpeed: 2000,
         });
 
-        // //CHANGING THE ARROW BUTTONS TO ARROWS
-        // $(".slick-next").html("<i class='fas fa-arrow-right'></i>");
-        // $(".slick-prev").html("<i class='fas fa-arrow-left'></i>");
+        <?php
+          if($inSession){
+        ?>
 
-        //HEADER STICKY FUNCTIONALITY
-        // Jquery handler for displaying sticky header upon scroll.
-        // $(window).on("scroll", () => {
-        //     let header = $("header");
+        $(".buy-now-btn").on("click", function(){
+          const amountInputEl = document.getElementById("amount");
+          const productImage = document.querySelector(".product-slide-item img").src;
+          const amount = amountInputEl.value;
+          if(!amount){
+            alert("Please provide a quantity");
+          }else{
+            $.ajax({
+              url: "./controllers/recieve-order.php",
+              type: "post",
+              data: {submit:true,pid:<?php echo $pid ?>,pname:<?php echo($product_details['name']) ?>,qty:amount,price:<?php echo(intval($product_details['price']))?>,image: productImage},
+              processData: false,
+              contentType: false,
+              beforeSend: function(){
+                $(".full-loader").addClass("active");
+              },
+              success: function (response) {
+                response = JSON.parse(response);
+                  if(response.success === 1){
+                    location.replace("./checkout");
+                  }else{
+                    // ALERT USER
+                    Swal.fire({
+                      title: response.error_title,
+                      icon: "error",
+                      text: response.error_msg,
+                      allowOutsideClick: false,
+                      allowEscapeKey: false,
+                    });
 
-        //     header[0].classList.toggle("sticky", $(window)[0].scrollY > 180);
-        // });
+                    $(".full-loader").removeClass("active");
+                  }
+                }
+            });
+          }
+        })
 
-        // Event Handler for Burger Menu Toggle
-        // burgerMenu.on("click", () => {
-        //     burgerMenu.toggleClass("active");
-        //     mobileNav.toggleClass("active");
-        // });
-
-        // SMOOTH SCROLL FUNCTIONALITY
-        // Smooth scroll function declaration for handling smooth document fragmenting.
-        // const smoothScroll = (buttonID, location, duration) => {
-        //     $(buttonID).on("click", (e) => {
-        //         $([document.documentElement, document.body]).animate({
-        //             scrollTop: $(location).offset().top
-        //         }, duration);
-        //     })
-        // };
-
-        // smoothScroll(".collaborate-btn-container button", "#services", 3000)
+        <?php
+          }else{
+        ?>
+        $(".buy-now-btn").on("click", function(){
+          // ALERT ADMIN
+          Swal.fire({
+            title: "Purchase Error",
+            icon: "error",
+            text: "You need to login to use this action.",
+            showCancelButton: true,
+            confirmButtonText: 'Login',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: '#2366B5',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // REDIRECT USER TO LOGIN PAGE
+              location.replace("./login");
+            }
+          });
+        });
+        <?php
+          }
+        ?>
+        
       });
     </script>
   </body>

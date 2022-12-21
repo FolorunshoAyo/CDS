@@ -1,3 +1,10 @@
+<?php
+  require(dirname(__DIR__) . '/auth-library/resources.php');
+  Auth::User("login");
+
+  $user_id = $_SESSION['user_id'];
+  $user_name = $_SESSION['user_name'];
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -24,7 +31,7 @@
       rel="stylesheet"
       href="../assets/css/media-queries/user-dash-mediaqueries.css"
     />
-    <title>Welcome !---user---! - CDS</title>
+    <title>Welcome <?php echo($user_name) ?> - CDS</title>
   </head>
   <body>
     <div class="mobile-backdrop"></div>
@@ -37,16 +44,19 @@
       <div class="nav-link-container">
         <ul class="nav-links">
           <li class="nav-link-item">
-            <a href="#" class="nav-link active"> Dashboard </a>
+            <a href="./" class="nav-link active"> Dashboard </a>
           </li>
           <li class="nav-link-item">
-            <a href="#" class="nav-link"> Items picked </a>
+            <a href="#" class="nav-link"> Savings products </a>
+          </li>
+          <li class="nav-item-link">
+            <a href="./orders">Orders</a>
           </li>
           <li class="nav-link-item">
-            <a href="#" class="nav-link"> Address </a>
+            <a href="./addresses" class="nav-link"> Addresses </a>
           </li>
           <li class="nav-link-item">
-            <a href="#" class="nav-link"> Account details </a>
+            <a href="./profile" class="nav-link"> My profile </a>
           </li>
           <li class="nav-link-item">
             <a href="#" class="nav-link logout"> Logout </a>
@@ -77,7 +87,7 @@
             </ul>
           </div>
           <div>
-            <a class="header-link" href="#">Homepage</a>
+            <a class="header-link" href="../">Homepage</a>
           </div>
           <div>
             <a class="header-link" href="#">Help</a>
@@ -92,16 +102,19 @@
             <ul class="dashboard-nav-links">
               <li class="title">My Profile</li>
               <li class="dashboard-nav-link active">
-                <a href="#">Dashboard</a>
+                <a href="./">Dashboard</a>
               </li>
               <li class="dashboard-nav-link">
-                <a href="#">Items-picked</a>
+                <a href="#">Savings products</a>
               </li>
               <li class="dashboard-nav-link">
-                <a href="#">Address</a>
+                <a href="./orders">Orders</a>
               </li>
               <li class="dashboard-nav-link">
-                <a href="#">Account details</a>
+                <a href="./addresses">Address</a>
+              </li>
+              <li class="dashboard-nav-link">
+                <a href="./profile">My profile</a>
               </li>
               <li class="dashboard-nav-link logout">
                 <a href="#">Logout</a>
@@ -120,22 +133,22 @@
             </p>
 
             <div class="dashboard-actions">
-              <a href="#" class="dashboard-action-group">
+              <a href="./orders" class="dashboard-action-group">
                 <figure>
                   <i class="fa fa-shopping-bag"></i>
                   <figcaption>Orders</figcaption>
                 </figure>
               </a>
-              <a href="#" class="dashboard-action-group">
+              <a href="./address" class="dashboard-action-group">
                 <figure>
                   <i class="fa fa-map-marker"></i>
                   <figcaption>Address</figcaption>
                 </figure>
               </a>
-              <a href="#" class="dashboard-action-group">
+              <a href="./profile" class="dashboard-action-group">
                 <figure>
                   <i class="fa fa-user"></i>
-                  <figcaption>Account Details</figcaption>
+                  <figcaption>My profile</figcaption>
                 </figure>
               </a>
             </div>

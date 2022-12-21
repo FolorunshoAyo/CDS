@@ -9,6 +9,8 @@ require dirname(__DIR__).'/PHPMailer/PHPMailer/src/Exception.php';
 require dirname(__DIR__).'/PHPMailer/PHPMailer/src/PHPMailer.php';
 require dirname(__DIR__).'/PHPMailer/PHPMailer/src/SMTP.php';
 
+$url = strval($url);
+
 //Function to send otp to the user
 function send_mail($email, $subject, $msg, $gurl)
 {
@@ -28,26 +30,33 @@ function send_mail($email, $subject, $msg, $gurl)
     $message = "<!DOCTYPE html>
 				   <html>
 					   <head>
+					   	   <link rel='stylesheet'  href='" . $url . "assets/fonts/fonts.css' type='text/css' />
 						   <style>               
 						   .container{
-							   background-color:rgb(234, 232, 232);
+							   background-color: #fff;
 							   padding: 10px;
-							   font-family: arial, calibri;
+							   font-family: 'Inter', sans-serif;
+							   border-radius: 5px;
+							   border: 5px solid #1270B0;
 						   }
-   
+
+						   .img-container{
+							text-align: center;
+							margin-bottom: 10px
+						   }
+
+						   .img-container img{
+								height: 80px;
+								width: 80px;
+						   }
+
 						   .box {
 							   padding: 30px;
-							   background-color: white;
-							   margin:auto;
-							   border-radius: 10px;
-							   font-size: 20px;
-							   font-family: arial, calibri;
 							   text-align: center;
 						   }
 						   
 						   p{
-							   font-size:15px;
-							   font-family: arial, calibri;
+							   font-size: 15px;
 						   }
 						   </style>
 					   </head>

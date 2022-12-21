@@ -1,3 +1,8 @@
+<?php
+  require(__DIR__.'/auth-library/resources.php');
+  Auth::Route("./user/");
+  $url = strval($url);
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>

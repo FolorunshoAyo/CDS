@@ -29,5 +29,10 @@
      src="https://kit.fontawesome.com/3ae896f9ec.js"
      crossorigin="anonymous"
    ></script>
+   <script>
+        setTimeout(()=> {
+            window.location.replace("login");
+        }, 3500);
+   </script>
 </body>
 </html>

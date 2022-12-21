@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- JQUERY DATATABLES CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    <!-- DROP DOWN MENU CSS -->
+    <link rel="stylesheet" href="../../assets/css/dropdown.css" />
+    <!-- Custom Fonts (Inter) -->
+    <link rel="stylesheet" href="../../assets/fonts/fonts.css" />
+    <!-- BASE CSS -->
+    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <!-- ADMIN DASHBOARD MENU CSS -->
+    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash-menu.css" />
+    <!-- ADMIN TABLE CSS -->
+    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/admin-table.css">
+    <!-- ADMIN AGENT CSS -->
+    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/orders.css">
+    <!-- DASHHBOARD MEDIA QUERIES -->
+    <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
+    <title>Orders - CDS</title>
+</head>
+
+<body style="background-color: #fafafa">
+    <div class="dash-wrapper">
+        <div class="mobile-backdrop"></div>
+        <aside class="dash-menu">
+            <div class="logo">
+                <div class="menu-icon">
+                    <i class="fa fa-bars"></i>
+                    <i class="fa fa-times"></i>
+                </div>
+                <a href="#" class="logo">
+                    <i class="fa fa-home"></i>
+                    <span> CDS ADMIN </span>
+                </a>
+            </div>
+            <ul class="side-menu" id="side-menu">
+                <li class="nav-item">
+                    <a href="index.html">
+                        <i class="fa fa-tachometer"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fa fa-signal"></i>
+                        <span>Statistics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fa fa-usd"></i>
+                        <span>Payments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fa fa-recycle"></i>
+                        <span>Shipping</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="products.html">
+                        <i class="fa fa-shopping-bag"></i>
+                        <span>Products</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="#">
+                        <i class="fa fa-users"></i>
+                        <span>Team</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fa fa-commenting-o"></i>
+                        <span>Messages</span>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="side-menu-bottom">
+                <li class="nav-tem">
+                    <a href="#">
+                        <i class="fa fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item logout">
+                    <a href="#">
+                        <i class="fa fa-sign-out"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        <section class="page-wrapper">
+            <div class="table-wrapper">
+                <h2 class="table-title">All Orders</h2>
+
+                <div class="table-container">
+                    <table id="teams-table" class="main-table">
+                        <thead>
+                            <tr>
+                                <!-- <th>
+                                    Product(s)
+                                </th> -->
+                                <th>
+                                    Order ID
+                                </th>
+                                <th>
+                                    Date
+                                </th>
+                                <th>
+                                    Customer
+                                </th>
+                                <th>
+                                    status
+                                </th>
+                                <th>
+                                    Set status
+                                </th>
+                                <th>
+                                    Total
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <!-- <td>
+                                    <div class="product-details-container">
+                                        <div class="product-img-container">
+                                            <img src="images/iphone13-green.jpg" alt="Product Image" />
+                                        </div>
+                                        <div class="product-details">
+                                            <span class="product-title">Iphone 13 green</span>
+                                            <span class="product-span">Category: Phone</span>
+                                        </div>
+                                    </div>
+                                </td> -->
+                                <td>
+                                    #112234
+                                </td>
+                                <td>
+                                    Sept 9, 2022
+                                </td>
+                                <td>
+                                    Shodiya Folorunsho
+                                </td>
+                                <td class="status-cell-12456">
+                                    <span class="dot pending-dot"></span>
+                                    pending
+                                    <!--
+                                    <span class="dot shipped-dot"></span>
+                                    shipped
+                                    <span class="dot awaiting-shipment-dot"></span>
+                                    awaiting shipment
+                                    <span class="dot completed-dot"></span>
+                                    delivered
+                                    <span class="dot cancelled-dot"></span>
+                                    cancelled
+                                    -->
+                                </td>
+                                <td>
+                                    <form>
+                                        <select class="order-status-select" name="order-status" data-orderID="12456">
+                                            <option value="1">pending</option>
+                                            <option  value="2">awaiting shipment</option>
+                                            <option  value="3">shipped</option>
+                                            <option value="4">completed</option>
+                                            <option value="5">cancelled</option>
+                                        </select>
+                                    </form>
+                                </td>
+                                <td>
+                                    NGN6000
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="dropdown-toggle" data-dd-target="1" aria-label="Dropdown Menu">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </button>
+                                        <div style="font-size: 1rem;" class="dropdown-menu" data-dd-path="1">
+                                            <a class="dropdown-menu__link" href="order-details.html">View Order</a>
+                                            <!-- <a class="dropdown-menu__link deleteEl" href="javascript:void(0)" data-productId="1"></a> -->
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- FONT AWESOME JIT SCRIPT-->
+    <script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
+    <!-- JQUERY SCRIPT -->
+    <script src="../../assets/js/jquery/jquery-3.6.min.js"></script>
+    <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
+    <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
+    <!-- METIS MENU JS -->
+    <script src="../../assets/js/metismenujs/metismenujs.js"></script>
+    <!-- Sweet Alert JS -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- JQUERY DATATABLE SCRIPT -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+    <!-- DROP DOWN JS -->
+    <script type="text/javascript" src="../../assets/js/dropdown/dropdown.min.js"></script>
+    <!-- DASHBOARD SCRIPT -->
+    <script src="../../assets/js/admin-dash.js"></script>
+    <script>
+        $(function () {
+            $("#teams-table").DataTable({
+                "pageLength": 10
+            });
+
+            // HANDLE ORDER STATUS UPDATE
+            $(".order-status-select").each(function () {
+                $(this).on("change", function (e) {
+                    const selectedOrderStatus = e.target.value;
+
+                    const selectedOrderId = $(this).attr("data-orderID");
+
+                    $.post("controllers/changeOrderStatus.php", { oid: selectedOrderId, submit: true }, function (response) {
+                        if (reponse.success === 1) {
+                            let statusHTML;
+                            // ALERT ADMIN
+                            Swal.fire({
+                                title: response.title,
+                                icon: "success",
+                                text: response.message,
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                            });
+
+                            switch(selectedOrderStatus){
+                                case "1":
+                                    statusHTML = "<span class='dot pending-dot'></span> pending";
+                                break;
+                                case "2":
+                                    statusHTML = "<span class='dot awaiting-shipment-dot'></span> awaiting shipmennt"
+                                break;
+                                case "3":
+                                    statusHTML = "<span class='dot shipped-dot'></span> shipped";
+                                break;
+                                case "4":
+                                    statusHTML = "<span class='dot completed-dot'></span> completed";
+                                break;
+                                case "5":
+                                    statusHTML = "<span class='dot cancelled-dot'></span> cancelled";
+                                break;
+                                default: 
+                                console.log("Not recognized");
+                                break;
+                            }
+
+                            // UPDATE STATUS CELL
+                            $(`status-cell-${selectedOrderId}`).html(statusHTML);
+                        } else {
+                            Swal.fire({
+                                title: response.error_title,
+                                icon: "error",
+                                text: response.error_message,
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                            });
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,3 +1,12 @@
+<?php
+  require(dirname(__DIR__) . '/auth-library/resources.php');
+  Auth::User("../login");
+
+  $user_id = $_SESSION['user_id'];
+
+  $user_details_sql = $db->query("SELECT * FROM users WHERE user_id={$user_id}");
+  $user_details = $user_details_sql->fetch_assoc();
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -138,7 +147,7 @@
                       id="fname"
                       class="form-input"
                       placeholder=" "
-                      value="Folorunsho"
+                      value="<?php echo($user_details['first_name']) ?>"
                       required
                     />
                     <label for="fname">First name</label>
@@ -152,29 +161,15 @@
                       id="lname"
                       class="form-input"
                       placeholder=" "
-                      value="Shodiya"
+                      value="<?php echo($user_details['last_name']) ?>"
                       required
                     />
                     <label for="lname">Last name</label>
                   </div>
                 </div>
                 <div class="form-group-container">
-                  <div class="form-group animate">
-                    <input
-                      type="text"
-                      name="oname"
-                      id="oname"
-                      class="form-input"
-                      value="Ayomide"
-                      placeholder=" "
-                      required
-                    />
-                    <label for="oname">Other name</label>
-                  </div>
-                </div>
-                <div class="form-group-container">
                   <h3 class="static-label">Email</h3>
-                  <span class="static-value">folushoayomide11@gmail.com</span>
+                  <span class="static-value"><?php echo($user_details['email']) ?></span>
                 </div>
                 <div class="form-group-container">
                   <div class="form-group animate">
@@ -183,28 +178,13 @@
                       name="mobileno"
                       id="mobileno"
                       class="form-input"
-                      value="07087857141"
+                      value="<?php echo($user_details['phone_no']) ?>"
                       placeholder=" "
                       required
                     />
                     <label for="mobileno">Mobile number</label>
                   </div>
                 </div>
-                <div class="form-group-container">
-                  <div class="form-group animate">
-                    <input
-                      type="text"
-                      name="address"
-                      id="address"
-                      class="form-input"
-                      value="some address"
-                      placeholder=" "
-                      required
-                    />
-                    <label for="address">Address</label>
-                  </div>
-                </div>
-
                 <div class="submit-btn-container">
                   <button type="submit" id="profile-submit-btn">Save Changes</button>
                   <button type="button" class="change-password-btn">
@@ -300,10 +280,10 @@
       integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
       crossorigin="anonymous"
     ></script>
-    <!-- SWEET ALERT JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-     <!-- JUST VALIDATE LIBRARY -->
-     <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
+    <!-- SWEET ALERT PLUGIN -->
+    <script src="../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
+    <!-- JUST VALIDATE LIBRARY -->
+    <script src="../assets/js/just-validate/just-validate.js"></script>
     <!-- CUSTOM DASHBOARD SCRIPT -->
     <script src="../assets/js/user-dash.js"></script>
     <script>
@@ -360,20 +340,6 @@
           value: 30,
         },
       ])
-      .addField('#oname', [
-        {
-          rule: 'required',
-          errorMessage: "Field is required"
-        },
-        {
-          rule: 'minLength',
-          value: 3,
-        },
-        {
-          rule: 'maxLength',
-          value: 30,
-        },
-        ])
         .addField('#lname', [
           {
             rule: 'required',
@@ -402,17 +368,13 @@
             value: 11,
           },
         ])
-        .addField('#address', [
-          {
-            rule: 'required',
-            errorMessage: "Field is required"
-          },
-        ]).onSuccess(() => {
+        .onSuccess(() => {
           const form = document.getElementById('edit-form');
 
           // GATHERING FORM DATA
           const formData = new FormData(form);
           formData.append("submit", true);
+          formData.append("user_id", <?php echo($user_details['user_id']) ?>)
               
           //SENDING FORM DATA TO THE SERVER
           $.ajax({
@@ -424,7 +386,7 @@
             dataType: 'json',
             beforeSend: function () {
               $("#profile-submit-btn").html("Updating...");
-              $("#profile-submit-btn").setAttribute("disabled", true);
+              $("#profile-submit-btn").attr("disabled", true);
             },
             success: function (response) {
               if (response.success === 1) {
@@ -437,7 +399,7 @@
                   allowEscapeKey: false,
                 });
               } else {
-                $("#profile-submit-btn").setAttribute("disabled", false);
+                $("#profile-submit-btn").attr("disabled", false);
                 $("#profile-submit-btn").html("Save Changes");
                     
                 if(response.error_title === "fatal"){
@@ -522,7 +484,7 @@
                 dataType: 'json',
                 beforeSend: function () {
                     $("#change-pass-submit-btn").html("Updating...");
-                    $("#change-pass-submit-btn").setAttribute("disabled", true);
+                    $("#change-pass-submit-btn").attr("disabled", true);
                 },
                 success: function (response) {
                   if (response.success === 1) {
@@ -535,7 +497,7 @@
                       allowEscapeKey: false,
                     });
                   } else {
-                    $("#change-pass-submit-btn").setAttribute("disabled", false);
+                    $("#change-pass-submit-btn").attr("disabled", false);
                     $("#change-pass-submit-btn").html("Change Password");
                     
                     if(response.error_title === "fatal"){

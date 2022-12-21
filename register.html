@@ -162,13 +162,13 @@
     <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
     <script src="assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!--SWEET ALERT JS -->
-    <script src="https//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="auth-library/vendor/dist/sweetalert2.all.min.js"></script>
     <!-- JUST VALIDATE LIBRARY -->
     <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
     <script>
       //FORM VALIDATION WITH VALIDATE.JS
 
-      const validation = new JustValidate("#formation-form", {
+      const validation = new JustValidate("#registeration-form", {
         errorFieldCssClass: "is-invalid",
       });
 
@@ -211,7 +211,7 @@
             errorMessage: "Email is invalid!",
           },
         ])
-        .addField("#phoneno", [
+        .addField("#mobileno", [
           {
             rule: "required",
             errorMessage: "Field is required",
@@ -276,7 +276,7 @@
             dataType: "json",
             beforeSend: function () {
               $(".submit-btn-container button").html("Registering...");
-              $(".submit-btn-container button").setAttr("disabled", true);
+              $(".submit-btn-container button").attr("disabled", true);
             },
             success: function (response) {
               setTimeout(() => {
@@ -284,7 +284,7 @@
                   // REDIRECT USER TO THE VERIFICATION PAGE
                   window.location = "authentication/send-code?a=send";
                 } else {
-                  $(".submit-btn-container button").setAttr("disabled", false);
+                  $(".submit-btn-container button").attr("disabled", false);
                   $(".submit-btn-container button").html("Register");
 
                   if (response.error_title === "fatal") {

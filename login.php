@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- IZI TOAST CSS -->
+    <link rel="stylesheet" href="auth-library/vendor/dist/css/iziToast.min.css" />
     <!-- Custom Fonts (Inter) -->
     <link rel="stylesheet" href="assets/fonts/fonts.css" type="text/css" />
     <!-- BASE CSS -->
@@ -96,44 +98,18 @@
     <script src="assets/js/jquery/jquery-3.6.min.js"></script>
     <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
     <script src="assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
+    <!-- IZI TOAST SCRIPT -->
+    <script src="auth-library/vendor/dist/js/iziToast.min.js"></script>
     <!-- JUST VALIDATE LIBRARY -->
-    <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
+    <script src="assets/js/just-validate/just-validate.js"></script>
     <script>
       //FORM VALIDATION WITH VALIDATE.JS
 
-      const validation = new JustValidate("#formation-form", {
+      const validation = new JustValidate("#login-form", {
         errorFieldCssClass: "is-invalid",
       });
 
       validation
-        .addField("#fname", [
-          {
-            rule: "required",
-            errorMessage: "Field is required",
-          },
-          {
-            rule: "minLength",
-            value: 3,
-          },
-          {
-            rule: "maxLength",
-            value: 30,
-          },
-        ])
-        .addField("#lname", [
-          {
-            rule: "required",
-            errorMessage: "Field is required",
-          },
-          {
-            rule: "minLength",
-            value: 3,
-          },
-          {
-            rule: "maxLength",
-            value: 30,
-          },
-        ])
         .addField("#email", [
           {
             rule: "required",
@@ -144,20 +120,6 @@
             errorMessage: "Email is invalid!",
           },
         ])
-        .addField("#phoneno", [
-          {
-            rule: "required",
-            errorMessage: "Field is required",
-          },
-          {
-            rule: "minLength",
-            value: 11,
-          },
-          {
-            rule: "maxLength",
-            value: 11,
-          },
-        ])
         .addField("#pwd", [
           {
             rule: "minLength",
@@ -166,28 +128,6 @@
           {
             rule: "required",
             errorMessage: "Please provide a password",
-          },
-        ])
-        .addField("#cpwd", [
-          {
-            rule: "minLength",
-            value: 6,
-          },
-          {
-            rule: "required",
-            errorMessage: "Field is required",
-          },
-          {
-            validator: (value, fields) => {
-              if (fields["#pwd"] && fields["#pwd"].elem) {
-                const repeatPasswordValue = fields["#pwd"].elem.value;
-
-                return value === repeatPasswordValue;
-              }
-
-              return true;
-            },
-            errorMessage: "Passwords should be the same",
           },
         ])
         .onSuccess((event) => {
@@ -207,18 +147,25 @@
             data: formData,
             processData: false,
             contentType: false,
+            beforeSend: function () {
+              $(".submit-btn-container button").html("<i class='fa fa-spinner rotate'></i>");
+              $(".submit-btn-container button").attr("disabled", true);
+            },
             success: function (response) {
               response = JSON.parse(response);
 
               if (response.success === 1) {
-                if (response.redirect === "dashboard") {
+                if (response.redirect === "home-page") {
                   //REDIRECT TO DASH
-                  window.location = "student/";
+                  window.location = "./";
                 } else {
                   // REDIRECT TO EMAIL VERIFICATION'S PAGE
                   window.location = "authentication/send-code?a=send";
                 }
               } else {
+                $(".submit-btn-container button").html("Log In");
+                $(".submit-btn-container button").attr("disabled", false);
+
                 if (response.error_title === "suspended") {
                   iziToast.error({
                     title:

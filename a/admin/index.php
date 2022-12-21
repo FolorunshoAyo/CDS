@@ -247,273 +247,47 @@
           </div>
         </section>
         <section class="payment-table-section card">
-          <h2 class="title">Latest Payments</h2>
+          <h2 class="title">Latest Orders</h2>
           <div class="payment-table-container">
             <table>
               <thead>
                 <tr>
-                  <th>Products</th>
                   <th>Order ID</th>
                   <th>Date</th>
-                  <th>Customer ID</th>
+                  <th>Customer</th>
                   <th>Status</th>
-                  <th>Amount</th>
+                  <th>Total</th>
                   <th>Confirm</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>
-                    Iphone 13 pro
-                  </td>
-                  <td>
                     #112234
                   </td>
                   <td>
                     Sept 9, 2022
                   </td>
                   <td>
-                    123456
+                    Shodiya Folorunsho
                   </td>
                   <td>
-                    <span class="dot green-dot"></span>
-                    Paid
+                    <span class="dot pending-dot"></span>
+                    pending
                   </td>
                   <td>
                     NGN6000
                   </td>
                   <td>
                     <!-- Link to flutterwave -->
-                    <a href="#">Confirm</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Iphone 13 pro
-                  </td>
-                  <td>
-                    #112234
-                  </td>
-                  <td>
-                    Sept 9, 2022
-                  </td>
-                  <td>
-                    123456
-                  </td>
-                  <td>
-                    <span class="dot red-dot"></span>
-                    Fail
-                  </td>
-                  <td>
-                    NGN0
-                  </td>
-                  <td>
-                    <!-- Link to flutterwave -->
-                    <a href="#">Confirm</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Iphone 13 pro
-                  </td>
-                  <td>
-                    #112234
-                  </td>
-                  <td>
-                    Sept 9, 2022
-                  </td>
-                  <td>
-                    123456
-                  </td>
-                  <td>
-                    <span class="dot green-dot"></span>
-                    Paid
-                  </td>
-                  <td>
-                    NGN6000
-                  </td>
-                  <td>
-                    <!-- Link to flutterwave -->
-                    <a href="#">Confirm</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Iphone 13 pro
-                  </td>
-                  <td>
-                    #112234
-                  </td>
-                  <td>
-                    Sept 9, 2022
-                  </td>
-                  <td>
-                    123456
-                  </td>
-                  <td>
-                    <span class="dot green-dot"></span>
-                    Paid
-                  </td>
-                  <td>
-                    NGN6000
-                  </td>
-                  <td>
-                    <!-- Link to flutterwave -->
-                    <a href="#">Confirm</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Iphone 13 pro
-                  </td>
-                  <td>
-                    #112234
-                  </td>
-                  <td>
-                    Sept 9, 2022
-                  </td>
-                  <td>
-                    123456
-                  </td>
-                  <td>
-                    <span class="dot green-dot"></span>
-                    Paid
-                  </td>
-                  <td>
-                    NGN6000
-                  </td>
-                  <td>
-                    <!-- Link to flutterwave -->
-                    <a href="#">Confirm</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Iphone 13 pro
-                  </td>
-                  <td>
-                    #112234
-                  </td>
-                  <td>
-                    Sept 9, 2022
-                  </td>
-                  <td>
-                    123456
-                  </td>
-                  <td>
-                    <span class="dot green-dot"></span>
-                    Paid
-                  </td>
-                  <td>
-                    NGN6000
-                  </td>
-                  <td>
-                    <!-- Link to flutterwave -->
-                    <a href="#">Confirm</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Iphone 13 pro
-                  </td>
-                  <td>
-                    #112234
-                  </td>
-                  <td>
-                    Sept 9, 2022
-                  </td>
-                  <td>
-                    123456
-                  </td>
-                  <td>
-                    <span class="dot green-dot"></span>
-                    Paid
-                  </td>
-                  <td>
-                    NGN6000
-                  </td>
-                  <td>
-                    <!-- Link to flutterwave -->
-                    <a href="#">Confirm</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Iphone 13 pro
-                  </td>
-                  <td>
-                    #112234
-                  </td>
-                  <td>
-                    Sept 9, 2022
-                  </td>
-                  <td>
-                    123456
-                  </td>
-                  <td>
-                    <span class="dot green-dot"></span>
-                    Paid
-                  </td>
-                  <td>
-                    NGN6000
-                  </td>
-                  <td>
-                    <!-- Link to flutterwave -->
-                    <a href="#">Confirm</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Iphone 13 pro
-                  </td>
-                  <td>
-                    #112234
-                  </td>
-                  <td>
-                    Sept 9, 2022
-                  </td>
-                  <td>
-                    123456
-                  </td>
-                  <td>
-                    <span class="dot green-dot"></span>
-                    Paid
-                  </td>
-                  <td>
-                    NGN6000
-                  </td>
-                  <td>
-                    <!-- Link to flutterwave -->
-                    <a href="#">Confirm</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Iphone 13 pro
-                  </td>
-                  <td>
-                    #112234
-                  </td>
-                  <td>
-                    Sept 9, 2022
-                  </td>
-                  <td>
-                    123456
-                  </td>
-                  <td>
-                    <span class="dot green-dot"></span>
-                    Paid
-                  </td>
-                  <td>
-                    NGN6000
-                  </td>
-                  <td>
-                    <!-- Link to flutterwave -->
-                    <a href="#">Confirm</a>
+                    <a href="order-details">View Order</a>
                   </td>
                 </tr>
               </tbody>
             </table>
+            <div class="view-orders-container">
+              <a  href="./all-orders" class="view-orders">View all orders</a>
+            </div>
           </div>
         </section>
       </section>
