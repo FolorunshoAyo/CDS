@@ -11,7 +11,7 @@
         $pcode = $db->real_escape_string($_POST['pcode']);
         $state = $db->real_escape_string($_POST['state']);
 
-        if(empty($rname) || empty($rphoneno) || empty($daddress) || empty($ainfo) || empty($city) || empty($pcode) || empty($state)){
+        if(empty($rname) || empty($rphoneno) || empty($daddress) || empty($city) || empty($pcode) || empty($state)){
             echo json_encode(array('success' => 0, 'error_title' => "Address Update Error", 'error_msg' => 'One or more input fields are empty'));
             exit();
         }else{

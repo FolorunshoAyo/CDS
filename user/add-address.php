@@ -1,3 +1,7 @@
+<?php
+  require(dirname(__DIR__).'/auth-library/resources.php');
+  Auth::User("../login");
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -137,7 +141,7 @@
               <div class="form-group-container">
                 <div class="form-group animate">
                   <input type="text" name="daddress" id="daddress" class="form-input" placeholder=" " required />
-                  <label for="address">Delivery address</label>
+                  <label for="daddress">Delivery address</label>
                 </div>
               </div>
               <div class="form-group-container">
@@ -162,6 +166,21 @@
                 <div class="form-group animate">
                   <select name="state" id="state">
                     <option value="">Choose State</option>
+                    <?php
+                      $sql_states = $db->query("SELECT * FROM states");
+
+                      while($state = $sql_states->fetch_assoc()){
+                        if($state['state_name'] === $address_details['address_state']){
+                    ?>
+                    <option selected><?php echo $state['state_name'] ?></option>
+                    <?php
+                        }else{
+                    ?>
+                    <option><?php echo $state['state_name'] ?></option>
+                    <?php
+                        }
+                      }
+                    ?>
                   </select>
                   <label for="state">State</label>
                 </div>
@@ -195,7 +214,7 @@
   <script>
 
     //FORM VALIDATION WITH VALIDATE.JS
-    const validation = new JustValidate("#product-upload-form", {
+    const validation = new JustValidate("#add-form", {
       errorFieldCssClass: "is-invalid",
     });
 
@@ -213,12 +232,6 @@
         },
       ])
       .addField("#daddress", [
-        {
-          rule: "required",
-          errorMessage: "Field is required",
-        },
-      ])
-      .addField("#ainfo", [
         {
           rule: "required",
           errorMessage: "Field is required",
@@ -257,7 +270,7 @@
         //SENDING FORM DATA TO THE SERVER
         $.ajax({
           type: "post",
-          url: "controllers/add_address.php",
+          url: "controllers/add-address.php",
           data: formData,
           contentType: false,
           processData: false,

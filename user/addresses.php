@@ -26,6 +26,8 @@
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous" />
+  <!-- IziToast CSS -->
+  <link rel="stylesheet" href="../auth-library/vendor/dist/css/iziToast.min.css" />
   <!-- Custom Fonts (Inter) -->
   <link rel="stylesheet" href="../assets/fonts/fonts.css" />
   <!-- BASE CSS -->
@@ -140,7 +142,8 @@
                 <b>You don't have any address. Click the button below to add a new address.</b>
             </div>
             <?php 
-              }elseif($sql_all_address->num_rows === 1){
+              }
+              if($sql_active_address->num_rows === 1){
                 $default_address_details = $sql_active_address->fetch_assoc(); 
             ?>
             <div class="address-card default">
@@ -164,7 +167,7 @@
               </footer>
             </div>
             <?php 
-              }else{
+              }if($sql_all_address->num_rows > 1){
 
                 while($row_address = $sql_other_addresses->fetch_assoc()){
             ?>
@@ -177,7 +180,7 @@
                 <span><?php echo $row_address['recipient_phone_no']?></span>
               </address>
               <footer class="address-action-container">
-                <button class="set-as-default-button">
+                <button class="set-as-default-button" onclick="setToDefaultAddress(<?php echo $row_address['address_id'] ?>)">
                   Set as default
                 </button>
 
@@ -216,8 +219,39 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
     crossorigin="anonymous"></script>
+  <!-- IZI TOAST SCRIPT -->
+  <script src="../auth-library/vendor/dist/js/iziToast.min.js"></script>
   <!-- CUSTOM DASHBOARD SCRIPT -->
   <script src="../assets/js/user-dash.js"></script>
+  <script>
+    function setToDefaultAddress(addressId){
+      $.post("./controllers/set-default-address.php", {submit: true, aid: addressId}, function(response){
+        response = JSON.parse(response);
+
+        if(response.success === 1){
+          iziToast.success({
+            title:
+              "Setting address to default....",
+            timeout: 2000,
+            backgroundColor: "#6dbd28",
+            theme: "dark",
+            position: "topRight",
+          });
+
+          setTimeout(() => location.reload(), 2000);
+        }else{
+          iziToast.error({
+            title:
+              response.error_msg,
+            timeout: 4000,
+            backgroundColor: "#6dbd28",
+            theme: "dark",
+            position: "topRight",
+          });
+        }
+      });
+    }
+  </script>
 </body>
 
 </html>
