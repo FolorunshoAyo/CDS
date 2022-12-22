@@ -163,7 +163,7 @@
 }
 
 .order-card-body p:not(:last-child){
-    margin: 5px;
+    margin-bottom: 5px;
 }
 
 

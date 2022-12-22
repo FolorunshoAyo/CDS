@@ -75,11 +75,23 @@ tbody tr td span.cancelled-dot{
     background-color: #000000;
 }
 
+tbody tr td form{
+    display: flex;
+    align-items: center;
+}
+
 tbody tr td form select{
     border: 2px solid var(--primary-color);
     border-radius: 5px;
     padding: 1rem;
     font-size: 1rem;
     font: inherit;
+    flex: 1;
+    margin-right: 10px;
+}
+
+tbody tr td form img{
+    width: 30px;
+    height: 30px;
 }
 

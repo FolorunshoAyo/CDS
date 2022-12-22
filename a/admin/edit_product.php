@@ -1,6 +1,7 @@
 <?php
   require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
-
+  AdminAuth::User("a/login");
+  
   if(isset($_GET['pid']) && !empty($_GET['pid'])){
     $pid = $_GET['pid'];
 

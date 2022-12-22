@@ -1,3 +1,47 @@
+<?php
+  require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+  AdminAuth::User("a/login");
+
+  if(isset($_GET['oid']) && !empty($_GET['oid'])){
+    $oid = $_GET['oid'];
+
+    $sql_order = $db->query("SELECT *
+    FROM orders INNER JOIN products ON 
+    orders.product_id = products.product_id 
+    INNER JOIN users ON orders.user_id=users.user_id
+    WHERE order_id={$oid}");
+
+    $order_details = $sql_order->fetch_assoc();
+  }else{
+    header("Location: ./orders");
+  }
+
+  function showStatus($status){
+    $html = "";
+    switch($status){
+      case "1":
+        $html = "<span class='product-status pending'>pending</span>";
+      break;
+      case "2":
+        $html = "<span class='product-status awaiting-shipment'>awaiting shipment</span>";
+      break;
+      case "3":
+        $html = "<span class='product-status shipped'>shipped</span>";
+      break;
+      case "4":
+        $html = "<span class='product-status completed'>completed</span>";
+      break;
+      case "5":
+        $html = "<span class='product-status cancelled'>cancelled</span>";
+      break;
+      default:
+        $html = "Unable to detect status";
+      break;
+    }
+
+    return $html;
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -94,37 +138,40 @@
         </aside>
         <section class="page-wrapper">
             <header class="dash-header">
-                <a href="orders.html" class="back-link">
+                <a href="./orders" class="back-link">
                     <i class="fa fa-arrow-left"></i>
                 </a>
             </header>
             <div class="order-details-wrapper">
-                <h2 class="order-title">Shodiya Folorunsho's Order Details</h2>
+                <h2 class="order-title"><?php echo ucfirst($order_details['last_name']) . " " . ucfirst($order_details['first_name']) ?>'s Order Details</h2>
 
                 <div class="order-details-container">
                     <div class="order-meta">
-                        <h2 class="order-no">Order n<sup>o</sup> 1687165263</h2>
+                        <h2 class="order-no">Order n<sup>o</sup> <?php echo $order_details['order_no'] ?></h2>
                         <div class="order-product-details">
                             <span class="product-quantity">1 item(s)</span>
-                            <span class="order-date">Placed on 26-05-2022</span>
-                            <span class="product-price">#5,800</span>
+                            <span class="order-date">Placed on <?php echo explode(" ", $order_details['ord_date'])[0] ?></span>
+                            <span class="product-price">₦<?php echo number_format(intval($order_details['purch_amt'])) ?></span>
                         </div>
                     </div>
 
                     <h2 class="order-details-title">Item(s) Ordered</h2>
 
                     <div class="order-item">
-                        <span class="product-status completed">Delivered</span>
-                        <span class="product-status">non-returnable</span>
+                        <?php echo showStatus($order_details['status']) ?>
+                        <span class="product-status completes">non-returnable</span>
 
                         <div class="product-info">
                             <div class="product-image-container">
-                                <img src="../assets/images/bed-1.jpeg" alt="Product picture">
+                                <?php
+                                    $product_image = explode(",", $order_details['pictures'])[0]
+                                ?>
+                                <img src="images/<?php echo $product_image ?>" alt="Product picture">
                             </div>
                             <div class="product-details">
-                                <span class="product-name">Camoon 60d</span>
-                                <span class="product-qty">Qty: 1</span>
-                                <span class="product-price">₦ 5,600</span>
+                                <span class="product-name"><?php echo $order_details['name'] ?> </span>
+                                <span class="product-qty">Qty: <?php echo $order_details['amount'] ?></span>
+                                <span class="product-price">₦<?php echo number_format(intval($order_details['purch_amt'])) ?></span>
                             </div>
                         </div>
                     </div>
@@ -142,9 +189,10 @@
 
                                 <div class="order-card-body-group">
                                     <h3> Payment Details </h3>
-                                    <p>Item total: ₦ 5,600</p>
+                                    <p>Item total: ₦ <?php echo number_format(intval($order_details['purch_amt'])) ?></p>
                                     <p>Shipping Fee: none</p>
-                                    <p>Promotional Discount: ₦ 5,600</p>
+                                    <!-- <p>Promotional Discount: ₦ 5,600</p> -->
+                                    <p>Total: ₦ <?php echo number_format(intval($order_details['purch_amt'])) ?> </p>
                                 </div>
                             </div>
                         </div>
@@ -161,10 +209,16 @@
                                 </div>
 
                                 <div class="order-card-body-group">
-                                    <h3> Shipping Address </h3>
-                                    <p>Item total: ₦ 5,600</p>
-                                    <p>Shipping Fee: none</p>
-                                    <p>Promotional Discount: ₦ 5,600</p>
+                                    <h3>Shipping Address</h3>
+                                    <?php 
+                                        $shipping_address = explode("%", $order_details['shipping_address']);
+                                        $recipient_name = $shipping_address[0];
+                                        $address = $shipping_address[1];
+                                    ?>
+                                    <p><?php echo $recipient_name ?></p>
+                                    <p>
+                                        <?php echo $address ?>
+                                    </p>
                                 </div>
                             </div>
                         </div>
