@@ -9,6 +9,11 @@
 
   $inSession = (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) || (isset($_SESSION['user_name']) && !empty($_SESSION['user_name']));
 
+  if($inSession){
+    $user_id = $_SESSION['user_id'];
+    $user_name = $_SESSION['user_name'];
+  }
+
   if(isset($_GET['pid']) && !empty($_GET['pid'])){
     $pid = $_GET['pid'];
 
@@ -147,7 +152,7 @@
               <span class="product-value"> 
                 N<?php 
                   // echo($human_readable->format(intval($rowProduct['price']))) 
-                  echo($product_details['price']) 
+                  echo number_format(intval(($product_details['price']))) 
                 ?> 
                 X
                 <?php echo($product_meta_details['duration_in_months']) ?> Months 
@@ -169,9 +174,7 @@
             </div>
             <div class="product-info-group amount-block">
               <span class="product-label"> Amount: </span>
-              <form id="amount">
-                <input type="number" min="1" max="50" value="1" id="amount">
-              </form>
+              <input type="number" min="1" max="50" value="1" id="amount">
             </div>
             <div class="product-info-group">
               <span class="product-label"> Details: </span><br /><br />
@@ -269,6 +272,18 @@
           autoplaySpeed: 2000,
         });
 
+        $(".start-saving-btn").on("click", function(){
+          // ALERT USER
+          Swal.fire({
+            title: "Start Saving",
+            icon: "error",
+            text: "This feature is not available at the moment",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          });
+
+        });
+
         <?php
           if($inSession){
         ?>
@@ -277,13 +292,23 @@
           const amountInputEl = document.getElementById("amount");
           const productImage = document.querySelector(".product-slide-item img").src;
           const amount = amountInputEl.value;
-          if(!amount){
+
+          const formData = new FormData();
+
+          formData.append("submit", true);
+          formData.append("pid", <?php echo $pid ?>);
+          formData.append("pname", "<?php echo($product_details['name']) ?>");
+          formData.append("qty", amount);
+          formData.append("price", <?php echo(intval($product_details['price']))?>);
+          formData.append("image", productImage);
+
+          if(amount.length === 0){
             alert("Please provide a quantity");
           }else{
             $.ajax({
               url: "./controllers/recieve-order.php",
               type: "post",
-              data: {submit:true,pid:<?php echo $pid ?>,pname:<?php echo($product_details['name']) ?>,qty:amount,price:<?php echo(intval($product_details['price']))?>,image: productImage},
+              data: formData,
               processData: false,
               contentType: false,
               beforeSend: function(){

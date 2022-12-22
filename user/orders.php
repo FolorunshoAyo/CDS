@@ -172,7 +172,7 @@
                   </div>
                   <div class="product-info">
                     <h3 class="product-name"><?php echo $row_order['name'] ?></h3>
-                    <span class="order-no">Order 9876543671</span>
+                    <span class="order-no">Order <?php echo $row_order['order_no'] ?></span>
                     <div class="order-meta-details">
                       <?php echo showStatus($row_order['status']) ?>
                       <span class="order-date">On <?php echo explode(" ", $row_order['ord_date'])[0] ?> </span>

@@ -4,7 +4,7 @@
     $url = strval($url);
     
     if(isset($_SESSION['order_no']) && !empty($_SESSION['order_no'])){
-        $order_no = $_SESSION['order-no'];
+        $order_no = $_SESSION['order_no'];
     }else{
         header("Location: ./");
     }

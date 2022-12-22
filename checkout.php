@@ -8,12 +8,13 @@
     $selectedProductDetails = $_SESSION['ordered_product_info'];
 
     $product_name = $selectedProductDetails['name'];
-    $qty = $selectedProductDetails['qty'];
+    $qty = $selectedProductDetails['quantity'];
     $price = $selectedProductDetails['price'];
+    $image = $selectedProductDetails['image'];
 
     $sql_user_address = $db->query("SELECT *
     FROM addresses INNER JOIN user_addresses ON 
-    addresses.address_id = user_addresses.address_id WHERE WHERE user_id={$userID} AND active=1");
+    addresses.address_id = user_addresses.address_id WHERE user_id={$userID} AND active=1");
 
     $sql_user_email_sql = $db->query("SELECT email FROM users WHERE user_id={$userID}");
 
@@ -49,7 +50,9 @@
             <h1>Confirm & Order</h1>
         </div>
         <div class="cancel-container">
-            <i class="fa fa-times"></i>
+            <a href="./product?pid=<?php echo $selectedProductDetails['pid'] ?>">
+                <i class="fa fa-times"></i>
+            </a>
         </div>
     </header>
     <main>
@@ -57,12 +60,12 @@
             <section class="product-info-container">
                 <div class="product-info">
                     <div class="product-image-container">
-                        <img src="assets/images/bed-10.jpg" alt="Iphone Green">
+                        <img src="<?php echo $image ?>" alt="Iphone Green">
                     </div>
                     <div class="order-information">
                         <span class="product-name"><?php echo $product_name ?></span>
                         <span class="product-quantity">Qty: <?php echo $qty ?></span>
-                        <span class="product-price-single">₦<?php echo $price ?></span>
+                        <span class="product-price-single">₦<?php echo number_format(intval($price)) ?></span>
                     </div>
                 </div>
             </section>
@@ -125,11 +128,11 @@
                         <?php 
                             $total = intval($qty) * intval($price);
                         ?>
-                        ₦<?php echo $total ?>
+                        ₦<?php echo number_format(intval($total)) ?>
                     </p>
                     <p>
                         <span class="title"><b>Total Price:</b></span>
-                        <b>₦<?php echo $total ?></b>
+                        <b>₦<?php echo number_format(intval($total)) ?></b>
                     </p>
                 </div>
                 <div class="order-btn-container">
@@ -149,10 +152,18 @@
     <script src="assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <script>
         $(".order-btn-container button").on("click", function(){
+            const formData = new FormData();
+
+            formData.append("submit", true);
+            formData.append("pid", <?php echo $selectedProductDetails['pid'] ?>);
+            formData.append("uid", <?php echo $userID ?>);
+            formData.append("amount", <?php echo $qty ?>);
+            formData.append("total", <?php echo $total ?>);
+
             $.ajax({
               url: "./controllers/process-order.php",
               type: "post",
-              data: {submit:true,pid:<?php echo $selectedProductDetails['pid'] ?>,uid:<?php echo($userID) ?>, amount:<?php echo $qty ?>, total:<?php echo $total ?>},
+              data: formData,
               processData: false,
               contentType: false,
               beforeSend: function(){
@@ -161,7 +172,7 @@
               success: function (response) {
                 response = JSON.parse(response);
                   if(response.success === 1){
-                    location.replace("./checkout-success.php");
+                    location.replace("./checkout_success");
                   }else{
                     // ALERT USER
                     Swal.fire({
