@@ -1,6 +1,7 @@
 <?php
   require(dirname(__DIR__) . '/auth-library/resources.php');
-
+  Auth::User("./login");
+  
   if(isset($_GET['aid']) && !empty($_GET['aid'])){
     $aid = $_GET['aid'];
 

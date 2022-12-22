@@ -146,7 +146,7 @@
               if($sql_active_address->num_rows === 1){
                 $default_address_details = $sql_active_address->fetch_assoc(); 
             ?>
-            <div class="address-card default">
+            <div class="address-card default" id="address-<?php echo $default_address_details['address_id'] ?>">
               <address class="main-address">
                 <p class="recipient-name"><?php echo $default_address_details['recipient_name']?></p>
                 <?php echo $default_address_details['delivery_address'] . ", " . $default_address_details['city_name'] . ". " . $default_address_details['address_state'] . "."?>
@@ -171,7 +171,7 @@
 
                 while($row_address = $sql_other_addresses->fetch_assoc()){
             ?>
-            <div class="address-card">
+            <div class="address-card" id="address-<?php echo $row_address['address_id'] ?>">
               <address class="main-address">
                 <p class="recipient-name"><?php echo $row_address['recipient_name'] ?></p>
                 <?php echo $row_address['delivery_address'] . ", " . $row_address['city_name'] . ". " . $row_address['address_state'] . "."?>
@@ -185,10 +185,10 @@
                 </button>
 
                 <div class="address-action-icon-group">
-                  <a href="./edit-address?aid=<?php echo $row_address['address_id']?>" class="edit-btn">
+                  <a href="./edit-address?aid=<?php echo $row_address['address_id'] ?>" class="edit-btn">
                     <i class="fa fa-pen"></i>
                   </a>
-                  <button class="edit-btn">
+                  <button class="edit-btn" onclick="deleteAddress(<?php echo $row_address['address_id'] ?>)">
                     <i class="fa fa-trash"></i>
                   </button>
                 </div>
@@ -202,7 +202,17 @@
           </div>
 
           <div class="btn-container">
+            <?php
+              if($sql_all_address->num_rows === 3){
+            ?>
+            <button onclick="alert('You cannot have more than three addresses');" class="new-address-btn">Add Address</button>
+            <?php 
+              }else{
+            ?>
             <a href="./add-address" class="new-address-btn">Add Address</a>
+            <?php 
+              }
+            ?>
           </div>
         </div>
       </div>
@@ -225,19 +235,18 @@
   <script src="../assets/js/user-dash.js"></script>
   <script>
     function setToDefaultAddress(addressId){
+      iziToast.success({
+        title: "Setting address to default....",
+        timeout: 2000,
+        backgroundColor: "#6dbd28",
+        theme: "dark",
+        position: "topRight",
+      });
+
       $.post("./controllers/set-default-address.php", {submit: true, aid: addressId}, function(response){
         response = JSON.parse(response);
 
         if(response.success === 1){
-          iziToast.success({
-            title:
-              "Setting address to default....",
-            timeout: 2000,
-            backgroundColor: "#6dbd28",
-            theme: "dark",
-            position: "topRight",
-          });
-
           setTimeout(() => location.reload(), 2000);
         }else{
           iziToast.error({
@@ -250,6 +259,34 @@
           });
         }
       });
+    }
+
+    function deleteAddress(addressId){
+      if(confirm("Are you sure you want to delete this address?")){
+        iziToast.success({
+          title: "Deleting address.....",
+          timeout: 2000,
+          backgroundColor: "#6dbd28",
+          theme: "dark",
+          position: "topRight",
+        });
+
+        $.post("./controllers/delete-address.php", {submit: true, aid: addressId}, function(response){
+          response = JSON.parse(response);
+          if(response.success === 1){
+            $(`#address-${addressId}`).remove();
+          }else{
+            iziToast.error({
+              title: response.error_msg,
+              timeout: 4000,
+              backgroundColor: "#6dbd28",
+              theme: "dark",
+              position: "topRight",
+            });
+          }
+        });
+
+      }
     }
   </script>
 </body>

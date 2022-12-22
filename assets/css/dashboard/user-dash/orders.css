@@ -9,7 +9,6 @@
 .order-container{
     padding: 1rem 0.5rem;
     border-radius: 10px;
-    height: 150px;
     position: relative;
 }
 
@@ -24,6 +23,7 @@
 
 .product-image-container{
     flex: 0 1 200px;
+    margin-right: 20px;
 }
 
 .product-image-container img{

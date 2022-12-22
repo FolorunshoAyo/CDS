@@ -43,8 +43,27 @@
     border-radius: 20px;
     text-transform: uppercase;
     padding: 0.5rem 1rem;
-    background-color: #6dbd28;
     color: var(--white);
+}
+
+.product-status.pending{
+    background-color: #0275d8;
+}
+
+.product-status.shipped{
+    background-color: #cd02d8;
+}
+
+.product-status.awaiting-shipment{
+    background-color: #d80202;
+}
+
+.product-status.completed{
+    background-color: #6dbd28;
+}
+
+.product-status.cancelled{
+    background-color: #000000;
 }
 
 .product-info{
@@ -114,7 +133,7 @@
 }
 
 .order-card-body p:not(:last-child){
-    margin: 5px;
+    margin-bottom: 5px;
 }
 
 

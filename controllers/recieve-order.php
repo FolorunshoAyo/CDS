@@ -7,6 +7,7 @@
         $qty = $db->real_escape_string($_POST['qty']);
         $price = $db->real_escape_string($_POST['price']);
         $image = $db->real_escape_string($_POST['image']);
+        
         if(empty($pid) || empty($pname) || empty($qty) || emppty($price) || empty($image)){
             echo json_encode(array('success' => 0, 'error_title' => "Purchase Error", 'error_message' => "One or more field(s) were not provided"));
             exit();
