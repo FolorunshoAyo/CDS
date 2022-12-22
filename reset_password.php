@@ -1,3 +1,13 @@
+<?php
+require(__DIR__.'/auth-library/resources.php');
+Auth::Route("login");
+
+if(isset($_GET['auth']) && !empty($_GET['auth'])) {
+	$get_token =  $db->real_escape_string($_GET['auth']);
+ }else {
+    header("Location: ./login");
+ }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -34,7 +44,7 @@
       </header>
       <section class="form-section">
         <div class="form-container">
-          <form id="reset-pass-form">
+          <form id="reset-pass-form" action="reset_password?a=new_pass&auth=<?php echo $get_token ?>" method="POST">
             <h1 class="form-title">Reset your Password</h1>
 
             <p class="form-text">
@@ -160,3 +170,53 @@
     </script>
   </body>
 </html>
+<?php
+$sql = "SELECT token, user_email FROM reset_tokens WHERE token='{$get_token}'";
+$result = $db->query($sql);
+if ($result->num_rows == 1) {
+    $row = $result->fetch_assoc();
+        $user_email = $row['user_email'];
+
+    $s = $db->query("SELECT * FROM users WHERE email='{$user_email}'");
+    $r = $s->fetch_assoc();
+    $uname = $r['first_name'];
+    
+    if (isset($_POST['submit'])) {
+    $pass = $db->real_escape_string($_POST['pwd']);
+    $conf_pass = $db->real_escape_string($_POST['cpwd']);
+
+       if ($pass != $conf_pass) {
+        toast_msg("error" ,"Error", "Password does not match!");   
+       }else {
+        $hashPass = password_hash($conf_pass, PASSWORD_DEFAULT);
+        $sql2 = "UPDATE users SET passkey=? WHERE email='{$user_email}'";
+        $statement = $db->prepare($sql2);
+        $statement->bind_param("s", $hashPass);
+        if ($statement->execute()) {
+            $sql3 = "DELETE FROM reset_tokens WHERE token='{$get_token}'";
+            $result2 = $db->query($sql3);
+            if ($result2) {             
+                unset($_SESSION['reset_link']);
+                $msg = "<div class='container'>
+                        <div class='box'>
+                        <b><h2>Hi $uname!</h2></b>
+                        <p>You are receiving this email to let you know that your account password has been changed successfully.</p><br>
+                        <a href='$url/login'><button style='background-color:#337AB7; color:white; padding:15px; border:0; border-radius:5px;'>Login</button></a>
+                        <br><br>
+                        </div>
+                </div>";
+               send_raw_mail($user_email, "StudentExtra Password Changed", $msg);
+               alert_msg_url("success", "Password changed successfully!", "Please login with the new password","login");                               
+           }
+       }			 		 
+    }
+    }else{
+        echo "<script>window.location.replace('./login')</script>";
+    }
+}else{
+    echo "<script>window.location.replace('./login')</script>";
+}
+
+
+
+?>

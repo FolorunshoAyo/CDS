@@ -82,7 +82,7 @@
 
           <div class="existing-account-block">
             Don't have an account?
-            <a href="register.html"
+            <a href="./register"
               >Sign Up <i class="fa fa-arrow-right"></i
             ></a>
           </div>

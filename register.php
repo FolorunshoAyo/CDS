@@ -145,7 +145,7 @@
 
           <div class="existing-account-block">
             Already have an account?
-            <a href="register.html"
+            <a href="./login"
               >Sign In <i class="fa fa-arrow-right"></i
             ></a>
           </div>
