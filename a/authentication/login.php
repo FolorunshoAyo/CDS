@@ -11,14 +11,16 @@ if (isset($_POST['login'])) {
 		echo json_encode(array('success' => 0, 'error_title' => "both fields are required"));
 	}else{
 		if($admin_type === "agent"){
-            $sql = $db->query("SELECT * FROM agent WHERE email='{$email}'");
+            $sql = $db->query("SELECT * FROM agents WHERE email='{$email}'");
             if ($sql->num_rows == 1) {
                 $row = $sql->fetch_assoc();
                 $passcode = $row['passkey'];
+                // if($password === $passcode){
                 if (password_verify($password, $passcode)) {
                     if($row['account_status'] == 0) {
                         echo json_encode(array('success' => 0, 'error_title' => 'Authentication Error', 'error_msg' => 'This account has been suspended, please contact the admin.'));
                     }else{
+                        $_SESSION['agent_id'] = $row['agent_id'];
                         echo json_encode(array('success' => 1, 'admin_type' => $admin_type));
                     }
                 }else {

@@ -1,3 +1,19 @@
+<?php
+    require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+    AgentAuth::User("a/login");
+
+    $agent_id = $_SESSION['agent_id'];
+
+    if(isset($_GET['cid']) && !empty($_GET['cid'])){
+        $cid = $_GET['cid'];
+    
+        $sql_agent_customer_details = $db->query("SELECT * FROM agent_customers WHERE agent_customer_id={$cid}");
+    
+        $customer_details = $sql_agent_customer_details->fetch_assoc();
+    }else{
+        header("Location: ./");
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,7 +36,7 @@
     <!-- ADMIN TABLE CSS -->
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/admin-table.css">
     <!-- ADMIN AGENT CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/agent.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/agents.css">
     <!-- ADMIN PRODUCTS CSS -->
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/products.css">
     <!-- MAIN TABLE CSS -->
@@ -53,29 +69,35 @@
                     <i class="fa fa-bars"></i>
                     <i class="fa fa-times"></i>
                 </div>
-                <a href="#" class="logo">
+                <a href="./" class="logo">
                     <i class="fa fa-home"></i>
                     <span> CDS AGENT </span>
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
                 <li class="nav-item active">
-                    <a href="index.html">
+                    <a href="./">
                         <i class="fa fa-users"></i>
                         <span>Customers</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0)">
                         <i class="fa fa-truck"></i>
                         <span>Shipping</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./wallets">
+                        <i class="fa fa-usd"></i>
+                        <span>Wallets</span>
                     </a>
                 </li>
             </ul>
 
             <ul class="side-menu-bottom">
                 <li class="nav-item logout">
-                    <a href="#">
+                    <a href="../logout">
                         <i class="fa fa-sign-out"></i>
                         <span>Logout</span>
                     </a>
@@ -84,7 +106,7 @@
         </aside>
         <section class="page-wrapper">
             <div class="table-wrapper">
-                <h2 class="table-title">Create New wallet for Shodiya A. Folorunsho</h2>
+                <h2 class="table-title">Create New wallet for <?php echo ucfirst($customer_details['last_name']) . " " . ucfirst($customer_details['first_name']) ?></h2>
 
                 <div class="table-container">
                     <table class="generic-table">
@@ -108,21 +130,24 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php 
+
+                            ?>
                             <tr>
                                 <td>
-                                    Shodiya Folorunsho
+                                    <?php echo $customer_details['last_name'] . " " . $customer_details['first_name'] ?>
                                 </td>
                                 <td>
-                                    folushoayoomide11@gmail.com
+                                    <?php echo $customer_details['email']? $customer_details['email'] : "No email yet"  ?>
                                 </td>
                                 <td>
-                                    07087857141
+                                    <?= $customer_details['phone_no'] ?>
                                 </td>
                                 <td>
-                                    <span class="id-number">#09878</span>
+                                    <span class="id-number">#<?php echo str_pad($customer_details['agent_customer_id'], 4, "0", STR_PAD_LEFT) ?></span>
                                 </td>
                                 <td>
-                                    Aug 09 2022
+                                <?php echo date("M d, Y", strtotime($customer_details['created_at'])) ?>
                                 </td>
                             </tr>
                         </tbody>
@@ -135,10 +160,17 @@
                             <div class="form-group-container">
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <select name="productId" id="productId" class="form-input">
-                                            <optgroup label="category-here">
-                                                <option value="product-id-here">Product Name</option>
-                                            </optgroup>
+                                        <select name="productId" id="productId" class="form-input">\\
+                                            <option value="">Select product</option>
+                                            <?php
+                                                $sql_all_products = $db->query("SELECT * FROM products");
+
+                                                while($product = $sql_all_products->fetch_assoc()){
+                                            ?>
+                                                <option value="<?php echo $product['product_id'] ?>"><?php echo $product['name'] ?></option>
+                                            <?php
+                                                }
+                                            ?>
                                         </select>
                                         <label for="productId">Pick Item</label>
                                     </div>
@@ -215,7 +247,7 @@
                     </div>
 
                     <div class="add-container">
-                        <a href="#">Add New Wallet</a>
+                        <a href="javascript:void(0)">Add New Wallet</a>
                     </div>
                 </div>
             </div>
@@ -237,7 +269,7 @@
     <!-- DROP DOWN JS -->
     <script type="text/javascript" src="../../assets/js/dropdown/dropdown.min.js"></script>
     <!-- JUST VALIDATE LIBRARY -->
-    <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
+    <script src="../../assets/js/just-validate/just-validate.js"></script>
     <!-- DASHBOARD SCRIPT -->
     <script src="../../assets/js/admin-dash.js"></script>
     <script>
@@ -254,16 +286,6 @@
                 if (n >= 1e12) return +(n / 1e12).toFixed(1) + "T";
             };
 
-            //MOCKED PRODUCT RESULT
-            const productDetails = {
-                id: 2345,
-                name: "A bed",
-                price: 20000,
-                durationInMonths: 10,
-                dailyPayment: "5000",
-                productStatus: 1
-            }
-
             //FORM VALIDATION WITH VALIDATE.JS
 
             const validation = new JustValidate("#view-item-form", {
@@ -278,11 +300,11 @@
                     },
                 ])
                 .onSuccess((event) => {
-                    // const  form = document.getElementById("view-item-form");
+                    const  form = document.getElementById("view-item-form");
 
-                    // const formData = new FormData(form);
+                    const formData = new FormData(form);
 
-                    // formData.append("submit", true);
+                    formData.append("submit", true);
 
                     const productImageEl = $(".product-img-container img"),
                         productNameEl = $(".product-title"),
@@ -316,19 +338,19 @@
                         success: function (response) {
                             setTimeout(() => {
                                 if (response.success === 1) {
-                                    productImageEl.attr("src", "../../assets/images/bed-1.jpeg");
-                                    productNameEl.html(productDetails.name);
-                                    productIdEl.html(`#${productDetails.id}`);
-                                    productPriceEl.html(formatCash(productDetails.price));
-                                    productDurationEl.html(productDetails.durationInMonths);
-                                    productDailyAmount.html(formatCash(productDetails.dailyPayment));
-                                    productStatusEl.attr("class", `product-status ${productDetails.productStatus ? "success" : "danger"}`);
-                                    productStatusEl.html(productDetails.productStatus ? "active" : "inactive");
+                                    productImageEl.attr("src", `../admin/images/${response.image}`);
+                                    productNameEl.html(response.name);
+                                    productIdEl.html(`#${response.pid}`);
+                                    productPriceEl.html(formatCash(response.price));
+                                    productDurationEl.html(response.duration_in_months);
+                                    productDailyAmount.html(formatCash(response.daily_payment));
+                                    productStatusEl.attr("class", `product-status ${response.product_status? "success" : "danger"}`);
+                                    productStatusEl.html(response.product_status ? "active" : "inactive");
 
                                     $(".loader-container").addClass("hide");
                                     itemView.removeClass("hide");
 
-                                    prepareAddWalletButton(productDetails.id);
+                                    prepareAddWalletButton(response.pid);
                                 } else {
                                     if (response.error_title === "fatal") {
                                         // REFRESH CURRENT PAGE
@@ -352,15 +374,18 @@
 
             function prepareAddWalletButton(productID) {
                 const addWalletBtn = $(".add-container a");
-                const postData = { product_id: productID, submit: true };
+                const formData = new FormData();
+
+                formData.append("product_id", productID);
+                formData.append("submit", true);
+                formData.append("customer_id", "<?= $cid ?>");
 
                 addWalletBtn.on("click", function (e) {
-                    e.preventDefault();
 
                     $.ajax({
                         type: "post",
                         url: "controllers/add_wallet.php",
-                        data: JSON.stringify(postData),
+                        data: formData,
                         contentType: false,
                         processData: false,
                         dataType: "json",
@@ -378,8 +403,8 @@
                                     imageAlt: 'Selected product',
                                     title: 'Wallet created successfully',
                                     html:
-                                        '<b>Price</b>: $price <br><br>' +
-                                        'You would be making a daily savings of ₦$daily_payment daily over a period of $duration_in_months months',
+                                        `<b>Price</b>: ${response.price} <br><br>
+                                        <?php echo $customer_details['first_name'] ?> would be making a daily savings of ₦${response.daily_payment} daily over a period of ${response.duration_in_months} months`,
                                     showCloseButton: true,
                                     showCancelButton: true,
                                     focusConfirm: false,
@@ -391,12 +416,18 @@
                                     }
 
                                     if(result.isCancelled){
-                                        location.href = `agent/`;
+                                        location.href = `./`;
                                     }
                                 });
                             } else {
                                 // ALERT THE AGENT UPON ERROR
-
+                                Swal.fire({
+                                    title: response.error_title,
+                                    icon: "error",
+                                    text: response.error_msg,
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                });
                             }
                         }
                     })

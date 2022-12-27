@@ -1,3 +1,18 @@
+<?php
+    require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+    AdminAuth::User("");
+    $admin_id = $_SESSION['admin_id'];
+
+    if(isset($_GET['aid']) && !empty($_GET['aid'])){
+        $aid = $_GET['aid'];
+    
+        $sql_agent_details = $db->query("SELECT * FROM agents WHERE agent_id={$aid}");
+    
+        $agent_details = $sql_agent_details->fetch_assoc();
+    }else{
+        header("Location: ./agents");
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,46 +43,46 @@
                     <i class="fa fa-bars"></i>
                     <i class="fa fa-times"></i>
                 </div>
-                <a href="#" class="logo">
+                <a href="./" class="logo">
                     <i class="fa fa-home"></i>
                     <span> CDS ADMIN </span>
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
                 <li class="nav-item">
-                    <a href="index.html">
+                    <a href="./">
                         <i class="fa fa-tachometer"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0)">
                         <i class="fa fa-signal"></i>
                         <span>Statistics</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="./orders">
                         <i class="fa fa-usd"></i>
-                        <span>Payments</span>
+                        <span>Orders</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0)">
                         <i class="fa fa-recycle"></i>
                         <span>Shipping</span>
                     </a>
                 </li>
                 <li class="nav-item active">
-                    <a href="products.html">
+                    <a href="./products">
                         <i class="fa fa-shopping-bag"></i>
                         <span>Products</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="./agents">
                         <i class="fa fa-users"></i>
-                        <span>Team</span>
+                        <span>Agents</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -86,7 +101,7 @@
                     </a>
                 </li>
                 <li class="nav-item logout">
-                    <a href="#">
+                    <a href="../logout">
                         <i class="fa fa-sign-out"></i>
                         <span>Logout</span>
                     </a>
@@ -95,7 +110,7 @@
         </aside>
         <section class="page-wrapper">
             <header class="dash-header">
-                <a href="agents.html" class="back-link">
+                <a href="./agents" class="back-link">
                     <i class="fa fa-arrow-left"></i>
                 </a>
             </header>
@@ -109,7 +124,7 @@
                                 <div class="form-group-container">
                                     <div class="form-group animate">
                                         <input type="text" name="fname" id="fname" class="form-input" placeholder=" "
-                                            value="Folorunsho" required />
+                                            value="<?= $agent_details['first_name'] ?>" required />
                                         <label for="fname">First Name</label>
                                     </div>
                                 </div>
@@ -117,7 +132,7 @@
                                 <div class="form-group-container">
                                     <div class="form-group animate">
                                         <input type="text" name="lname" id="lname" class="form-input"
-                                            placeholder=" " value="Shodiya" required />
+                                            placeholder=" " value="<?= $agent_details['last_name'] ?>" required />
                                         <label for="lname">Last Name</label>
                                     </div>
                                 </div>
@@ -125,19 +140,19 @@
                                 <div class="form-group-container">
                                     <div class="form-group animate">
                                         <input type="text" name="oname" id="oname"
-                                            class="form-input" placeholder=" " value="Ayomide" required />
+                                            class="form-input" placeholder=" " value="<?= $agent_details['other_name'] ?>" required />
                                         <label for="oname">Other Name</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group-container">
                                     <h3 class="static-label">Email</h3>
-                                    <span class="static-email">folushoayomide11@gmail.com</span>
+                                    <span class="static-email"><?= $agent_details['email'] ?></span>
                                 </div>
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <input type="number" name="phoneno" id="phoneno" class="form-input" placeholder=" " value="07087857141" required />
+                                        <input type="number" name="phoneno" id="phoneno" class="form-input" placeholder=" " value="<?= $agent_details['phone_no'] ?>" required />
                                         <label for="phoneno">Phone</label>
                                     </div>
                                 </div>
@@ -148,7 +163,7 @@
                                             Activate Account
                                         </span>
                                         <label for="active" class="switch">
-                                            <input type="checkbox" id="active" name="active" value="yes">
+                                            <input type="checkbox" id="active" name="active" <?php echo $agent_details['account_status'] === "1"? "checked" : "" ?> value="1">
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
@@ -173,14 +188,16 @@
     <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!-- METIS MENU JS -->
     <script src="../../assets/js/metismenujs/metismenujs.js"></script>
+    <!-- SWEET ALERT PLUGIN -->
+    <script src="../../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
     <!-- JUST VALIDATE LIBRARY -->
-    <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
+    <script src="../../assets/js/just-validate/just-validate.js"></script>
     <!-- DASHBOARD SCRIPT -->
     <script src="../../assets/js/admin-dash.js"></script>
     <script>
         //FORM VALIDATION WITH VALIDATE.JS
 
-        const validation = new JustValidate("#product-upload-form", {
+        const validation = new JustValidate("#agent-upload-form", {
             errorFieldCssClass: "is-invalid",
         });
 
@@ -203,19 +220,7 @@
                     errorMessage: "Field is required",
                 },
             ])
-            .addField("#email", [
-                {
-                    rule: "required",
-                    errorMessage: "Field is required",
-                },
-            ])
             .addField("#phoneno", [
-                {
-                    rule: "required",
-                    errorMessage: "Field is required",
-                },
-            ])
-            .addField("#active", [
                 {
                     rule: "required",
                     errorMessage: "Field is required",
@@ -245,15 +250,15 @@
                             if (response.success === 1) {
                                 // ALERT USER UPON SUCCESSFUL UPLOAD
                                 Swal.fire({
-                                    title: "Agent Added",
+                                    title: "Agent uodated",
                                     icon: "success",
-                                    text: `You've added ${response.agent_name} successfully`,
+                                    text: `You've updated agent successfully`,
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
                                     confirmButtonColor: '#2366B5',
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.href = "products"
+                                        location.href = "agents"
                                     }
                                 })
                             } else {
@@ -268,7 +273,7 @@
                                     Swal.fire({
                                         title: response.error_title,
                                         icon: "error",
-                                        text: response.error_message,
+                                        text: response.error_msg,
                                         allowOutsideClick: false,
                                         allowEscapeKey: false,
                                     });

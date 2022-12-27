@@ -271,6 +271,30 @@
           autoplay: true,
           autoplaySpeed: 2000,
         });
+        
+        const menuContainer = document.querySelector(".menu-container a");
+            menuContainer.addEventListener("click", toggle);
+
+            function toggle(e) {
+                e.stopPropagation();
+                var link=this;
+                var menu = link.nextElementSibling;
+
+                if(!menu) return;
+                if (menu.style.display !== 'block') {
+                    menu.style.display = 'block';
+                }  else {
+                    menu.style.display = 'none';
+                }
+            };
+
+            function closeAll() {
+                menuContainer.nextElementSibling.style.display='none';
+            };
+
+            window.onclick=function(event){
+                closeAll.call(event.target);
+            };
 
         $(".start-saving-btn").on("click", function(){
           // ALERT USER
@@ -301,8 +325,8 @@
           formData.append("qty", amount);
           formData.append("price", <?php echo(intval($product_details['price']))?>);
           formData.append("image", productImage);
-
-          if(amount.length === 0){
+          
+          if(Number(amount) === 0){
             alert("Please provide a quantity");
           }else{
             $.ajax({

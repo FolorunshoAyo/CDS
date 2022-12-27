@@ -81,9 +81,9 @@
           <a href="./" class="nav-link"> Dashboard </a>
         </li>
         <li class="nav-link-item">
-          <a href="#" class="nav-link"> Savings products </a>
+          <a href="javascript:void(0)" class="nav-link"> Savings products </a>
         </li>
-        <li class="nav-item-link active">
+        <li class="nav-link-item active">
           <a href="./orders" class="nav-link">Orders</a>
         </li>
         <li class="nav-link-item">
@@ -93,7 +93,7 @@
           <a href="./profile" class="nav-link"> My profile </a>
         </li>
         <li class="nav-link-item">
-          <a href="#" class="nav-link logout"> Logout </a>
+          <a href="../logout" class="nav-link logout"> Logout </a>
         </li>
       </ul>
     </div>
@@ -134,13 +134,13 @@
               <a href="./">Dashboard</a>
             </li>
             <li class="dashboard-nav-link">
-              <a href="#">Savings products</a>
+              <a href="javascript:void(0)">Savings products</a>
             </li>
             <li class="dashboard-nav-link active">
               <a href="./orders">Orders</a>
             </li>
             <li class="dashboard-nav-link">
-              <a href="#">Addresses</a>
+              <a href="./addresses">Addresses</a>
             </li>
             <li class="dashboard-nav-link">
               <a href="./profile">My profile</a>

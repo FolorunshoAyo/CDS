@@ -1,3 +1,8 @@
+<?php
+    require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+    AdminAuth::User("");
+    $admin_id = $_SESSION['admin_id'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,14 +33,14 @@
                     <i class="fa fa-bars"></i>
                     <i class="fa fa-times"></i>
                 </div>
-                <a href="#" class="logo">
+                <a href="./" class="logo">
                     <i class="fa fa-home"></i>
                     <span> CDS ADMIN </span>
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
                 <li class="nav-item">
-                    <a href="index.html">
+                    <a href="./">
                         <i class="fa fa-tachometer"></i>
                         <span>Dashboard</span>
                     </a>
@@ -47,9 +52,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="./orders">
                         <i class="fa fa-usd"></i>
-                        <span>Payments</span>
+                        <span>Orders</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -59,15 +64,15 @@
                     </a>
                 </li>
                 <li class="nav-item active">
-                    <a href="products.html">
+                    <a href="./products">
                         <i class="fa fa-shopping-bag"></i>
                         <span>Products</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="./agents">
                         <i class="fa fa-users"></i>
-                        <span>Team</span>
+                        <span>Agents</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -86,7 +91,7 @@
                     </a>
                 </li>
                 <li class="nav-item logout">
-                    <a href="#">
+                    <a href="../logout">
                         <i class="fa fa-sign-out"></i>
                         <span>Logout</span>
                     </a>
@@ -95,7 +100,7 @@
         </aside>
         <section class="page-wrapper">
             <header class="dash-header">
-                <a href="agents.html" class="back-link">
+                <a href="./agents" class="back-link">
                     <i class="fa fa-arrow-left"></i>
                 </a>
             </header>
@@ -103,7 +108,7 @@
                 <h2 class="product-form-title">Register a New Agent</h2>
 
                 <div class="product-form-container">
-                    <form id="team-upload-form">
+                    <form id="agent-upload-form">
                         <div class="form-groupings">
                             <div class="form-group-container">
                                 <div class="form-group-container">
@@ -151,7 +156,7 @@
                                             Activate Account
                                         </span>
                                         <label for="active" class="switch">
-                                            <input type="checkbox" id="active" name="active" value="yes">
+                                            <input type="checkbox" id="active" name="active" value="1">
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
@@ -176,14 +181,16 @@
     <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!-- METIS MENU JS -->
     <script src="../../assets/js/metismenujs/metismenujs.js"></script>
+    <!-- SWEET ALERT PLUGIN -->
+    <script src="../../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
     <!-- JUST VALIDATE LIBRARY -->
-    <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
+    <script src="../../assets/js/just-validate/just-validate.js"></script>
     <!-- DASHBOARD SCRIPT -->
     <script src="../../assets/js/admin-dash.js"></script>
     <script>
         //FORM VALIDATION WITH VALIDATE.JS
 
-        const validation = new JustValidate("#product-upload-form", {
+        const validation = new JustValidate("#agent-upload-form", {
             errorFieldCssClass: "is-invalid",
         });
 
@@ -218,14 +225,8 @@
                     errorMessage: "Field is required",
                 },
             ])
-            .addField("#active", [
-                {
-                    rule: "required",
-                    errorMessage: "Field is required",
-                },
-            ])
             .onSuccess((event) => {
-                const form = document.getElementById("team-upload-form");
+                const form = document.getElementById("agent-upload-form");
 
                 // GATHERING FORM DATA
                 const formData = new FormData(form);
@@ -246,6 +247,7 @@
                     success: function (response) {
                         setTimeout(() => {
                             if (response.success === 1) {
+                                console.log(response.random_pass);
                                 // ALERT USER UPON SUCCESSFUL UPLOAD
                                 Swal.fire({
                                     title: "Agent Added",

@@ -91,9 +91,9 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#">
+            <a href="./agents">
               <i class="fa fa-users"></i>
-              <span>Team</span>
+              <span>Agents</span>
             </a>
           </li>
           <li class="nav-item">

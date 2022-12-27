@@ -1,3 +1,26 @@
+<?php
+    require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+    AgentAuth::User("a/login");
+
+    
+  // NUMBER FORMATTER
+  // $human_readable = new \NumberFormatter(
+  //   'en_US', 
+  //   \NumberFormatter::PADDING_POSITION
+  // );
+
+    $agent_id = $_SESSION['agent_id'];
+
+    if(isset($_GET['cid']) && !empty($_GET['cid'])){
+        $cid = $_GET['cid'];
+    
+        $sql_agent_customer_details = $db->query("SELECT * FROM agent_customers WHERE agent_customer_id={$cid}");
+    
+        $customer_details = $sql_agent_customer_details->fetch_assoc();
+    }else{
+        header("Location: ./");
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,29 +62,35 @@
                     <i class="fa fa-bars"></i>
                     <i class="fa fa-times"></i>
                 </div>
-                <a href="#" class="logo">
+                <a href="./" class="logo">
                     <i class="fa fa-home"></i>
                     <span> CDS AGENT </span>
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
-                <li class="nav-item">
-                    <a href="index.html">
+                <li class="nav-item active">
+                    <a href="./">
                         <i class="fa fa-users"></i>
                         <span>Customers</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0)">
                         <i class="fa fa-truck"></i>
                         <span>Shipping</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./wallets">
+                        <i class="fa fa-usd"></i>
+                        <span>Wallets</span>
                     </a>
                 </li>
             </ul>
 
             <ul class="side-menu-bottom">
                 <li class="nav-item logout">
-                    <a href="#">
+                    <a href="../logout">
                         <i class="fa fa-sign-out"></i>
                         <span>Logout</span>
                     </a>
@@ -70,12 +99,23 @@
         </aside>
         <section class="page-wrapper">
             <div class="table-wrapper">
-                <h2 class="table-title">Shodiya Folorunsho A. Wallets</h2>
+                <h2 class="table-title"><?php echo ucfirst($customer_details['last_name']) . " " . ucfirst($customer_details['first_name']) ?> Wallets</h2>
 
+                <?php
+                    $sql_customer_wallets = $db->query("SELECT *
+                    FROM agent_wallets
+                    INNER JOIN products ON agent_wallets.product_id = products.product_id
+                    WHERE agent_customer_id='$cid' AND agent_id='$agent_id';");
+
+                    if($sql_customer_wallets->num_rows === 0){
+                ?>
                 <div class="no-wallet-container">
                     <span>No wallets yet</span>
                     <a href="add_customer.html">Create new Wallet</a>
                 </div>
+                <?php
+                    }else{
+                ?>
 
                 <div class="existing-wallet-view">
                     <div class="table-container">
@@ -89,9 +129,6 @@
                                         Product ID
                                     </th>
                                     <th>
-                                        Customer ID
-                                    </th>
-                                    <th>
                                         Current balance
                                     </th>
                                     <th>
@@ -103,66 +140,55 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr wallet-id="1">
+                                <?php 
+                                    while($wallet_details = $sql_customer_wallets->fetch_assoc()){
+                                ?>
+                                <tr wallet-id="<?= $wallet_details['wallet_id'] ?>">
                                     <td>
                                         <div class="product-details-container">
                                             <div class="product-img-container">
-                                                <img src="../../assets/images/4-runner.jpg" alt="Product Image">
+                                                <?php
+                                                    $product_image = explode(",", $wallet_details['pictures'])[0];
+                                                ?>
+                                                <img src="../admin/images/<?= $product_image ?>" alt="Product Image">
                                             </div>
                                             <div class="product-details">
-                                                <span class="product-title">Toyota RAV 4</span>
+                                                <span class="product-title"><?= $wallet_details['name'] ?></span>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <span class="id-number">#09878</span>
+                                        <span class="id-number">#<?php echo str_pad($wallet_details['product_id'], 4, "0", STR_PAD_LEFT) ?></span>
                                     </td>
                                     <td>
-                                        <span class="id-number">#09878</span>
+                                        NGN
+                                        <?php 
+                                            // echo($human_readable->format(intval($wallet_details['total_amount']))) 
+                                            echo number_format(intval($wallet_details['total_amount']));
+                                        ?>
                                     </td>
                                     <td>
-                                        NGN 24k
-                                    </td>
-                                    <td>
-                                        NGN 24k
+                                        NGN 
+                                        <?php 
+                                            // echo($human_readable->format(intval($wallet_details['price']))) 
+                                            echo number_format(intval($wallet_details['price']));
+                                        ?>
                                     </td>
                                     <td>
                                         <span class="status-badge success">active</span>
                                     </td>
                                 </tr>
-                                <tr wallet-id="2">
-                                    <td>
-                                        <div class="product-details-container">
-                                            <div class="product-img-container">
-                                                <img src="../../assets/images/4-runner.jpg" alt="Product Image">
-                                            </div>
-                                            <div class="product-details">
-                                                <span class="product-title">Toyota RAV 4</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="id-number">#09878</span>
-                                    </td>
-                                    <td>
-                                        <span class="id-number">#09878</span>
-                                    </td>
-                                    <td>
-                                        NGN 24k
-                                    </td>
-                                    <td>
-                                        NGN 24k
-                                    </td>
-                                    <td>
-                                        <span class="status-badge success">active</span>
-                                    </td>
-                                </tr>
+                                <?php
+                                    }
+                                }
+                                ?>
                             </tbody>
                         </table>
                     </div>
 
                     <div class="add-container">
-                        <a href="add_customer.html">Add to Wallet</a>
+                        <a href="javascript:void(0)" class="add-btn">Add to Wallet</a>
+                        <a href="javascript:void(0)" class="delete-btn">Delete Wallet</a>
                     </div>
                 </div>
             </div>
@@ -174,7 +200,7 @@
                 <i class="fa fa-times"></i>
             </div>
             <form id="add-to-account-form">
-                <h1 class="form-title">Add to savings for Toyota Rav 4</h1>
+                <h1 class="form-title">Add to savings for <span id="product-name">Toyota Rav 4</span></h1>
 
                 <p class="form-text">
                     Please make sure the information provided here are accurate
@@ -225,8 +251,8 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- JQUERY DATATABLE SCRIPT -->
     <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
-    <!-- JUST VALIDATE LIBRARY -->
-    <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
+        <!-- JUST VALIDATE LIBRARY -->
+        <script src="../../assets/js/just-validate/just-validate.js"></script>
     <!-- DASHBOARD SCRIPT -->
     <script src="../../assets/js/admin-dash.js"></script>
     <script>
@@ -258,24 +284,21 @@
                     });
 
                     $(this).addClass("active");
+
+                    selectedWalletId = $(this).attr("wallet-id");
+
+                    console.log(selectedWalletId);
                 });
             });
 
-            $(document).on("click", function (event) {
-                if ($(event.target).closest("#view-wallets-table tbody tr").length === 0) {
-                    $("#view-wallets-table tbody tr").each(function () {
-                        $(this).removeClass("active")
-                    });
 
-                    selectedWalletId = null;
-                }
+            // CLOSE BUTTON CLICK EVENT FOR MODAL
+            $(".close-button").on("click", function(){
+                $(".add-to-account-wrapper").addClass("hide");
             });
 
-
-            $(".add-container a").on("click", function (e) {
-                e.preventDefault();
-
-                if (selectedWallet === null) {
+            $(".add-btn").on("click", function (e) {
+                if (selectedWalletId === null) {
                     Swal.fire({
                         title: "No wallet selected",
                         icon: "info",
@@ -284,11 +307,16 @@
                         allowEscapeKey: false,
                     });
                 } else {
-                    //SENDING FORM DATA TO THE SERVER
+                    const formData = new FormData();
+
+                    formData.append("submit", true);
+                    formData.append("wid", selectedWalletId);
+
+                    // SENDING FORM DATA TO THE SERVER
                     $.ajax({
                         type: "post",
-                        url: "controllers/fetch_walllet_details.php",
-                        data: JSON.stringify({ walletId: selectedWalletId, submit: true }),
+                        url: "controllers/fetch_wallet_details.php",
+                        data: formData,
                         contentType: false,
                         processData: false,
                         dataType: "json",
@@ -300,7 +328,7 @@
                                 if (response.success === 1) {
                                     $(".loader-wrapper").addClass("hide");
                                     $("#curr-balance").html(response.balance.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-
+                                    $("#product-name").html(response.name);
                                     $(".add-to-account-wrapper").removeClass("hide");
                                 } else {
                                     $(".loader-wrapper").addClass("hide");
@@ -313,7 +341,71 @@
                                         Swal.fire({
                                             title: response.error_title,
                                             icon: "error",
-                                            text: response.error_message,
+                                            text: response.error_msg,
+                                            allowOutsideClick: false,
+                                            allowEscapeKey: false,
+                                        });
+                                    }
+                                }
+                            }, 1500);
+                        },
+                    });
+                }
+            });
+
+            $(".delete-btn").on("click", function (e) {
+                if (selectedWalletId === null) {
+                    Swal.fire({
+                        title: "No wallet selected",
+                        icon: "info",
+                        text: "please select a wallet",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                    });
+                } else {
+                    const formData = new FormData();
+
+                    formData.append("submit", true);
+                    formData.append("wid", selectedWalletId);
+
+                    // SENDING FORM DATA TO THE SERVER
+                    $.ajax({
+                        type: "post",
+                        url: "controllers/delete_wallet.php",
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        dataType: "json",
+                        beforeSend: function () {
+                            $(".loader-wrapper").removeClass("hide");
+                        },
+                        success: function (response) {
+                            setTimeout(() => {
+                                if (response.success === 1) {
+                                    $(".loader-wrapper").addClass("hide");
+
+                                    // ALERT USER
+                                    Swal.fire({
+                                        title: "Wallet Delete",
+                                        icon: "success",
+                                        text: "Wallet deleted successfully",
+                                        allowOutsideClick: false,
+                                        allowEscapeKey: false,
+                                    });
+
+                                    $(`tr[wallet-id='${selectedWalletId}']`).remove();
+                                } else {
+                                    $(".loader-wrapper").addClass("hide");
+
+                                    if (response.error_title === "fatal") {
+                                        // REFRESH CURRENT PAGE
+                                        location.reload();
+                                    } else {
+                                        // ALERT USER
+                                        Swal.fire({
+                                            title: response.error_title,
+                                            icon: "error",
+                                            text: response.error_msg,
                                             allowOutsideClick: false,
                                             allowEscapeKey: false,
                                         });
@@ -351,14 +443,15 @@
 
                     const formData = new FormData(form);
                     formData.append("submit", true);
-                    formData.append("walletId", selectedWalletId);
+                    formData.append("wid", selectedWalletId);
                     // CONVERTING FORMATTED(HUMAN READABLE) FIELDS BACK TO NUMBER 
                     const formatedFields = [];
 
-                    for (let [key, value] of formData.entries()) {
-                        if (key === "amount") {
+                    for(let [key, value] of formData.entries()){
+                        if(key === "amount"){
                             formatedFields.push(value);
                         }
+                        console.log(`${key}: ${value}`);
                     }
 
                     const modifiedFormatedFields = formatedFields.map(value => value.replace(/,/g, ""));
@@ -375,7 +468,7 @@
                         processData: false,
                         dataType: "json",
                         beforeSend: function () {
-                            $(".submit-btn-container").html("Updating...")
+                            $(".submit-btn-container button").html("Updating...")
                             $(".submit-btn-container button").attr("disabled", true);
                         },
                         success: function (response) {
@@ -390,11 +483,11 @@
                                     confirmButtonColor: '#2366B5',
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.href = "wallets"
+                                        location.href = "./wallets?cid=<?= $cid ?>"
                                     }
                                 })
                             } else {
-                                $(".submit-btn-container").html("Confirm action")
+                                $(".submit-btn-container button").html("Confirm action")
                                 $(".submit-btn-container button").attr("disabled", false);
 
                                 if (response.error_title === "fatal") {
@@ -405,7 +498,7 @@
                                     Swal.fire({
                                         title: response.error_title,
                                         icon: "error",
-                                        text: response.error_message,
+                                        text: response.error_msg,
                                         allowOutsideClick: false,
                                         allowEscapeKey: false,
                                     });

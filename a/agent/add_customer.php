@@ -1,3 +1,9 @@
+<?php
+    require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+    AgentAuth::User("a/login");
+
+    $agent_id = $_SESSION['agent_id'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,29 +34,35 @@
                     <i class="fa fa-bars"></i>
                     <i class="fa fa-times"></i>
                 </div>
-                <a href="#" class="logo">
+                <a href="./" class="logo">
                     <i class="fa fa-home"></i>
                     <span> CDS AGENT </span>
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
                 <li class="nav-item active">
-                    <a href="index.html">
+                    <a href="./">
                         <i class="fa fa-users"></i>
                         <span>Customers</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0)">
                         <i class="fa fa-truck"></i>
                         <span>Shipping</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./wallets">
+                        <i class="fa fa-usd"></i>
+                        <span>Wallets</span>
                     </a>
                 </li>
             </ul>
 
             <ul class="side-menu-bottom">
                 <li class="nav-item logout">
-                    <a href="#">
+                    <a href="../logout">
                         <i class="fa fa-sign-out"></i>
                         <span>Logout</span>
                     </a>
@@ -67,7 +79,7 @@
                 <h2 class="product-form-title">Register a New Customer</h2>
 
                 <div class="product-form-container">
-                    <form id="team-upload-form">
+                    <form id="customer-upload-form">
                         <div class="form-groupings">
                             <div class="form-group-container">
                                 <div class="form-group-container">
@@ -86,18 +98,18 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group-container">
+                                <!-- <div class="form-group-container">
                                     <div class="form-group animate">
                                         <input type="text" name="oname" id="oname"
                                             class="form-input" placeholder=" " required />
                                         <label for="oname">Other Name</label>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
                                         <input type="email" name="email" id="email" class="form-input"
-                                            placeholder=" " required />
+                                            placeholder=" " />
                                         <label for="email">Email</label>
                                     </div>
                                 </div>
@@ -111,7 +123,7 @@
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <input type="text" name="address" id="address" class="form-input" placeholder=" " required />
+                                        <input type="text" name="address" id="address" class="form-input" placeholder=" " />
                                         <label for="address">Address</label>
                                     </div>
                                 </div>
@@ -135,8 +147,10 @@
     <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!-- METIS MENU JS -->
     <script src="../../assets/js/metismenujs/metismenujs.js"></script>
+    <!-- SWEET ALERT PLUGIN -->
+    <script src="../../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
     <!-- JUST VALIDATE LIBRARY -->
-    <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
+    <script src="../../assets/js/just-validate/just-validate.js"></script>
     <!-- DASHBOARD SCRIPT -->
     <script src="../../assets/js/admin-dash.js"></script>
     <script>
@@ -159,30 +173,30 @@
                     errorMessage: "Field is required",
                 },
             ])
-            .addField("#oname", [
-                {
-                    rule: "required",
-                    errorMessage: "Field is required",
-                },
-            ])
-            .addField("#email", [
-                {
-                    rule: "required",
-                    errorMessage: "Field is required",
-                },
-            ])
+            // .addField("#oname", [
+            //     {
+            //         rule: "required",
+            //         errorMessage: "Field is required",
+            //     },
+            // ])
+            // .addField('#email', [
+            //     {
+            //         rule: 'email',
+            //         errorMessage: 'Email is invalid!',
+            //     },
+            // ])
             .addField("#phoneno", [
                 {
                     rule: "required",
                     errorMessage: "Field is required",
                 },
             ])
-            .addField("#address", [
-                {
-                    rule: "required",
-                    errorMessage: "Field is required",
-                },
-            ])
+            // .addField("#address", [
+            //     {
+            //         rule: "required",
+            //         errorMessage: "Field is required",
+            //     },
+            // ])
             .onSuccess((event) => {
                 const form = document.getElementById("customer-upload-form");
 
@@ -207,15 +221,15 @@
                             if (response.success === 1) {
                                 // ALERT USER UPON SUCCESSFUL UPLOAD
                                 Swal.fire({
-                                    title: "Agent Added",
+                                    title: "Customer Added",
                                     icon: "success",
-                                    text: `You've added ${response.agent_name} successfully`,
+                                    text: `You've added a customer successfully`,
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
                                     confirmButtonColor: '#2366B5',
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.href = "products"
+                                        location.href = "./"
                                     }
                                 })
                             } else {

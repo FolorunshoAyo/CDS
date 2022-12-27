@@ -1,3 +1,9 @@
+<?php
+    require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+    AgentAuth::User("a/login");
+
+    $agent_id = $_SESSION['agent_id'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,7 +24,7 @@
     <!-- ADMIN TABLE CSS -->
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/admin-table.css">
     <!-- ADMIN AGENT CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/agent.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/agent-index.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
     <title>Agent - CDS</title>
@@ -40,19 +46,19 @@
             </div>
             <ul class="side-menu" id="side-menu">
                 <li class="nav-item active">
-                    <a href="index.html">
+                    <a href="./">
                         <i class="fa fa-users"></i>
                         <span>Customers</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0)">
                         <i class="fa fa-truck"></i>
                         <span>Shipping</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="./wallets">
                         <i class="fa fa-usd"></i>
                         <span>Wallets</span>
                     </a>
@@ -61,7 +67,7 @@
 
             <ul class="side-menu-bottom">
                 <li class="nav-item logout">
-                    <a href="#">
+                    <a href="../logout">
                         <i class="fa fa-sign-out"></i>
                         <span>Logout</span>
                     </a>
@@ -86,9 +92,6 @@
                                     Phone number
                                 </th>
                                 <th>
-                                    Customer ID
-                                </th>
-                                <th>
                                     Date added
                                 </th>
                                 <th>
@@ -97,214 +100,47 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php 
+                                $sql_agent_customers = $db->query("SELECT * FROM agent_customers WHERE agent_id='$agent_id' ORDER BY agent_id DESC");
+
+                                $count = 1;
+                                while($customer = $sql_agent_customers->fetch_assoc()){
+                            ?>
                             <tr>
                                 <td>
-                                    Shodiya Folorunsho
+                                    <?php echo $customer['last_name'] . " " . $customer['first_name'] ?>
                                 </td>
                                 <td>
-                                    folushoayoomide11@gmail.com
+                                    <?php echo $customer['email']? $customer['email'] : "No email" ?>
                                 </td>
                                 <td>
-                                   07087857141
+                                   <?php echo $customer['phone_no'] ?>
                                 </td>
                                 <td>
-                                    Customer
+                                    <?php echo date("j, M Y", strtotime($customer['created_at'])) ?>
                                 </td>
                                 <td>
-                                   Aug 09 2022
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="dropdown-toggle" data-dd-target="1" aria-label="Dropdown Menu">
+                                    <div class="dropdown" style="font-size: 10px;">
+                                        <button class="dropdown-toggle" data-dd-target="<?php echo $count ?>" aria-label="Dropdown Menu">
                                             <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                         </button>
-                                        <div class="dropdown-menu" data-dd-path="1">
-                                            <a class="dropdown-menu__link" href="#">Edit Customer</a>
-                                            <a class="dropdown-menu__link" href="#">New wallet</a>
-                                            <a class="dropdown-menu__link" href="#">Existing wallets</a>
+                                        <div class="dropdown-menu" data-dd-path="<?php echo $count ?>">
+                                            <a class="dropdown-menu__link" href="edit_customer?cid=<?php echo $customer['agent_customer_id'] ?>">Edit Customer</a>
+                                            <a class="dropdown-menu__link" href="./new_wallet?cid=<?php echo $customer['agent_customer_id'] ?>">New wallet</a>
+                                            <a class="dropdown-menu__link" href="wallets?cid=<?php echo $customer['agent_customer_id'] ?>">Existing wallets</a>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    Shodiya Folorunsho
-                                </td>
-                                <td>
-                                    folushoayoomide11@gmail.com
-                                </td>
-                                <td>
-                                   07087857141
-                                </td>
-                                <td>
-                                    Customer
-                                </td>
-                                <td>
-                                   Aug 09 2022
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="dropdown-toggle" data-dd-target="2" aria-label="Dropdown Menu">
-                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                        </button>
-                                        <div class="dropdown-menu" data-dd-path="2">
-                                            <a class="dropdown-menu__link" href="#">Edit Customer</a>
-                                            <a class="dropdown-menu__link" href="#">New wallet</a>
-                                            <a class="dropdown-menu__link" href="#">Existing wallets</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Shodiya Folorunsho
-                                </td>
-                                <td>
-                                    folushoayoomide11@gmail.com
-                                </td>
-                                <td>
-                                   07087857141
-                                </td>
-                                <td>
-                                    Customer
-                                </td>
-                                <td>
-                                   Aug 09 2022
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="dropdown-toggle" data-dd-target="3" aria-label="Dropdown Menu">
-                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                        </button>
-                                        <div class="dropdown-menu" data-dd-path="3">
-                                            <a class="dropdown-menu__link" href="#">Edit Customer</a>
-                                            <a class="dropdown-menu__link" href="#">New wallet</a>
-                                            <a class="dropdown-menu__link" href="#">Existing wallets</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Shodiya Folorunsho
-                                </td>
-                                <td>
-                                    folushoayoomide11@gmail.com
-                                </td>
-                                <td>
-                                   07087857141
-                                </td>
-                                <td>
-                                    Customer
-                                </td>
-                                <td>
-                                   Aug 09 2022
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="dropdown-toggle" data-dd-target="4" aria-label="Dropdown Menu">
-                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                        </button>
-                                        <div class="dropdown-menu" data-dd-path="4">
-                                            <a class="dropdown-menu__link" href="#">Edit Customer</a>
-                                            <a class="dropdown-menu__link" href="#">New wallet</a>
-                                            <a class="dropdown-menu__link" href="#">Existing wallets</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Shodiya Folorunsho
-                                </td>
-                                <td>
-                                    folushoayoomide11@gmail.com
-                                </td>
-                                <td>
-                                   07087857141
-                                </td>
-                                <td>
-                                    Customer
-                                </td>
-                                <td>
-                                   Aug 09 2022
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="dropdown-toggle" data-dd-target="5" aria-label="Dropdown Menu">
-                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                        </button>
-                                        <div class="dropdown-menu" data-dd-path="5">
-                                            <a class="dropdown-menu__link" href="#">Edit Customer</a>
-                                            <a class="dropdown-menu__link" href="#">New wallet</a>
-                                            <a class="dropdown-menu__link" href="#">Existing wallets</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Shodiya Folorunsho
-                                </td>
-                                <td>
-                                    folushoayoomide11@gmail.com
-                                </td>
-                                <td>
-                                   07087857141
-                                </td>
-                                <td>
-                                    Customer
-                                </td>
-                                <td>
-                                   Aug 09 2022
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="dropdown-toggle" data-dd-target="6" aria-label="Dropdown Menu">
-                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                        </button>
-                                        <div class="dropdown-menu" data-dd-path="6">
-                                            <a class="dropdown-menu__link" href="#">Edit Customer</a>
-                                            <a class="dropdown-menu__link" href="#">New wallet</a>
-                                            <a class="dropdown-menu__link" href="#">Existing wallets</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Shodiya Folorunsho
-                                </td>
-                                <td>
-                                    folushoayoomide11@gmail.com
-                                </td>
-                                <td>
-                                   07087857141
-                                </td>
-                                <td>
-                                    Customer
-                                </td>
-                                <td>
-                                   Aug 09 2022
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="dropdown-toggle" data-dd-target="7" aria-label="Dropdown Menu">
-                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                        </button>
-                                        <div class="dropdown-menu" data-dd-path="7">
-                                            <a class="dropdown-menu__link" href="#">Edit Customer</a>
-                                            <a class="dropdown-menu__link" href="#">New wallet</a>
-                                            <a class="dropdown-menu__link" href="#">Existing wallets</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+                            <?php
+                                $count++;
+                                }
+                            ?>
                         </tbody>
                     </table>
                 </div>
                 <div class="add-container">
-                    <a href="add_customer.html">Add Customer</a>
+                    <a href="./add_customer">Add Customer</a>
                 </div>
             </div>
         </section>
@@ -335,33 +171,34 @@
             // HANDLE PRODUCT DELETION
             $(".deleteEl").each(function () {
                 $(this).on("click", function (e) {
-                    e.preventDefault();
 
-                    const selectedCustomerId = $(this).attr("data-cusId");tomer
+                    const selectedCustomerId = $(this).attr("data-cusId");
 
-                    $.post("controllers/deleteCustomer.php", { pid: selectedProductId, submit: true }, function (response) {
-                        if (reponse.success === 1) {
-                            // ALERT ADMIN
-                            Swal.fire({
-                                title: response.title,
-                                icon: "success",
-                                text: response.message,
-                                allowOutsideClick: false,
-                                allowEscapeKey: false,
-                            });
+                    if(confirm("Delete this agent? \n NB: Deleting this customer would wipe out all it's details.")){
+                        $.post("controllers/delete-agent-customer.php", { cid: selectedCustomerId, submit: true }, function (response) {
+                            if (reponse.success === 1) {
+                                // ALERT ADMIN
+                                Swal.fire({
+                                    title: "Customer Delete",
+                                    icon: "success",
+                                    text: "Customer deleted successfully",
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                });
 
-                            // REMOVE PRODUCT FROM RECORDS
-                            $(this).parent().parent().parent().parent()[0].remove();
-                        } else {
-                            Swal.fire({
-                                title: response.error_title,
-                                icon: "error",
-                                text: response.error_message,
-                                allowOutsideClick: false,
-                                allowEscapeKey: false,
-                            });
-                        }
-                    });
+                                // REMOVE PRODUCT FROM RECORDS
+                                $(this).parent().parent().parent().parent()[0].remove();
+                            } else {
+                                Swal.fire({
+                                    title: response.error_title,
+                                    icon: "error",
+                                    text: response.error_message,
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                });
+                            }
+                        });
+                    }   
                 });
             });
         });
