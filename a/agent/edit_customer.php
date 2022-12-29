@@ -201,6 +201,7 @@
                 // GATHERING FORM DATA
                 const formData = new FormData(form);
                 formData.append("submit", true);
+                formData.append("cid", <?php echo $cid ?>);
 
                 //SENDING FORM DATA TO THE SERVER
                 $.ajax({

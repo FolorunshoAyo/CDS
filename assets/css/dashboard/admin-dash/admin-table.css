@@ -1,5 +1,5 @@
 .table-wrapper{
-    margin: 8rem 0 2rem;
+    margin: 5rem 0 2rem;
     background-color: var(--white);
     border-radius: 10px;
     padding: 2rem 0;
@@ -72,6 +72,7 @@ table.dataTable tbody td{
     background-color: transparent;
     border: none;
     cursor: pointer;
+    font-size: 5px;
     border-radius: 50%;
     transition: .3s;
     color: #d0d0d0;

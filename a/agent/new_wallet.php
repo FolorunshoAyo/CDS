@@ -403,8 +403,8 @@
                                     imageAlt: 'Selected product',
                                     title: 'Wallet created successfully',
                                     html:
-                                        `<b>Price</b>: ${response.price} <br><br>
-                                        <?php echo $customer_details['first_name'] ?> would be making a daily savings of ₦${response.daily_payment} daily over a period of ${response.duration_in_months} months`,
+                                        `<b>Price</b>: ${response.price} <br><br>` +
+                                        <?php echo $customer_details['first_name'] ?> ` would be making a daily savings of ₦${response.daily_payment} daily over a period of ${response.duration_in_months} months`,
                                     showCloseButton: true,
                                     showCancelButton: true,
                                     focusConfirm: false,
@@ -412,7 +412,7 @@
                                     cancelButtonText: 'Ok',
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.href = `wallets?cid=${response.cid}`;
+                                        location.href = `./wallets?cid=${response.cid}`;
                                     }
 
                                     if(result.isCancelled){

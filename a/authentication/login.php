@@ -19,6 +19,8 @@ if (isset($_POST['login'])) {
                 if (password_verify($password, $passcode)) {
                     if($row['account_status'] == 0) {
                         echo json_encode(array('success' => 0, 'error_title' => 'Authentication Error', 'error_msg' => 'This account has been suspended, please contact the admin.'));
+                    }elseif($row['account_status'] == 2){
+                        echo json_encode(array('success' => 0, 'error_title' => 'Authentication Error', 'error_msg' => 'This account has been disabled, please contact the admin.'));
                     }else{
                         $_SESSION['agent_id'] = $row['agent_id'];
                         echo json_encode(array('success' => 1, 'admin_type' => $admin_type));

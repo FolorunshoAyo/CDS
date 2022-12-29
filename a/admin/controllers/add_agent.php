@@ -18,21 +18,21 @@
             $sql_add_agent = $db->query("INSERT INTO agents (last_name, first_name, other_name, email, passkey, phone_no, account_status) VALUES('$lname', '$fname', '$oname', '$email', '$passkey', '$phoneno', '$account_status')");
 
             if($sql_add_agent){
-                $subject = "CDS AGENT VERIFICATION";
-                // SEND MAIL
-                $message = "<div class='container'>
-				  <div class='image-container'>
-				  	<img src='" . $url . "/assets/images/logo-small.png' alt='logo'/>
-				  </div>
-                  <div class='box'>
-                    <h2>". greeting() . "!</h2>
-                    <p>Agent" . ucfirst($fname) . "</p>
-                    <p>Your password is <b>" . $random_pass . "<b></p>                              
-                  </div>
-                </div>";
+                // $subject = "CDS AGENT VERIFICATION";
+                // // SEND MAIL
+                // $message = "<div class='container'>
+				//   <div class='image-container'>
+				//   	<img src='" . $url . "/assets/images/logo-small.png' alt='logo'/>
+				//   </div>
+                //   <div class='box'>
+                //     <h2>". greeting() . "!</h2>
+                //     <p>Agent" . ucfirst($fname) . "</p>
+                //     <p>Your password is <b>" . $random_pass . "<b></p>                              
+                //   </div>
+                // </div>";
 
-                send_raw_mail($email, $subject, $message);
-                echo json_encode(array('success' => 1, 'random_pass' => $random_pass));
+                // send_raw_mail($email, $subject, $message);
+                echo json_encode(array('success' => 1, 'agent_name' => $fname, 'random_pass' => $random_pass));
             }
         }
     }else{

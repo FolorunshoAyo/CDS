@@ -4,7 +4,8 @@
     if(isset($_POST['submit'])){
         $aid = $_SESSION['agent_id'];
         $wid = $db->real_escape_string($_POST['wid']);
-        $amount = $db->real_escape_string($_POST['amount']);
+        $daily_payment = $db->real_escape_string($_POST['daily_payment']);
+        $days = $db->real_escape_string($_POST['days']);
         $pwd = $db->real_escape_string($_POST['pwd']);
 
         if(empty($wid) || empty($amount) || empty($pwd)){
@@ -14,15 +15,15 @@
 
             $agent_passcode = $sql_agent_details->fetch_assoc()['passkey'];
 
-            if($pwd === $agent_passcode){
+            if(password_verify($pwd, $agent_passcode)){
                 $sql_wallet_details = $db->query("SELECT total_amount FROM agent_wallets WHERE wallet_id='$wid'");
                 
                 $total_amount = intval($sql_wallet_details->fetch_assoc()['total_amount']);
 
-                $balance = $total_amount + intval($amount);
+                $balance = $total_amount + (intval($days) * intval($daily_payment));
 
                 $sql_update_wallet = $db->query("UPDATE agent_wallets SET total_amount='$balance' WHERE wallet_id='$wid'");
-                
+
                 if($sql_update_wallet){
                     echo json_encode(array('success' => 1));
                 }

@@ -46,7 +46,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0">
                         <i class="fa fa-signal"></i>
                         <span>Statistics</span>
                     </a>
@@ -58,7 +58,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0">
                         <i class="fa fa-recycle"></i>
                         <span>Shipping</span>
                     </a>
@@ -76,7 +76,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0">
                         <i class="fa fa-commenting-o"></i>
                         <span>Messages</span>
                     </a>
@@ -85,7 +85,7 @@
 
             <ul class="side-menu-bottom">
                 <li class="nav-tem">
-                    <a href="#">
+                    <a href="javascript:void(0)">
                         <i class="fa fa-gear"></i>
                         <span>Settings</span>
                     </a>
@@ -252,13 +252,13 @@
                                 Swal.fire({
                                     title: "Agent Added",
                                     icon: "success",
-                                    text: `You've added ${response.agent_name} successfully`,
+                                    text: `You've added agent ${response.agent_name} successfully`,
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
                                     confirmButtonColor: '#2366B5',
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.href = "products"
+                                        location.href = "agents"
                                     }
                                 })
                             } else {

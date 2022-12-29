@@ -187,8 +187,8 @@
                     </div>
 
                     <div class="add-container">
-                        <a href="javascript:void(0)" class="add-btn">Add to Wallet</a>
-                        <a href="javascript:void(0)" class="delete-btn">Delete Wallet</a>
+                        <a href="javascript:void(0)" class="add-btn">Add to Savings</a>
+                        <!-- <a href="javascript:void(0)" class="delete-btn">Delete Wallet</a> -->
                     </div>
                 </div>
             </div>
@@ -207,16 +207,26 @@
                 </p>
 
                 <div class="form-groupings">
+
+                    <div class="form-group-container">
+                        <h3 class="static-label">Daily payment</h3>
+                        <span class="static-value">NGN <span id="daily-payment">1,000</span> per day</span>
+                    </div>
+
                     <div class="form-group-container">
                         <h3 class="static-label">Current Balance</h3>
                         <span class="static-value">NGN <span id="curr-balance">2,000</span></span>
                     </div>
 
+                    <div class="saved-amount-alert hide">
+                        You are saving a total of NGN <span id="total">2,000</span> for <span id="no-of-days">3</span> days
+                    </div>
+
                     <div class="form-group-container">
                         <div class="form-group animate">
-                            <input type="text" name="amount" id="amount" class="form-input format" placeholder=" "
+                            <input type="number" name="days" id="days" class="form-input format" placeholder=" "
                                 required />
-                            <label for="amount">Enter Amount</label>
+                            <label for="days">Enter number of days to save</label>
                         </div>
                     </div>
 
@@ -257,23 +267,10 @@
     <script src="../../assets/js/admin-dash.js"></script>
     <script>
         $(function () {
-            let selectedWalletId = null;
+            let daily_payment = null, selectedWalletId = null;
 
             $("#view-wallets-table").DataTable({
                 "pageLength": 10
-            });
-
-            // COVERT NUMBER TO READABLE FORM
-            $('input.format').keyup(function (event) {
-                // skip for arrow keys
-                if (event.which >= 37 && event.which <= 40) return;
-
-                // format number
-                $(this).val(function (index, value) {
-                    return value
-                        .replace(/\D/g, "")
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                });
             });
 
             // HANDLE PRODUCT DELETION
@@ -286,8 +283,6 @@
                     $(this).addClass("active");
 
                     selectedWalletId = $(this).attr("wallet-id");
-
-                    console.log(selectedWalletId);
                 });
             });
 
@@ -295,6 +290,9 @@
             // CLOSE BUTTON CLICK EVENT FOR MODAL
             $(".close-button").on("click", function(){
                 $(".add-to-account-wrapper").addClass("hide");
+
+                $("#days").val("");
+                $("#pwd").val("");
             });
 
             $(".add-btn").on("click", function (e) {
@@ -329,6 +327,8 @@
                                     $(".loader-wrapper").addClass("hide");
                                     $("#curr-balance").html(response.balance.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ","));
                                     $("#product-name").html(response.name);
+                                    $("#daily-payment").html(response.daily_payment);
+                                    daily_payment = response.daily_payment;
                                     $(".add-to-account-wrapper").removeClass("hide");
                                 } else {
                                     $(".loader-wrapper").addClass("hide");
@@ -353,67 +353,83 @@
                 }
             });
 
-            $(".delete-btn").on("click", function (e) {
-                if (selectedWalletId === null) {
-                    Swal.fire({
-                        title: "No wallet selected",
-                        icon: "info",
-                        text: "please select a wallet",
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                    });
-                } else {
-                    const formData = new FormData();
+            // $(".delete-btn").on("click", function (e) {
+            //     if (selectedWalletId === null) {
+            //         Swal.fire({
+            //             title: "No wallet selected",
+            //             icon: "info",
+            //             text: "please select a wallet",
+            //             allowOutsideClick: false,
+            //             allowEscapeKey: false,
+            //         });
+            //     } else {
+            //         const formData = new FormData();
 
-                    formData.append("submit", true);
-                    formData.append("wid", selectedWalletId);
+            //         formData.append("submit", true);
+            //         formData.append("wid", selectedWalletId);
 
-                    // SENDING FORM DATA TO THE SERVER
-                    $.ajax({
-                        type: "post",
-                        url: "controllers/delete_wallet.php",
-                        data: formData,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        beforeSend: function () {
-                            $(".loader-wrapper").removeClass("hide");
-                        },
-                        success: function (response) {
-                            setTimeout(() => {
-                                if (response.success === 1) {
-                                    $(".loader-wrapper").addClass("hide");
+            //         // SENDING FORM DATA TO THE SERVER
+            //         $.ajax({
+            //             type: "post",
+            //             url: "controllers/delete_wallet.php",
+            //             data: formData,
+            //             contentType: false,
+            //             processData: false,
+            //             dataType: "json",
+            //             beforeSend: function () {
+            //                 $(".loader-wrapper").removeClass("hide");
+            //             },
+            //             success: function (response) {
+            //                 setTimeout(() => {
+            //                     if (response.success === 1) {
+            //                         $(".loader-wrapper").addClass("hide");
 
-                                    // ALERT USER
-                                    Swal.fire({
-                                        title: "Wallet Delete",
-                                        icon: "success",
-                                        text: "Wallet deleted successfully",
-                                        allowOutsideClick: false,
-                                        allowEscapeKey: false,
-                                    });
+            //                         // ALERT USER
+            //                         Swal.fire({
+            //                             title: "Wallet Delete",
+            //                             icon: "success",
+            //                             text: "Wallet deleted successfully",
+            //                             allowOutsideClick: false,
+            //                             allowEscapeKey: false,
+            //                         });
 
-                                    $(`tr[wallet-id='${selectedWalletId}']`).remove();
-                                } else {
-                                    $(".loader-wrapper").addClass("hide");
+            //                         $(`tr[wallet-id='${selectedWalletId}']`).remove();
+            //                     } else {
+            //                         $(".loader-wrapper").addClass("hide");
 
-                                    if (response.error_title === "fatal") {
-                                        // REFRESH CURRENT PAGE
-                                        location.reload();
-                                    } else {
-                                        // ALERT USER
-                                        Swal.fire({
-                                            title: response.error_title,
-                                            icon: "error",
-                                            text: response.error_msg,
-                                            allowOutsideClick: false,
-                                            allowEscapeKey: false,
-                                        });
-                                    }
-                                }
-                            }, 1500);
-                        },
-                    });
+            //                         if (response.error_title === "fatal") {
+            //                             // REFRESH CURRENT PAGE
+            //                             location.reload();
+            //                         } else {
+            //                             // ALERT USER
+            //                             Swal.fire({
+            //                                 title: response.error_title,
+            //                                 icon: "error",
+            //                                 text: response.error_msg,
+            //                                 allowOutsideClick: false,
+            //                                 allowEscapeKey: false,
+            //                             });
+            //                         }
+            //                     }
+            //                 }, 1500);
+            //             },
+            //         });
+            //     }
+            // });
+
+            $("#days").on("input", function(){
+                const daily_payment = Number($("#daily-payment").text().trim().replace(/,/g, ""));
+                const no_of_days = Number($("#days").val());
+
+                const totalAmtToBeSaved = (daily_payment * no_of_days).toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+                // ALERT USER
+                $("#total").html(totalAmtToBeSaved);
+                $("#no-of-days").html(no_of_days);
+                $(".saved-amount-alert").removeClass("hide");
+
+                if(no_of_days === 0){
+                    $(".saved-amount-alert").addClass("hide");
                 }
             });
 
@@ -422,11 +438,14 @@
             });
 
             validation
-                .addField("#amount", [
+                .addField("#days", [
                     {
                         rule: "required",
                         errorMessage: "Field is required",
                     },
+                    {
+                        validator: (value) => value !== '0',
+                    }
                 ])
                 .addField("#pwd", [
                     {
@@ -444,20 +463,7 @@
                     const formData = new FormData(form);
                     formData.append("submit", true);
                     formData.append("wid", selectedWalletId);
-                    // CONVERTING FORMATTED(HUMAN READABLE) FIELDS BACK TO NUMBER 
-                    const formatedFields = [];
-
-                    for(let [key, value] of formData.entries()){
-                        if(key === "amount"){
-                            formatedFields.push(value);
-                        }
-                        console.log(`${key}: ${value}`);
-                    }
-
-                    const modifiedFormatedFields = formatedFields.map(value => value.replace(/,/g, ""));
-
-                    formData.set("amount", modifiedFormatedFields[0]);
-
+                    formData.append("daily_payment", daily_payment);
 
                     //SENDING FORM DATA TO ADD SAVINGS TO WALLET
                     $.ajax({

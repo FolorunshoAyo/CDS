@@ -117,12 +117,12 @@
                                    <?php echo $customer['phone_no'] ?>
                                 </td>
                                 <td>
-                                    <?php echo date("j, M Y", strtotime($customer['created_at'])) ?>
+                                    <?php echo date("j M, Y", strtotime($customer['created_at'])) ?>
                                 </td>
                                 <td>
                                     <div class="dropdown" style="font-size: 10px;">
                                         <button class="dropdown-toggle" data-dd-target="<?php echo $count ?>" aria-label="Dropdown Menu">
-                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                           o<br>o<br>o
                                         </button>
                                         <div class="dropdown-menu" data-dd-path="<?php echo $count ?>">
                                             <a class="dropdown-menu__link" href="edit_customer?cid=<?php echo $customer['agent_customer_id'] ?>">Edit Customer</a>

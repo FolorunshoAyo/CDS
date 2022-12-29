@@ -53,7 +53,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0">
                         <i class="fa fa-signal"></i>
                         <span>Statistics</span>
                     </a>
@@ -65,25 +65,25 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0">
                         <i class="fa fa-recycle"></i>
                         <span>Shipping</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a href="./products">
                         <i class="fa fa-shopping-bag"></i>
                         <span>Products</span>
                     </a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a href="./agents">
                         <i class="fa fa-users"></i>
                         <span>Agents</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0">
                         <i class="fa fa-commenting-o"></i>
                         <span>Messages</span>
                     </a>
@@ -92,7 +92,7 @@
 
             <ul class="side-menu-bottom">
                 <li class="nav-tem">
-                    <a href="#">
+                    <a href="javascript:void(0)">
                         <i class="fa fa-gear"></i>
                         <span>Settings</span>
                     </a>
@@ -176,7 +176,7 @@
                                    <?php echo $agent['phone_no'] ?>
                                 </td>
                                 <td>
-                                    <?php echo date("j, M Y", strtotime($agent['created_at'])) ?>
+                                    <?php echo date("j M, Y", strtotime($agent['created_at'])) ?>
                                 </td>
                                 <td>
                                     <?php echo showStatus($agent['account_status']) ?>
@@ -184,7 +184,7 @@
                                 <td>
                                     <div class="dropdown" style="font-size: 12px;">
                                         <button class="dropdown-toggle" data-dd-target="<?php echo $count ?>" aria-label="Dropdown Menu">
-                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                            o<br>o<br>o
                                         </button>
                                         <div class="dropdown-menu" data-dd-path="<?php echo $count ?>">
                                             <a class="dropdown-menu__link" href="./edit_agent?aid=<?php echo $agent['agent_id'] ?>">Edit Agent</a>

@@ -71,50 +71,50 @@
                     <i class="fa fa-bars"></i>
                     <i class="fa fa-times"></i>
                 </div>
-                <a href="#" class="logo">
+                <a href="./" class="logo">
                     <i class="fa fa-home"></i>
                     <span> CDS ADMIN </span>
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
                 <li class="nav-item">
-                    <a href="index.html">
+                    <a href="./">
                         <i class="fa fa-tachometer"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0">
                         <i class="fa fa-signal"></i>
                         <span>Statistics</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="./orders">
                         <i class="fa fa-usd"></i>
-                        <span>Payments</span>
+                        <span>Orders</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0">
                         <i class="fa fa-recycle"></i>
                         <span>Shipping</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="products.html">
+                <li class="nav-item active">
+                    <a href="./products">
                         <i class="fa fa-shopping-bag"></i>
                         <span>Products</span>
                     </a>
                 </li>
-                <li class="nav-item active">
-                    <a href="#">
+                <li class="nav-item">
+                    <a href="./agents">
                         <i class="fa fa-users"></i>
-                        <span>Team</span>
+                        <span>Agents</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0">
                         <i class="fa fa-commenting-o"></i>
                         <span>Messages</span>
                     </a>
@@ -123,13 +123,13 @@
 
             <ul class="side-menu-bottom">
                 <li class="nav-tem">
-                    <a href="#">
+                    <a href="javascript:void(0)">
                         <i class="fa fa-gear"></i>
                         <span>Settings</span>
                     </a>
                 </li>
                 <li class="nav-item logout">
-                    <a href="#">
+                    <a href="../logout">
                         <i class="fa fa-sign-out"></i>
                         <span>Logout</span>
                     </a>

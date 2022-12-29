@@ -59,7 +59,7 @@
                     <i class="fa fa-bars"></i>
                     <i class="fa fa-times"></i>
                 </div>
-                <a href="#" class="logo">
+                <a href="./" class="logo">
                     <i class="fa fa-home"></i>
                     <span> CDS ADMIN </span>
                 </a>
@@ -72,37 +72,37 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0">
                         <i class="fa fa-signal"></i>
                         <span>Statistics</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="./orders">
                         <i class="fa fa-usd"></i>
-                        <span>Payments</span>
+                        <span>Orders</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0">
                         <i class="fa fa-recycle"></i>
                         <span>Shipping</span>
                     </a>
                 </li>
                 <li class="nav-item active">
-                    <a href="products">
+                    <a href="./products">
                         <i class="fa fa-shopping-bag"></i>
                         <span>Products</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="./agents">
                         <i class="fa fa-users"></i>
-                        <span>Team</span>
+                        <span>Agents</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0">
                         <i class="fa fa-commenting-o"></i>
                         <span>Messages</span>
                     </a>
@@ -111,7 +111,7 @@
 
             <ul class="side-menu-bottom">
                 <li class="nav-tem">
-                    <a href="#">
+                    <a href="javascript:void(0)">
                         <i class="fa fa-gear"></i>
                         <span>Settings</span>
                     </a>
@@ -201,7 +201,7 @@
                                 <td>
                                     <div class="dropdown">
                                         <button class="dropdown-toggle" data-dd-target="<?php echo($products_count); ?>" aria-label="Dropdown Menu">
-                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                            o<br>o<br>o
                                         </button>
                                         <div class="dropdown-menu" data-dd-path="<?php echo($products_count); ?>">
                                             <a class="dropdown-menu__link" href="edit_product?pid=<?php echo($row_product['product_id']); ?>">Edit product</a>

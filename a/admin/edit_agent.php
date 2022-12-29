@@ -56,7 +56,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="javascript:void(0)">
+                    <a href="javascript:void(0">
                         <i class="fa fa-signal"></i>
                         <span>Statistics</span>
                     </a>
@@ -68,7 +68,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="javascript:void(0)">
+                    <a href="javascript:void(0">
                         <i class="fa fa-recycle"></i>
                         <span>Shipping</span>
                     </a>
@@ -86,7 +86,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="javascript:void(0">
                         <i class="fa fa-commenting-o"></i>
                         <span>Messages</span>
                     </a>
@@ -95,7 +95,7 @@
 
             <ul class="side-menu-bottom">
                 <li class="nav-tem">
-                    <a href="#">
+                    <a href="javascript:void(0)">
                         <i class="fa fa-gear"></i>
                         <span>Settings</span>
                     </a>
@@ -232,6 +232,8 @@
                 // GATHERING FORM DATA
                 const formData = new FormData(form);
                 formData.append("submit", true);
+                formData.append("aid", <?php echo $aid ?>);
+
 
                 //SENDING FORM DATA TO THE SERVER
                 $.ajax({

@@ -41,13 +41,20 @@
 
 .form-text{
     font-size: 1.5rem;
+    margin-bottom: 20px;
 }
 
 .static-label{
-    font-size: 2.5rem;
+    font-size: 1.8rem;
     margin-bottom: 10px;
 }
 
 .static-value{
-    font-size: 3rem;
+    font-size: 1.5 rem;
+}
+
+.saved-amount-alert{
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #6dbd28;
 }
