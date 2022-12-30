@@ -192,6 +192,76 @@
                     </div>
                 </div>
             </div>
+
+            <div class="loader-container hide">
+                <div class="loader"></div>
+            </div>
+
+            <div class="table-wrapper wallet-history hide">
+                <div class="table-container">
+                    <h2 class="table-title">Wallet History</h2>
+
+                    <table id="wallet-history-table" class="main-table wallet-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    S/N
+                                </th>
+                                <th>
+                                    Amount
+                                </th>
+                                <th>
+                                    Days Saved
+                                </th>
+                                <th>
+                                    Period Covered
+                                </th>
+                                <th>
+                                    Deposited at
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    1
+                                </td>
+                                <td>
+                                    NGN 3,000
+                                </td>
+                                <td>
+                                    2 days
+                                </td>
+                                <td>
+                                    30 Dec, 2022 - 31 Dec, 2022
+                                </td>
+                                <td>
+                                    30 Dec, 2022 <br>
+                                    10:28am
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    2
+                                </td>
+                                <td>
+                                    NGN 7,500
+                                </td>
+                                <td>
+                                    5 days
+                                </td>
+                                <td>
+                                    01 Jan, 2022 - 05 Jan, 2022
+                                </td>
+                                <td>
+                                    30 Dec, 2022 <br>
+                                    10:31am
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </section>
     </div>
     <div class="add-to-account-wrapper hide">
@@ -273,6 +343,10 @@
                 "pageLength": 10
             });
 
+            $("#wallet-history-table").DataTable({
+                "pageLength": 10
+            });
+
             // HANDLE PRODUCT DELETION
             $("#view-wallets-table tbody tr").each(function (e) {
                 $(this).on("click", function (e) {
@@ -281,8 +355,61 @@
                     });
 
                     $(this).addClass("active");
-
                     selectedWalletId = $(this).attr("wallet-id");
+
+                    const formData = new FormData();
+
+                    formData.append("submit", true);
+                    formData.append("wid", selectedWalletId);
+
+
+                    $.get(`./controllers/wallet_history_check.php?wid=${selectedWalletId}`, function(response){
+                        response = JSON.parse(response);
+                        if(response.containsInfo){
+                            // OBTAIN SAVINGS HISTORY OF WALLET FROM SERVER
+                            $.ajax({
+                                type: "post",
+                                url: "controllers/fetch_wallet_history.php",
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                dataType: "json",
+                                beforeSend: function () {
+                                    $(".loader-container").removeClass("hide");
+                                    $(".table-wrapper.wallet-history").addClass("hide");
+                                },
+                                success: function (response) {
+                                    setTimeout(() => {
+                                        if (response.success === 1) {
+                                            $(".loader-container").addClass("hide");
+
+                                            //ADD FETCHED DATA TO TABLE
+                                            $("#wallet-history-table tbody").html(response.data);
+
+                                            // REVEAL WALLET HISTORY
+                                            $(".table-wrapper.wallet-history").removeClass("hide");
+                                        } else {
+                                            $(".loader-wrapper").addClass("hide");
+
+                                            if (response.error_title === "fatal") {
+                                                // REFRESH CURRENT PAGE
+                                                location.reload();
+                                            } else {
+                                                // ALERT USER
+                                                Swal.fire({
+                                                    title: response.error_title,
+                                                    icon: "error",
+                                                    text: response.error_msg,
+                                                    allowOutsideClick: false,
+                                                    allowEscapeKey: false,
+                                                });
+                                            }
+                                        }
+                                    }, 1500);
+                                },
+                            });
+                        }
+                    });
                 });
             });
 
@@ -293,6 +420,7 @@
 
                 $("#days").val("");
                 $("#pwd").val("");
+                $(".saved-amount-alert").addClass("hide");
             });
 
             $(".add-btn").on("click", function (e) {
@@ -328,7 +456,7 @@
                                     $("#curr-balance").html(response.balance.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ","));
                                     $("#product-name").html(response.name);
                                     $("#daily-payment").html(response.daily_payment);
-                                    daily_payment = response.daily_payment;
+                                    daily_payment = response.daily_payment.replace(/,/g, "");
                                     $(".add-to-account-wrapper").removeClass("hide");
                                 } else {
                                     $(".loader-wrapper").addClass("hide");
