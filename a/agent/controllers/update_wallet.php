@@ -23,7 +23,7 @@
                 $sql_check_for_existing_savings = $db->query("SELECT * FROM agent_savings WHERE start_date = '$today' OR end_date = '$today'");
 
                 if($sql_check_for_existing_savings->num_rows > 0){
-                    $sql_check_latest_savings = $db->query("SELECT * FROM agent_savings WHERE start_date = '$today' OR end_date = '$today' ORDER BY savings_id DESC LIMIT 1");
+                    $sql_check_latest_savings = $db->query("SELECT * FROM agent_savings WHERE wallet_id = '$wid' ORDER BY savings_id DESC LIMIT 1");
 
                     $last_savings_date = $sql_check_latest_savings->fetch_assoc()['end_date'];
 

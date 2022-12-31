@@ -93,6 +93,12 @@
                         <span>Wallets</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="./wallets">
+                        <i class="fa fa-money"></i>
+                        <span>Easy Buy</span>
+                    </a>
+                </li>
             </ul>
 
             <ul class="side-menu-bottom">

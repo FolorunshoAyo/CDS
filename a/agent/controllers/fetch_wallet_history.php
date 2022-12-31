@@ -12,7 +12,7 @@
 
             $count = 1;
             while($savings_details = $sql_get_wallet_history->fetch_assoc()){
-                $html .= "<tr><td>$count</td><td>".$savings_details['amount']."</td><td>".$savings_details['savings_days']."</td><td>".date("d M, Y", strtotime($savings_details['start_date']))." - ".date("d M, Y", strtotime($savings_details['end_date']))."</td><td>".date("d M, Y", strtotime($savings_details['deposited_at']))."<br>".date("H:i a", strtotime($savings_details['deposited_at']))."</td></tr>";
+                $html .= "<tr><td>$count</td><td>NGN ".number_format($savings_details['amount'])."</td><td>".$savings_details['savings_days']."</td><td>".date("d M, Y", strtotime($savings_details['start_date']))." - ".date("d M, Y", strtotime($savings_details['end_date']))."</td><td>".date("d M, Y", strtotime($savings_details['deposited_at']))."<br>".date("H:i a", strtotime($savings_details['deposited_at']))."</td></tr>";
                 $count++;
             }
 
