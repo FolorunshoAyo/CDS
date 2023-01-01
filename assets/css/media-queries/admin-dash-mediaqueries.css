@@ -169,6 +169,11 @@
     .product-image-container{
         flex: 0 0 100px;
     }
+
+    .image-upload-container{
+        height: 150px;
+        width: 150px;
+    }
 }
 
 @media only screen and (min-width: 112.5em){

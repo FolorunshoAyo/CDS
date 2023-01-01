@@ -1,13 +1,13 @@
 <?php
-    require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+    require(dirname(dirname(dirname(__DIR__))) . '/auth-library/resources.php');
     AgentAuth::User("a/login");
 
     $agent_id = $_SESSION['agent_id'];
 
     if(isset($_GET['cid']) && !empty($_GET['cid'])){
         $cid = $_GET['cid'];
-    
-        $sql_agent_customer_details = $db->query("SELECT * FROM agent_customers WHERE agent_customer_id={$cid}");
+        
+        $sql_agent_customer_details = $db->query("SELECT * FROM easybuy_agent_customers WHERE agent_customer_id={$cid}");
     
         $customer_details = $sql_agent_customer_details->fetch_assoc();
     }else{
@@ -24,25 +24,25 @@
     <!-- JQUERY DATATABLES CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     <!-- DROP DOWN MENU CSS -->
-    <link rel="stylesheet" href="../../assets/css/dropdown.css" />
+    <link rel="stylesheet" href="../../../assets/css/dropdown.css" />
     <!-- Custom Fonts (Inter) -->
-    <link rel="stylesheet" href="../../assets/fonts/fonts.css" />
+    <link rel="stylesheet" href="../../../assets/fonts/fonts.css" />
     <!-- BASE CSS -->
-    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <link rel="stylesheet" href="../../../assets/css/base.css" />
     <!-- FORMS CSS -->
-    <link rel="stylesheet" href="../../assets/css/form.css">
+    <link rel="stylesheet" href="../../../assets/css/form.css">
     <!-- ADMIN DASHBOARD MENU CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash-menu.css" />
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash-menu.css" />
     <!-- ADMIN TABLE CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/admin-table.css">
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/admin-table.css">
     <!-- ADMIN AGENT CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/agents.css">
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/agents.css">
     <!-- ADMIN PRODUCTS CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/products.css">
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/products.css">
     <!-- MAIN TABLE CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/main-table.css">
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/main-table.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
-    <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
+    <link rel="stylesheet" href="../../../assets/css/media-queries/admin-dash-mediaqueries.css" />
     <style>
         .form-container {
             width: 95%;
@@ -75,7 +75,7 @@
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a href="./">
                         <i class="fa fa-users"></i>
                         <span>Customers</span>
@@ -87,7 +87,7 @@
                         <span>Shipping</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a href="./easybuy/">
                         <i class="fa fa-money"></i>
                         <span>Easy Buy</span>
@@ -97,7 +97,7 @@
 
             <ul class="side-menu-bottom">
                 <li class="nav-item logout">
-                    <a href="../logout">
+                    <a href="../../logout">
                         <i class="fa fa-sign-out"></i>
                         <span>Logout</span>
                     </a>
@@ -106,7 +106,7 @@
         </aside>
         <section class="page-wrapper">
             <div class="table-wrapper">
-                <h2 class="table-title">Create New wallet for <?php echo ucfirst($customer_details['last_name']) . " " . ucfirst($customer_details['first_name']) ?></h2>
+                <h2 class="table-title">Create Easy Buy wallet for <?php echo ucfirst($customer_details['last_name']) . " " . ucfirst($customer_details['first_name']) ?></h2>
 
                 <div class="table-container">
                     <table class="generic-table">
@@ -123,6 +123,9 @@
                                 </th>
                                 <th>
                                     Customer ID
+                                </th>
+                                <th>
+                                    BVN
                                 </th>
                                 <th>
                                     Date added
@@ -147,6 +150,9 @@
                                     <span class="id-number">#<?php echo str_pad($customer_details['agent_customer_id'], 4, "0", STR_PAD_LEFT) ?></span>
                                 </td>
                                 <td>
+                                    <?= $customer_details['bvn'] ?>
+                                </td>
+                                <td>
                                 <?php echo date("M d, Y", strtotime($customer_details['created_at'])) ?>
                                 </td>
                             </tr>
@@ -167,7 +173,7 @@
 
                                                 while($product = $sql_all_products->fetch_assoc()){
                                             ?>
-                                                <option value="<?php echo $product['product_id'] ?>"><?php echo $product['name'] ?></option>
+                                                <option value="<?php echo $product['product_id'] ?>"><?php echo $product['name'] . " (" . "NGN " . number_format($product['price']) . ")"?></option>
                                             <?php
                                                 }
                                             ?>
@@ -247,7 +253,7 @@
                     </div>
 
                     <div class="add-container">
-                        <a href="javascript:void(0)">Add New Wallet</a>
+                        <a href="javascript:void(0)">Create EB Wallet</a>
                     </div>
                 </div>
             </div>
@@ -257,23 +263,25 @@
     <!-- FONT AWESOME JIT SCRIPT-->
     <script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
     <!-- JQUERY SCRIPT -->
-    <script src="../../assets/js/jquery/jquery-3.6.min.js"></script>
+    <script src="../../../assets/js/jquery/jquery-3.6.min.js"></script>
     <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
-    <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
+    <script src="../../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!-- METIS MENU JS -->
-    <script src="../../assets/js/metismenujs/metismenujs.js"></script>
+    <script src="../../../assets/js/metismenujs/metismenujs.js"></script>
     <!-- Sweet Alert JS -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- JQUERY DATATABLE SCRIPT -->
     <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     <!-- DROP DOWN JS -->
-    <script type="text/javascript" src="../../assets/js/dropdown/dropdown.min.js"></script>
+    <script type="text/javascript" src="../../../assets/js/dropdown/dropdown.min.js"></script>
     <!-- JUST VALIDATE LIBRARY -->
-    <script src="../../assets/js/just-validate/just-validate.js"></script>
+    <script src="../../../assets/js/just-validate/just-validate.js"></script>
     <!-- DASHBOARD SCRIPT -->
-    <script src="../../assets/js/admin-dash.js"></script>
+    <script src="../../../assets/js/admin-dash.js"></script>
     <script>
         $(function () {
+            let selectedProductPrice;
+
             $("#view-item-table").DataTable({
                 "pageLength": 10
             });
@@ -326,7 +334,7 @@
                     //SENDING FORM DATA TO THE SERVER
                     $.ajax({
                         type: "post",
-                        url: "controllers/fetch_product_details.php",
+                        url: "../controllers/fetch_product_details.php",
                         data: formData,
                         contentType: false,
                         processData: false,
@@ -338,10 +346,11 @@
                         success: function (response) {
                             setTimeout(() => {
                                 if (response.success === 1) {
-                                    productImageEl.attr("src", `../admin/images/${response.image}`);
+                                    productImageEl.attr("src", `../../admin/images/${response.image}`);
                                     productNameEl.html(response.name);
                                     productIdEl.html(`#${response.pid}`);
                                     productPriceEl.html(formatCash(response.price));
+                                    selectedProductPrice = (response.price/2).toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                     productDurationEl.html(response.duration_in_months);
                                     productDailyAmount.html(formatCash(response.daily_payment));
                                     productStatusEl.attr("class", `product-status ${response.product_status? "success" : "danger"}`);
@@ -382,55 +391,55 @@
 
                 addWalletBtn.on("click", function (e) {
 
-                    $.ajax({
-                        type: "post",
-                        url: "controllers/add_wallet.php",
-                        data: formData,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        beforeSend: function () {
-                            addWalletBtn.html("Adding...");
-                        },
-                        success: function (response) {
-                            if (response.success == 1) {
-                                // ALERT AND REDIRECT AGENT TO USER WALLETS
-                                Swal.fire({
-                                    width: '60%',
-                                    imageUrl: `../admin/images/${response.product_image}`,
-                                    imageWidth: 400,
-                                    imageHeight: 200,
-                                    imageAlt: 'Selected product',
-                                    title: 'Wallet created successfully',
-                                    html:
-                                        `<b>Price</b>: NGN ${response.price} <br><br>` +
-                                        <?php echo $customer_details['first_name'] ?> ` would be making a daily savings of ₦${response.daily_payment} daily over a period of ${response.duration_in_months} months`,
-                                    showCloseButton: true,
-                                    showCancelButton: true,
-                                    focusConfirm: false,
-                                    confirmButtonText: 'View wallets',
-                                    cancelButtonText: 'Ok',
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        location.href = `./wallets?cid=${response.cid}`;
-                                    }
-
-                                    if(result.isCancelled){
-                                        location.href = `./`;
-                                    }
-                                });
-                            } else {
-                                // ALERT THE AGENT UPON ERROR
-                                Swal.fire({
-                                    title: response.error_title,
-                                    icon: "error",
-                                    text: response.error_msg,
-                                    allowOutsideClick: false,
-                                    allowEscapeKey: false,
-                                });
+                    if(confirm(`Creating this wallet automatically adds NGN ${selectedProductPrice} to this wallet \n Continue?`)){
+                        $.ajax({
+                            type: "post",
+                            url: "controllers/add_wallet.php",
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            beforeSend: function () {
+                                addWalletBtn.html("Adding...");
+                            },
+                            success: function (response) {
+                                if (response.success == 1) {
+                                    // ALERT AND REDIRECT AGENT TO USER WALLETS
+                                    Swal.fire({
+                                        width: '60%',
+                                        imageUrl: `../../admin/images/${response.product_image}`,
+                                        imageWidth: 400,
+                                        imageHeight: 200,
+                                        imageAlt: 'Selected product',
+                                        title: 'Wallet created successfully',
+                                        html:
+                                            `<b>Price</b>: NGN ${response.price.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")} <br><br>` +
+                                            "<?php echo $customer_details['first_name'] ?>"  + ` would be making a daily savings of ₦${response.daily_payment} daily over a period of ${response.duration_in_months} months`,
+                                        showCloseButton: true,
+                                        showCancelButton: true,
+                                        focusConfirm: false,
+                                        confirmButtonText: 'View wallet',
+                                        cancelButtonText: 'Ok',
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            location.href = `./wallets?cid=${response.cid}`;
+                                        }else{
+                                            location.href = "./";
+                                        }
+                                    });
+                                } else {
+                                    // ALERT THE AGENT UPON ERROR
+                                    Swal.fire({
+                                        title: response.error_title,
+                                        icon: "error",
+                                        text: response.error_msg,
+                                        allowOutsideClick: false,
+                                        allowEscapeKey: false,
+                                    });
+                                }
                             }
-                        }
-                    })
+                        });
+                    }
                 });
             }
         });

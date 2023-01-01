@@ -1,5 +1,5 @@
 <?php
-    require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+    require(dirname(dirname(dirname(__DIR__))) . '/auth-library/resources.php');
     AgentAuth::User("a/login");
 
     
@@ -14,7 +14,7 @@
     if(isset($_GET['cid']) && !empty($_GET['cid'])){
         $cid = $_GET['cid'];
     
-        $sql_agent_customer_details = $db->query("SELECT * FROM agent_customers WHERE agent_customer_id={$cid}");
+        $sql_agent_customer_details = $db->query("SELECT * FROM easybuy_agent_customers WHERE agent_customer_id={$cid}");
     
         $customer_details = $sql_agent_customer_details->fetch_assoc();
     }else{
@@ -31,25 +31,25 @@
     <!-- JQUERY DATATABLES CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     <!-- Custom Fonts (Inter) -->
-    <link rel="stylesheet" href="../../assets/fonts/fonts.css" />
+    <link rel="stylesheet" href="../../../assets/fonts/fonts.css" />
     <!-- BASE CSS -->
-    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <link rel="stylesheet" href="../../../assets/css/base.css" />
     <!-- FORM CSS -->
-    <link rel="stylesheet" href="../../assets/css/form.css" />
+    <link rel="stylesheet" href="../../../assets/css/form.css" />
     <!-- ADMIN DASHBOARD MENU CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash-menu.css" />
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash-menu.css" />
     <!-- ADMIN TABLE CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/admin-table.css">
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/admin-table.css">
     <!-- ADMIN AGENT CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/agent.css">
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/agent.css">
     <!-- ADMIN PRODUCTS CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/products.css">
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/products.css">
     <!-- MAIN TABLE CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/main-table.css">
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/main-table.css">
     <!-- WALLETS CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/wallets.css" />
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/wallets.css" />
     <!-- DASHHBOARD MEDIA QUERIES -->
-    <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
+    <link rel="stylesheet" href="../../../assets/css/media-queries/admin-dash-mediaqueries.css" />
     <title>Customer Wallets - CDS AGENT</title>
 </head>
 
@@ -68,7 +68,7 @@
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a href="./">
                         <i class="fa fa-users"></i>
                         <span>Customers</span>
@@ -80,8 +80,8 @@
                         <span>Shipping</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="./easybuy/">
+                <li class="nav-item active">
+                    <a href="./">
                         <i class="fa fa-usd"></i>
                         <span>Easy Buy</span>
                     </a>
@@ -90,7 +90,7 @@
 
             <ul class="side-menu-bottom">
                 <li class="nav-item logout">
-                    <a href="../logout">
+                    <a href="../../logout">
                         <i class="fa fa-sign-out"></i>
                         <span>Logout</span>
                     </a>
@@ -99,19 +99,19 @@
         </aside>
         <section class="page-wrapper">
             <div class="table-wrapper">
-                <h2 class="table-title"><?php echo ucfirst($customer_details['last_name']) . " " . ucfirst($customer_details['first_name']) ?> Wallets</h2>
+                <h2 class="table-title"><?php echo ucfirst($customer_details['last_name']) . " " . ucfirst($customer_details['first_name']) ?> Easy Buy Wallets</h2>
 
                 <?php
                     $sql_customer_wallets = $db->query("SELECT *
-                    FROM agent_wallets
-                    INNER JOIN products ON agent_wallets.product_id = products.product_id
+                    FROM easybuy_agent_wallets
+                    INNER JOIN products ON easybuy_agent_wallets.product_id = products.product_id
                     WHERE agent_customer_id='$cid' AND agent_id='$agent_id';");
 
                     if($sql_customer_wallets->num_rows === 0){
                 ?>
                 <div class="no-wallet-container">
                     <span>No wallets yet</span>
-                    <a href="add_customer.html">Create new Wallet</a>
+                    <a href="./new_wallet">Create new Wallet</a>
                 </div>
                 <?php
                     }else{
@@ -135,6 +135,9 @@
                                         Target
                                     </th>
                                     <th>
+                                        Total Savings Days
+                                    </th>
+                                    <th>
                                         Wallet Status
                                     </th>
                                 </tr>
@@ -150,7 +153,7 @@
                                                 <?php
                                                     $product_image = explode(",", $wallet_details['pictures'])[0];
                                                 ?>
-                                                <img src="../admin/images/<?= $product_image ?>" alt="Product Image">
+                                                <img src="../../admin/images/<?= $product_image ?>" alt="Product Image">
                                             </div>
                                             <div class="product-details">
                                                 <span class="product-title"><?= $wallet_details['name'] ?></span>
@@ -172,6 +175,14 @@
                                         <?php 
                                             // echo($human_readable->format(intval($wallet_details['price']))) 
                                             echo number_format(intval($wallet_details['price']));
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php 
+                                            $wallet_id = $wallet_details['wallet_id'];
+                                            $sql_check_total_savings_days = $db->query("SELECT SUM(savings_days) as total_savings_days FROM easybuy_agent_savings WHERE wallet_id='$wallet_id'");
+
+                                            echo $sql_check_total_savings_days->fetch_assoc()['total_savings_days'];
                                         ?>
                                     </td>
                                     <td>
@@ -322,19 +333,19 @@
     <!-- FONT AWESOME JIT SCRIPT-->
     <script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
     <!-- JQUERY SCRIPT -->
-    <script src="../../assets/js/jquery/jquery-3.6.min.js"></script>
+    <script src="../../../assets/js/jquery/jquery-3.6.min.js"></script>
     <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
-    <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
+    <script src="../../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!-- METIS MENU JS -->
-    <script src="../../assets/js/metismenujs/metismenujs.js"></script>
+    <script src="../../../assets/js/metismenujs/metismenujs.js"></script>
     <!-- Sweet Alert JS -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- JQUERY DATATABLE SCRIPT -->
     <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
         <!-- JUST VALIDATE LIBRARY -->
-        <script src="../../assets/js/just-validate/just-validate.js"></script>
+        <script src="../../../assets/js/just-validate/just-validate.js"></script>
     <!-- DASHBOARD SCRIPT -->
-    <script src="../../assets/js/admin-dash.js"></script>
+    <script src="../../../assets/js/admin-dash.js"></script>
     <script>
         $(function () {
             let daily_payment = null, selectedWalletId = null;

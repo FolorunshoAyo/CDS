@@ -53,9 +53,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="./wallets">
+                    <a href="./">
                         <i class="fa fa-usd"></i>
-                        <span>Wallets</span>
+                        <span>Easy Buy</span>
                     </a>
                 </li>
             </ul>

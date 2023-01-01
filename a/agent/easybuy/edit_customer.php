@@ -1,5 +1,5 @@
 <?php
-    require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+    require(dirname(dirname(dirname(__DIR__))) . '/auth-library/resources.php');
     AgentAuth::User("a/login");
 
     $agent_id = $_SESSION['agent_id'];
@@ -7,7 +7,7 @@
     if(isset($_GET['cid']) && !empty($_GET['cid'])){
         $cid = $_GET['cid'];
     
-        $sql_agent_customer_details = $db->query("SELECT * FROM agent_customers WHERE agent_customer_id={$cid}");
+        $sql_agent_customer_details = $db->query("SELECT * FROM easybuy_agent_customers WHERE agent_customer_id={$cid}");
     
         $customer_details = $sql_agent_customer_details->fetch_assoc();
     }else{
@@ -22,17 +22,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Custom Fonts (Inter) -->
-    <link rel="stylesheet" href="../../assets/fonts/fonts.css" />
+    <link rel="stylesheet" href="../../../assets/fonts/fonts.css" />
     <!-- BASE CSS -->
-    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <link rel="stylesheet" href="../../../assets/css/base.css" />
     <!-- FORM CSS -->
-    <link rel="stylesheet" href="../../assets/css/form.css" />
+    <link rel="stylesheet" href="../../../assets/css/form.css" />
     <!-- ADMIN FORM CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/admin-form.css">
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/admin-form.css">
     <!-- ADMIN DASHBOARD MENU CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash-menu.css" />
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash-menu.css" />
     <!-- DASHHBOARD MEDIA QUERIES -->
-    <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
+    <link rel="stylesheet" href="../../../assets/css/media-queries/admin-dash-mediaqueries.css" />
     <title>Add a new agent - CDS ADMIN</title>
 </head>
 
@@ -51,7 +51,7 @@
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a href="./">
                         <i class="fa fa-users"></i>
                         <span>Customers</span>
@@ -63,7 +63,7 @@
                         <span>Shipping</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a href="./easybuy/">
                         <i class="fa fa-usd"></i>
                         <span>Easy Buy</span>
@@ -73,7 +73,7 @@
 
             <ul class="side-menu-bottom">
                 <li class="nav-item logout">
-                    <a href="../logout">
+                    <a href="../../logout">
                         <i class="fa fa-sign-out"></i>
                         <span>Logout</span>
                     </a>
@@ -82,7 +82,7 @@
         </aside>
         <section class="page-wrapper">
             <header class="dash-header">
-                <a href="agents.html" class="back-link">
+                <a href="./" class="back-link">
                     <i class="fa fa-arrow-left"></i>
                 </a>
             </header>
@@ -94,9 +94,19 @@
                         <div class="form-groupings">
                             <div class="form-group-container">
                                 <div class="form-group-container">
+                                    <div class="image-upload-container">
+                                        <img src="../customer-images/<?php echo $customer_details['image']?>" alt="profile" />
+                                        <div class="action-container">
+                                            <input type="file" name="customer-img" id="customer-img" onchange="previewImage(event)"/>
+                                            <label for="customer-img"><i class="fa fa-pen"></i> Change image</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <input type="text" name="fname" id="fname" class="form-input" placeholder=" "
-                                            value="<?= $customer_details['first_name'] ?>" required />
+                                        <input type="text" name="fname" id="fname" class="form-input"
+                                            placeholder=" " value="<?= $customer_details['first_name'] ?>" required />
                                         <label for="fname">First Name</label>
                                     </div>
                                 </div>
@@ -108,6 +118,7 @@
                                         <label for="lname">Last Name</label>
                                     </div>
                                 </div>
+
 
                                 <!-- <div class="form-group-container">
                                     <div class="form-group animate">
@@ -121,6 +132,19 @@
                                     <h3 class="static-label">Email</h3>
                                     <span class="static-value">folushoayomide11@gmail.com</span>
                                 </div> -->
+                                <div class="form-group-container">
+                                    <div class="form-group animate">
+                                        <input type="text" name="oaddress" id="oaddress" value="<?= $customer_details['office_address'] ?>" class="form-input" placeholder=" " />
+                                        <label for="oaddress">Office Address</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-container">
+                                    <div class="form-group animate">
+                                        <input type="text" name="haddress" id="haddress" value="<?= $customer_details['home_address'] ?>" class="form-input" placeholder=" " />
+                                        <label for="haddress">Home Address</label>
+                                    </div>
+                                </div>
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
@@ -139,8 +163,13 @@
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <input type="text" name="address" id="address" class="form-input" placeholder=" " value="<?php $customer_details['address']? $customer_details['phone_no'] : "" ?>" />
-                                        <label for="address">Address</label>
+                                        <input type="text" name="bvn" id="bvn" class="form-input" value="<?php echo $customer_details['bvn'] ?>" placeholder=" " required />
+                                        <label for="bvn">BVN (Bank Verification Number)</label>
+                                        <div class="confirmation-container hide">
+                                            <img src="../../../assets/images/loading-gif.gif" class="" alt="loader">
+                                            <i class="fa fa-check hide" title="This BVN is valid"></i>
+                                            <i class="fa fa-times hide" title="Not a valid BVN"></i>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -158,18 +187,26 @@
     <!-- FONT AWESOME JIT SCRIPT-->
     <script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
     <!-- JQUERY SCRIPT -->
-    <script src="../../assets/js/jquery/jquery-3.6.min.js"></script>
+    <script src="../../../assets/js/jquery/jquery-3.6.min.js"></script>
     <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
-    <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
+    <script src="../../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!-- METIS MENU JS -->
-    <script src="../../assets/js/metismenujs/metismenujs.js"></script>
+    <script src="../../../assets/js/metismenujs/metismenujs.js"></script>
     <!-- SWEET ALERT PLUGIN -->
-    <script src="../../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
+    <script src="../../../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
     <!-- JUST VALIDATE LIBRARY -->
-    <script src="../../assets/js/just-validate/just-validate.js"></script>
+    <script src="../../../assets/js/just-validate/just-validate.js"></script>
     <!-- DASHBOARD SCRIPT -->
-    <script src="../../assets/js/admin-dash.js"></script>
+    <script src="../../../assets/js/admin-dash.js"></script>
     <script>
+        function previewImage(e){
+            const [file] = e.target.files;
+
+            if(file){
+                $(".image-upload-container img").attr("src", URL.createObjectURL(file));
+            }
+        }
+
         //FORM VALIDATION WITH VALIDATE.JS
 
         const validation = new JustValidate("#customer-upload-form", {
@@ -189,10 +226,55 @@
                     errorMessage: "Field is required",
                 },
             ])
+            .addField("#oaddress", [
+                {
+                    rule: "required",
+                    errorMessage: "Field is required",
+                },
+            ])
+            .addField("#haddress", [
+                {
+                    rule: "required",
+                    errorMessage: "Field is required",
+                },
+            ])
+            .addField('#email', [
+                {
+                    rule: 'email',
+                    errorMessage: 'Email is invalid!',
+                },
+            ])
             .addField("#phoneno", [
                 {
                     rule: "required",
                     errorMessage: "Field is required",
+                },
+            ])
+            .addField("#bvn", [
+                {
+                    rule: "required",
+                    errorMessage: "Field is required",
+                },
+            ])
+            .addField("#customer-img", [
+                {
+                    rule: 'minFilesCount',
+                    value: 1,
+                },
+                {
+                    rule: 'maxFilesCount',
+                    value: 1,
+                },
+                {
+                    rule: 'files',
+                    value: {
+                        files: {
+                            extensions: ['jpeg', 'png', 'jpg'],
+                            maxSize: 3000000,
+                            minSize: 1000,
+                            types: ['image/jpeg', 'image/jpg', 'image/png'],
+                        },
+                    },
                 },
             ])
             .onSuccess((event) => {
@@ -206,7 +288,7 @@
                 //SENDING FORM DATA TO THE SERVER
                 $.ajax({
                     type: "post",
-                    url: "controllers/edit_customer.php",
+                    url: "./controllers/edit_customer.php",
                     data: formData,
                     contentType: false,
                     processData: false,

@@ -1,5 +1,5 @@
 <?php
-    require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+    require(dirname(dirname(dirname(__DIR__))) . '/auth-library/resources.php');
     AgentAuth::User("a/login");
 
     $agent_id = $_SESSION['agent_id'];
@@ -14,19 +14,19 @@
     <!-- JQUERY DATATABLES CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     <!-- DROP DOWN MENU CSS -->
-    <link rel="stylesheet" href="../../assets/css/dropdown.css" />
+    <link rel="stylesheet" href="../../../assets/css/dropdown.css" />
     <!-- Custom Fonts (Inter) -->
-    <link rel="stylesheet" href="../../assets/fonts/fonts.css" />
+    <link rel="stylesheet" href="../../../assets/fonts/fonts.css" />
     <!-- BASE CSS -->
-    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <link rel="stylesheet" href="../../../assets/css/base.css" />
     <!-- ADMIN DASHBOARD MENU CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash-menu.css" />
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash-menu.css" />
     <!-- ADMIN TABLE CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/admin-table.css">
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/admin-table.css">
     <!-- ADMIN AGENT CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/agent-index.css">
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/agent-index.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
-    <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
+    <link rel="stylesheet" href="../../../assets/css/media-queries/admin-dash-mediaqueries.css" />
     <title>Agent - CDS</title>
 </head>
 
@@ -45,7 +45,7 @@
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a href="./">
                         <i class="fa fa-users"></i>
                         <span>Customers</span>
@@ -57,7 +57,7 @@
                         <span>Shipping</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a href="./easybuy/">
                         <i class="fa fa-money"></i>
                         <span>Easy Buy</span>
@@ -67,7 +67,7 @@
 
             <ul class="side-menu-bottom">
                 <li class="nav-item logout">
-                    <a href="../logout">
+                    <a href="../../logout">
                         <i class="fa fa-sign-out"></i>
                         <span>Logout</span>
                     </a>
@@ -101,10 +101,16 @@
                         </thead>
                         <tbody>
                             <?php 
-                                $sql_agent_customers = $db->query("SELECT * FROM agent_customers WHERE agent_id='$agent_id' ORDER BY agent_customer_id DESC");
+                                $sql_agent_customers = $db->query("SELECT * FROM 
+                                easybuy_agent_customers WHERE agent_id='$agent_id' ORDER BY agent_customer_id DESC");
 
                                 $count = 1;
                                 while($customer = $sql_agent_customers->fetch_assoc()){
+
+                                    // CHECK FOR EXISTING WALLET
+                                    $customer_id = $customer['agent_customer_id'];
+                                    $sql_check_existing_wallet = $db->query("SELECT * FROM easybuy_agent_wallets WHERE agent_customer_id = {$customer_id} AND completed='0'");
+                                    $can_create_wallet = ($sql_check_existing_wallet->num_rows === 0);
                             ?>
                             <tr>
                                 <td>
@@ -125,9 +131,9 @@
                                            o<br>o<br>o
                                         </button>
                                         <div class="dropdown-menu" data-dd-path="<?php echo $count ?>">
-                                            <a class="dropdown-menu__link" href="edit_customer?cid=<?php echo $customer['agent_customer_id'] ?>">Edit Customer</a>
-                                            <a class="dropdown-menu__link" href="./new_wallet?cid=<?php echo $customer['agent_customer_id'] ?>">New wallet</a>
-                                            <a class="dropdown-menu__link" href="wallets?cid=<?php echo $customer['agent_customer_id'] ?>">Existing wallets</a>
+                                            <a class="dropdown-menu__link" href="./edit_customer?cid=<?php echo $customer_id ?>">Edit Customer</a>
+                                            <a class="dropdown-menu__link" href="<?php echo $can_create_wallet? "./new_wallet?cid=$customer_id" : "javascript:void(0)"?>">New wallet</a>
+                                            <a class="dropdown-menu__link" href="./wallets?cid=<?php echo $customer_id ?>">Existing wallets</a>
                                         </div>
                                     </div>
                                 </td>
@@ -149,24 +155,40 @@
     <!-- FONT AWESOME JIT SCRIPT-->
     <script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
     <!-- JQUERY SCRIPT -->
-    <script src="../../assets/js/jquery/jquery-3.6.min.js"></script>
+    <script src="../../../assets/js/jquery/jquery-3.6.min.js"></script>
     <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
-    <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
+    <script src="../../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!-- METIS MENU JS -->
-    <script src="../../assets/js/metismenujs/metismenujs.js"></script>
+    <script src="../../../assets/js/metismenujs/metismenujs.js"></script>
     <!-- Sweet Alert JS -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- JQUERY DATATABLE SCRIPT -->
     <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     <!-- DROP DOWN JS -->
-    <script type="text/javascript" src="../../assets/js/dropdown/dropdown.min.js"></script>
+    <script type="text/javascript" src="../../../assets/js/dropdown/dropdown.min.js"></script>
     <!-- DASHBOARD SCRIPT -->
-    <script src="../../assets/js/admin-dash.js"></script>
+    <script src="../../../assets/js/admin-dash.js"></script>
     <script>
         $(function () {
             $("#agent-table").DataTable({
                 "pageLength": 10
             });
+
+
+            $("a[href='javascript:void(0)'].dropdown-menu__link").on("click", function(){
+                Swal.fire({
+                    title: "Unable to create new wallet",
+                    icon: "info",
+                    text: "A wallet is existing please complete the existing wallet and try again",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                });
+            });
+
+            function modal_alert(message){
+                console.log(message);
+                
+            }
 
             // HANDLE PRODUCT DELETION
             $(".deleteEl").each(function () {
