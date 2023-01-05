@@ -1,3 +1,8 @@
+<?php
+  require(dirname(__DIR__) . '/auth-library/resources.php');
+  AdminAuth::Route("a/admin/");
+  AgentAuth::Route("a/agent/");
+?>
 <!DOCTYPE html>
 <html lang="en">
 

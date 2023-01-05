@@ -20,6 +20,23 @@
     }else{
         header("Location: ./");
     }
+
+    function showStatus($status){
+        $html = "";
+        switch($status){
+            case "0":
+                $html = "<span class='status-badge progress'>In progress</span>";
+            break;
+            case "1":
+                $html = "<span class='status-badge completed'>Completed</span>";
+            break;
+            default:
+                $html = "Not recognised";
+            break;
+        }
+
+        return $html;
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -135,6 +152,9 @@
                                         Target
                                     </th>
                                     <th>
+                                        Total Savings Days
+                                    </th>
+                                    <th>
                                         Wallet Status
                                     </th>
                                 </tr>
@@ -175,7 +195,17 @@
                                         ?>
                                     </td>
                                     <td>
-                                        <span class="status-badge success">active</span>
+                                        <?php 
+                                            $wallet_id = $wallet_details['wallet_id'];
+                                            $sql_check_total_savings_days = $db->query("SELECT SUM(savings_days) as total_savings_days FROM agent_savings WHERE wallet_id='$wallet_id'");
+
+                                            echo $sql_check_total_savings_days->fetch_assoc()['total_savings_days'];
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                            echo showStatus($wallet_details['completed']);
+                                        ?>
                                     </td>
                                 </tr>
                                 <?php
@@ -433,50 +463,66 @@
                         allowEscapeKey: false,
                     });
                 } else {
-                    const formData = new FormData();
+                    // CHECK IF COMPLETED
+                    $.get(`./controllers/check_completed_wallet.php?wid=${selectedWalletId}`, function (response){
+                        response = JSON.parse(response);
 
-                    formData.append("submit", true);
-                    formData.append("wid", selectedWalletId);
+                        if(response.completed === "1"){
+                            Swal.fire({
+                                title: "Add to savings",
+                                icon: "info",
+                                text: "This wallet has been completed. Please select or create another wallet",
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                            });
+                        }else{
+                            
+                            const formData = new FormData();
 
-                    // SENDING FORM DATA TO THE SERVER
-                    $.ajax({
-                        type: "post",
-                        url: "controllers/fetch_wallet_details.php",
-                        data: formData,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        beforeSend: function () {
-                            $(".loader-wrapper").removeClass("hide");
-                        },
-                        success: function (response) {
-                            setTimeout(() => {
-                                if (response.success === 1) {
-                                    $(".loader-wrapper").addClass("hide");
-                                    $("#curr-balance").html(response.balance.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-                                    $("#product-name").html(response.name);
-                                    $("#daily-payment").html(response.daily_payment);
-                                    daily_payment = response.daily_payment.replace(/,/g, "");
-                                    $(".add-to-account-wrapper").removeClass("hide");
-                                } else {
-                                    $(".loader-wrapper").addClass("hide");
+                            formData.append("submit", true);
+                            formData.append("wid", selectedWalletId);
 
-                                    if (response.error_title === "fatal") {
-                                        // REFRESH CURRENT PAGE
-                                        location.reload();
-                                    } else {
-                                        // ALERT USER
-                                        Swal.fire({
-                                            title: response.error_title,
-                                            icon: "error",
-                                            text: response.error_msg,
-                                            allowOutsideClick: false,
-                                            allowEscapeKey: false,
-                                        });
-                                    }
-                                }
-                            }, 1500);
-                        },
+                            // SENDING FORM DATA TO THE SERVER
+                            $.ajax({
+                                type: "post",
+                                url: "controllers/fetch_wallet_details.php",
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                dataType: "json",
+                                beforeSend: function () {
+                                    $(".loader-wrapper").removeClass("hide");
+                                },
+                                success: function (response) {
+                                    setTimeout(() => {
+                                        if (response.success === 1) {
+                                            $(".loader-wrapper").addClass("hide");
+                                            $("#curr-balance").html(response.balance.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                                            $("#product-name").html(response.name);
+                                            $("#daily-payment").html(response.daily_payment);
+                                            daily_payment = response.daily_payment.replace(/,/g, "");
+                                            $(".add-to-account-wrapper").removeClass("hide");
+                                        } else {
+                                            $(".loader-wrapper").addClass("hide");
+
+                                            if (response.error_title === "fatal") {
+                                                // REFRESH CURRENT PAGE
+                                                location.reload();
+                                            } else {
+                                                // ALERT USER
+                                                Swal.fire({
+                                                    title: response.error_title,
+                                                    icon: "error",
+                                                    text: response.error_msg,
+                                                    allowOutsideClick: false,
+                                                    allowEscapeKey: false,
+                                                });
+                                            }
+                                        }
+                                    }, 1500);
+                                },
+                            });
+                        }
                     });
                 }
             });
@@ -617,7 +663,23 @@
                                     confirmButtonColor: '#2366B5',
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.href = "./wallets?cid=<?= $cid ?>"
+                                        if(response.completed){
+                                            // ALERT USER
+                                            Swal.fire({
+                                                title: "Wallet Completed",
+                                                icon: "success",
+                                                text: "Your customer has successfully saved to acquire this product",
+                                                allowOutsideClick: false,
+                                                allowEscapeKey: false,
+                                                confirmButtonColor: '#2366B5',
+                                            }).then((result) => {
+                                                if(result.isConfirmed){
+                                                    location.href = "./wallets?cid=<?= $cid ?>";
+                                                }
+                                            });
+                                        }else{
+                                            location.href = "./wallets?cid=<?= $cid ?>";
+                                        }
                                     }
                                 })
                             } else {

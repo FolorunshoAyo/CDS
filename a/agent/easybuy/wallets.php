@@ -20,6 +20,24 @@
     }else{
         header("Location: ./");
     }
+
+
+    function showStatus($status){
+        $html = "";
+        switch($status){
+            case "0":
+                $html = "<span class='status-badge progress'>In progress</span>";
+            break;
+            case "1":
+                $html = "<span class='status-badge completed'>Completed</span>";
+            break;
+            default:
+                $html = "Not recognised";
+            break;
+        }
+
+        return $html;
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +59,7 @@
     <!-- ADMIN TABLE CSS -->
     <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/admin-table.css">
     <!-- ADMIN AGENT CSS -->
-    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/agent.css">
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/agents.css">
     <!-- ADMIN PRODUCTS CSS -->
     <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/products.css">
     <!-- MAIN TABLE CSS -->
@@ -62,14 +80,14 @@
                     <i class="fa fa-bars"></i>
                     <i class="fa fa-times"></i>
                 </div>
-                <a href="./" class="logo">
+                <a href="#" class="logo">
                     <i class="fa fa-home"></i>
                     <span> CDS AGENT </span>
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
                 <li class="nav-item">
-                    <a href="./">
+                    <a href="../">
                         <i class="fa fa-users"></i>
                         <span>Customers</span>
                     </a>
@@ -82,7 +100,7 @@
                 </li>
                 <li class="nav-item active">
                     <a href="./">
-                        <i class="fa fa-usd"></i>
+                        <i class="fa fa-money"></i>
                         <span>Easy Buy</span>
                     </a>
                 </li>
@@ -186,7 +204,9 @@
                                         ?>
                                     </td>
                                     <td>
-                                        <span class="status-badge success">active</span>
+                                       <?php
+                                        echo showStatus($wallet_details['completed']);
+                                       ?>
                                     </td>
                                 </tr>
                                 <?php
@@ -373,7 +393,6 @@
                     formData.append("submit", true);
                     formData.append("wid", selectedWalletId);
 
-
                     $.get(`./controllers/wallet_history_check.php?wid=${selectedWalletId}`, function(response){
                         response = JSON.parse(response);
                         if(response.containsInfo){
@@ -444,50 +463,66 @@
                         allowEscapeKey: false,
                     });
                 } else {
-                    const formData = new FormData();
+                    // CHECK IF COMPLETED
+                    $.get(`./controllers/check_completed_wallet.php?wid=${selectedWalletId}`, function (response){
+                        response = JSON.parse(response);
 
-                    formData.append("submit", true);
-                    formData.append("wid", selectedWalletId);
+                        if(response.completed === "1"){
+                            Swal.fire({
+                                title: "Add to savings",
+                                icon: "info",
+                                text: "This wallet has been completed. Please select or create another wallet",
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                            });
+                        }else{
+                            
+                            const formData = new FormData();
 
-                    // SENDING FORM DATA TO THE SERVER
-                    $.ajax({
-                        type: "post",
-                        url: "controllers/fetch_wallet_details.php",
-                        data: formData,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        beforeSend: function () {
-                            $(".loader-wrapper").removeClass("hide");
-                        },
-                        success: function (response) {
-                            setTimeout(() => {
-                                if (response.success === 1) {
-                                    $(".loader-wrapper").addClass("hide");
-                                    $("#curr-balance").html(response.balance.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-                                    $("#product-name").html(response.name);
-                                    $("#daily-payment").html(response.daily_payment);
-                                    daily_payment = response.daily_payment.replace(/,/g, "");
-                                    $(".add-to-account-wrapper").removeClass("hide");
-                                } else {
-                                    $(".loader-wrapper").addClass("hide");
+                            formData.append("submit", true);
+                            formData.append("wid", selectedWalletId);
 
-                                    if (response.error_title === "fatal") {
-                                        // REFRESH CURRENT PAGE
-                                        location.reload();
-                                    } else {
-                                        // ALERT USER
-                                        Swal.fire({
-                                            title: response.error_title,
-                                            icon: "error",
-                                            text: response.error_msg,
-                                            allowOutsideClick: false,
-                                            allowEscapeKey: false,
-                                        });
-                                    }
-                                }
-                            }, 1500);
-                        },
+                            // SENDING FORM DATA TO THE SERVER
+                            $.ajax({
+                                type: "post",
+                                url: "controllers/fetch_wallet_details.php",
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                dataType: "json",
+                                beforeSend: function () {
+                                    $(".loader-wrapper").removeClass("hide");
+                                },
+                                success: function (response) {
+                                    setTimeout(() => {
+                                        if (response.success === 1) {
+                                            $(".loader-wrapper").addClass("hide");
+                                            $("#curr-balance").html(response.balance.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                                            $("#product-name").html(response.name);
+                                            $("#daily-payment").html(response.daily_payment);
+                                            daily_payment = response.daily_payment.replace(/,/g, "");
+                                            $(".add-to-account-wrapper").removeClass("hide");
+                                        } else {
+                                            $(".loader-wrapper").addClass("hide");
+
+                                            if (response.error_title === "fatal") {
+                                                // REFRESH CURRENT PAGE
+                                                location.reload();
+                                            } else {
+                                                // ALERT USER
+                                                Swal.fire({
+                                                    title: response.error_title,
+                                                    icon: "error",
+                                                    text: response.error_msg,
+                                                    allowOutsideClick: false,
+                                                    allowEscapeKey: false,
+                                                });
+                                            }
+                                        }
+                                    }, 1500);
+                                },
+                            });
+                        }
                     });
                 }
             });
@@ -628,7 +663,23 @@
                                     confirmButtonColor: '#2366B5',
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.href = "./wallets?cid=<?= $cid ?>"
+                                        if(response.completed){
+                                            // ALERT USER
+                                            Swal.fire({
+                                                title: "Wallet Completed",
+                                                icon: "success",
+                                                text: "Your customer has successfully saved to acquire this product",
+                                                allowOutsideClick: false,
+                                                allowEscapeKey: false,
+                                                confirmButtonColor: '#2366B5',
+                                            }).then((result) => {
+                                                if(result.isConfirmed){
+                                                    location.href = "./wallets?cid=<?= $cid ?>";
+                                                }
+                                            });
+                                        }else{
+                                            location.href = "./wallets?cid=<?= $cid ?>";
+                                        }
                                     }
                                 })
                             } else {

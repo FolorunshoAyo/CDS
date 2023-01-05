@@ -45,14 +45,14 @@
                     <i class="fa fa-bars"></i>
                     <i class="fa fa-times"></i>
                 </div>
-                <a href="./" class="logo">
+                <a href="#" class="logo">
                     <i class="fa fa-home"></i>
                     <span> CDS AGENT </span>
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
                 <li class="nav-item">
-                    <a href="./">
+                    <a href="../">
                         <i class="fa fa-users"></i>
                         <span>Customers</span>
                     </a>
@@ -64,8 +64,8 @@
                     </a>
                 </li>
                 <li class="nav-item active">
-                    <a href="./easybuy/">
-                        <i class="fa fa-usd"></i>
+                    <a href="./">
+                        <i class="fa fa-money"></i>
                         <span>Easy Buy</span>
                     </a>
                 </li>

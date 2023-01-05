@@ -30,7 +30,7 @@ class Auth
 
 class AdminAuth extends Auth{
     /**
-     * Authentication for pages inside the admin folder
+     * Authentication for pages ouside the admin folder
      */
     static function Route($url)
     {

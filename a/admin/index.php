@@ -2,13 +2,20 @@
   require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
   AdminAuth::User("a/login");
   $admin_id = $_SESSION['admin_id'];
+
+  // NUMBER FORMATTER
+  // $human_readable = new \NumberFormatter(
+  //   'en_US', 
+  //   \NumberFormatter::PADDING_POSITION
+  // );
+
   //==================================================================
   //Check users last saving date
 
-  $date_time = $db->query("SELECT NOW() AS nowdate");
-  $row = $date_time->fetch_assoc();
-  $dated = $row['nowdate'];
-  $now = strtotime($dated);
+  // $date_time = $db->query("SELECT NOW() AS nowdate");
+  // $row = $date_time->fetch_assoc();
+  // $dated = $row['nowdate'];
+  // $now = strtotime($dated);
   // $time = date("M d Y, h:i A", $now);
 
   $current_date = date('Y-m-d');
@@ -19,6 +26,32 @@
       $row_admin = $admin_sql->fetch_assoc();
   }else{
       header("Location: ../login");
+  }
+
+  function showStatus($status){
+    $html = "";
+    switch($status){
+      case "1":
+        $html = "<span class='dot pending-dot'></span> pending";
+      break;
+      case "2":
+        $html = "<span class='dot awaiting-shipment-dot'></span> awaiting shipment";
+      break;
+      case "3":
+        $html = "<span class='dot shipped-dot'></span> shipped";
+      break;
+      case "4":
+        $html = "<span class='dot completed-dot'></span> completed";
+      break;
+      case "5":
+        $html = "<span class='dot cancelled-dot'></span> cancelled";
+      break;
+      default:
+        $html = "Unable to detect status";
+      break;
+    }
+
+    return $html;
   }
 ?>
 <!DOCTYPE html>
@@ -56,43 +89,43 @@
         </a>
       </div>
       <ul class="side-menu" id="side-menu">
-        <li class="nav-item">
+        <li title="dashboard" class="nav-item active">
           <a href="./">
             <i class="fa fa-tachometer"></i>
             <span>Dashboard</span>
           </a>
         </li>
-        <li class="nav-item">
+        <li title="statistics" class="nav-item">
           <a href="javascript:void(0">
             <i class="fa fa-signal"></i>
             <span>Statistics</span>
           </a>
         </li>
-        <li class="nav-item">
+        <li title="orders" class="nav-item">
           <a href="./orders">
             <i class="fa fa-usd"></i>
             <span>Orders</span>
           </a>
         </li>
-        <li class="nav-item">
+        <li title="shipping" class="nav-item">
           <a href="javascript:void(0">
             <i class="fa fa-recycle"></i>
             <span>Shipping</span>
           </a>
         </li>
-        <li class="nav-item active">
+        <li title="products" class="nav-item">
           <a href="./products">
             <i class="fa fa-shopping-bag"></i>
             <span>Products</span>
           </a>
         </li>
-        <li class="nav-item">
+        <li title="agents" class="nav-item">
           <a href="./agents">
             <i class="fa fa-users"></i>
             <span>Agents</span>
           </a>
         </li>
-        <li class="nav-item">
+        <li title="messages" class="nav-item">
           <a href="javascript:void(0">
             <i class="fa fa-commenting-o"></i>
             <span>Messages</span>
@@ -100,14 +133,14 @@
         </li>
       </ul>
 
-      <ul class="side-menu-bottom">
+      <ul title="settings" class="side-menu-bottom">
         <li class="nav-tem">
           <a href="javascript:void(0)">
             <i class="fa fa-gear"></i>
             <span>Settings</span>
           </a>
         </li>
-        <li class="nav-item logout">
+        <li title="logout" class="nav-item logout">
           <a href="../logout">
             <i class="fa fa-sign-out"></i>
             <span>Logout</span>
@@ -120,20 +153,57 @@
         <h1 class="welcome-message">Welcome
           <?php echo(ucfirst($row_admin['first_name'])); ?>,
         </h1>
-        <div class="select-container">
+        <!-- <div class="select-container">
           <form id="selected-date-form" action="#" method="GET">
             <select id="selected-date" name="selected-date">
               <option>29 Sept, 2022</option>
             </select>
           </form>
-        </div>
+        </div> -->
       </header>
       <section class="card-widgets">
         <div class="card today-card">
           <div class="card-details">
+            <?php
+
+              $sql_number_of_easybuy_wallets = $db->query("SELECT COUNT(wallet_id) as no_easybuy_wallets FROM easybuy_agent_wallets WHERE created_at LIKE '%$current_date%'");
+              $sql_number_of_agent_wallets = $db->query("SELECT COUNT(wallet_id) as no_agent_wallets FROM agent_wallets WHERE created_at LIKE '%$current_date%'");
+              // $sql_number_of_user_wallets = $db->query("SELECT COUNT(wallet_id) as no_user_wallets FROM user_wallets");
+
+              $wallets_created = array(
+                $sql_number_of_easybuy_wallets->fetch_assoc()['no_easybuy_wallets'],
+                $sql_number_of_agent_wallets->fetch_assoc()['no_agent_wallets']
+              );
+
+              $total_wallets_created = 0;
+
+              foreach($wallets_created as $wallet_created){
+                $total_wallets_created += intval($wallet_created);
+              }
+
+              $sql_total_amount_easybuy_wallets = $db->query("SELECT SUM(amount) as daily_revenue FROM easybuy_agent_savings WHERE deposited_at LIKE '%$current_date%'");
+              $sql_total_amount_agent_wallets = $db->query("SELECT SUM(amount) as daily_revenue FROM agent_savings WHERE deposited_at LIKE '%$current_date%'");
+              // $sql_total_amount_user_wallets = $db->query("SELECT SUM(amount) as total_amount FROM user_wallets WHERE deposited_at LIKE '%$current_date%'");
+
+              $total_amounts = array(
+                $sql_total_amount_easybuy_wallets->fetch_assoc()['daily_revenue'],
+                $sql_total_amount_agent_wallets->fetch_assoc()['daily_revenue']
+              );
+
+              $total_payments = 0;
+
+              foreach($total_amounts as $total_amount){
+                $total_payments += intval($total_amount);
+              }
+            ?>
             <h2 class="title">Today's payments</h2>
-            <span class="card-figure">NGN 12.5K</span>
-            <span class="card-more-info">76 wallets has been created today</span>
+            <span class="card-figure">NGN
+              <?php 
+                // echo($human_readable->format($total_payments)) 
+                echo number_format($total_payments);
+              ?>
+            </span>
+            <span class="card-more-info"><?php echo $total_wallets_created?> wallets has been created today</span>
           </div>
           <div class="card-graph">
             <!-- GRAPH HERE -->
@@ -170,11 +240,62 @@
             </div>
           </div>
           <div class="card-figure-container">
-            <span class="card-figure">NGN4.6M</span>
-            <span class="comparison-factor success">
-              <i class="fa fa-arrow-up"></i>
-              5% than last month
+            <?php 
+              $this_month = lcfirst(date("Y-m"));
+              $last_month = lcfirst(date("Y-m", strtotime("last month")));
+              // REVENUE FROM EASY BUY
+              $sql_this_month_revenue_easybuy = $db->query("select SUM(total_amount) as month_revenue from easybuy_agent_wallets where created_at LIKE '%$this_month%'");
+              $sql_last_month_revenue_easybuy = $db->query("select SUM(total_amount) as month_revenue from easybuy_agent_wallets where created_at LIKE '%$last_month%'");
+
+              // REVENUE FROM AGENT WALLETS
+              $sql_this_month_revenue_agents = $db->query("select SUM(total_amount) as month_revenue from agent_wallets where created_at LIKE '%$this_month%'");
+              $sql_last_month_revenue_agents = $db->query("select SUM(total_amount) as month_revenue from agent_wallets where created_at LIKE '%$last_month%'");
+
+              //REVENUE FROM USER WALLETS
+              // $sql_this_month_revenue_users = $db->query("select SUM(total_amount) as monthly_revenue from user_wallets where monthname(created_at)='$this_month'");
+              // $sql_last_month_revenue_users = $db->query("select SUM(total_amount) as monthly_revenue from user_wallets where monthname(created_at)='$last_month'");
+
+              $last_month_total = 0;
+              $this_month_total = 0;
+
+              $last_month_revenues = array($sql_last_month_revenue_agents->fetch_assoc()['month_revenue'], $sql_last_month_revenue_easybuy->fetch_assoc()['month_revenue']);
+              $this_month_revenues = array($sql_this_month_revenue_agents->fetch_assoc()['month_revenue'], $sql_this_month_revenue_easybuy->fetch_assoc()['month_revenue']);
+
+              foreach($this_month_revenues as $this_month_revenue){
+                $this_month_total += intval($this_month_revenue);
+              }
+
+              foreach($last_month_revenues as $last_month_revenue){
+                $last_month_total += intval($last_month_revenue);
+              }
+
+              // CALCULATE PERCENTAGE CHANGE
+              $percent_change = round(($last_month_total - $this_month_total) / $last_month_total * 100);
+            ?>
+            <span class="card-figure">
+              NGN
+              <?php 
+                // echo($human_readable->format($this_month_total)) 
+                echo number_format($this_month_total);
+              ?>
             </span>
+            <?php
+              if($percent_change < 0){
+            ?>
+              <span class="comparison-factor success">
+                  <i class="fa fa-arrow-up"></i>
+                  <?php echo abs($percent_change) ?>% than last month
+                </span>
+            <?php 
+              }else{
+            ?>
+              <span class="comparison-factor danger">
+                <i class="fa fa-arrow-down"></i>
+                <?php echo $percent_change ?>% than last month
+              </span>
+            <?php
+              }
+            ?>
           </div>
           <div class="graph-container">
             <!-- GRAPH HERE -->
@@ -245,46 +366,248 @@
         </div>
       </section>
       <section class="payment-table-section card">
-        <h2 class="title">Latest Orders</h2>
-        <div class="payment-table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Order ID</th>
-                <th>Date</th>
-                <th>Customer</th>
-                <th>Status</th>
-                <th>Total</th>
-                <th>Confirm</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  #112234
-                </td>
-                <td>
-                  Sept 9, 2022
-                </td>
-                <td>
-                  Shodiya Folorunsho
-                </td>
-                <td>
-                  <span class="dot pending-dot"></span>
-                  pending
-                </td>
-                <td>
-                  NGN6000
-                </td>
-                <td>
-                  <!-- Link to flutterwave -->
-                  <a href="order-details">View Order</a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="tabs-container">
+          <div class="tabs">
+            <div class="tab active" data-tab="1">
+              User Orders
+            </div>
+            <div class="tab" data-tab="2">
+              Agent Savings
+            </div>
+            <div class="tab" data-tab="3">
+              User Savings
+            </div>
+          </div>
+        </div>
+        <div class="tab-content tab-1 active">
+          <h2 class="title">User Orders</h2>
+          <div class="payment-table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Date</th>
+                  <th>Customer</th>
+                  <th>Status</th>
+                  <th>Total</th>
+                  <th>Confirm</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                   $sql_all_orders = $db->query("SELECT orders.*, users.last_name, users.first_name FROM orders INNER JOIN users ON orders.user_id=users.user_id");
+
+                   $count = 1;
+                   while($order = $sql_all_orders->fetch_assoc()){
+                ?>
+                <tr>
+                  <td>
+                    #<?= $order['order_no'] ?>
+                  </td>
+                  <td>
+                    <?php
+                      echo date("d M, Y", strtotime($order['ord_date']));
+                    ?>
+                  </td>
+                  <td>
+                    <?php
+                      echo $order['last_name'] . " " . $order['first_name'];
+                    ?>
+                  </td>
+                  <td>
+                    <?php 
+                      echo showStatus($order['status'])
+                    ?>
+                  </td>
+                  <td>
+                    NGN <?= number_format($order['purch_amt']) ?>
+                  </td>
+                  <td>
+                    <!-- Link to flutterwave -->
+                    <a href="order-details?oid=<?= $order['order_id'] ?>">View Order</a>
+                  </td>
+                </tr>
+                <?php
+                  $count++;
+                  }
+                ?>
+              </tbody>
+            </table>
+            <div class="view-orders-container">
+              <a href="./orders" class="view-orders">View all orders</a>
+            </div>
+          </div>
+        </div>
+        <div class="tab-content tab-2">
+          <h2 class="title">Agent Savings</h2>
+          <div class="payment-table-container">
+            <h3 class="title">Normal Savings</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>S/N</th>
+                  <th>Agent Name</th>
+                  <th>Customer Name</th>
+                  <th>Product</th>
+                  <th>Amount paid</th>
+                  <th>Days saved</th>
+                  <th>Period covered</th>
+                  <th>Deposited at</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                  $sql_normal_savings_query = $db->query("SELECT agents.last_name as agent_last_name, agents.first_name as agent_first_name, agent_customers.first_name as customer_first_name, agent_customers.last_name as customer_last_name, products.name, agent_savings.savings_days, agent_savings.amount, agent_savings.start_date, agent_savings.end_date, agent_savings.deposited_at
+                  FROM ((((agent_wallets
+                  INNER JOIN agents ON agent_wallets.agent_id = agents.agent_id)
+                  INNER JOIN agent_customers ON agent_wallets.agent_customer_id = agent_customers.agent_customer_id)
+                  INNER JOIN products ON agent_wallets.product_id = products.product_id)
+                  INNER JOIN agent_savings ON agent_wallets.wallet_id = agent_savings.wallet_id) LIMIT 10");
+
+                  $count = 1;
+
+                  while($normal_savings_detais = $sql_normal_savings_query->fetch_assoc()){
+                ?>
+                <tr>
+                  <td>
+                    #<?php echo $count ?>
+                  </td>
+                  <td>
+                    <?php echo $normal_savings_detais['agent_last_name'] . " " . $normal_savings_detais['agent_first_name'] ?>
+                  </td>
+                  <td>
+                    <?php echo $normal_savings_detais['customer_last_name'] . " " . $normal_savings_detais['customer_first_name'] ?>
+                  </td>
+                  <td>
+                    <?php echo $normal_savings_detais['name'] ?>
+                  </td>
+                  <td>
+                    NGN <?php echo $normal_savings_detais['amount'] ?>
+                  </td>
+                  <td>
+                    <?php echo $normal_savings_detais['savings_days'] ?> days
+                  </td>
+                  <td>
+                    <?php echo date("d M, Y", strtotime($normal_savings_detais['start_date'])) . " - " . date("d M, Y", strtotime($normal_savings_detais['end_date'])) ?>
+                  </td>
+                  <td>
+                    <?php echo date("d M, Y", strtotime($normal_savings_detais['deposited_at'])) . "<br>" . date("H:i a", strtotime($normal_savings_detais['deposited_at']))?>
+                  </td>
+                </tr>
+                <?php
+                  $count++;
+                  }
+                ?>
+              </tbody>
+            </table>
+          </div>
+          <div class="payment-table-container">
+            <h3 class="title">Easy Buy Savings</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>S/N</th>
+                  <th>Agent Name</th>
+                  <th>Customer Name</th>
+                  <th>Product</th>
+                  <th>Amount paid</th>
+                  <th>Days saved</th>
+                  <th>Period covered</th>
+                  <th>Deposited at</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                  $sql_easybuy_savings_query = $db->query("SELECT agents.last_name as agent_last_name, agents.first_name as agent_first_name, easybuy_agent_customers.first_name as customer_first_name, easybuy_agent_customers.last_name as customer_last_name, products.name, easybuy_agent_savings.savings_days, easybuy_agent_savings.amount, easybuy_agent_savings.start_date, easybuy_agent_savings.end_date, easybuy_agent_savings.deposited_at
+                  FROM ((((easybuy_agent_wallets
+                  INNER JOIN agents ON easybuy_agent_wallets.agent_id = agents.agent_id)
+                  INNER JOIN easybuy_agent_customers ON easybuy_agent_wallets.agent_customer_id = easybuy_agent_customers.agent_customer_id)
+                  INNER JOIN products ON easybuy_agent_wallets.product_id = products.product_id)
+                  INNER JOIN easybuy_agent_savings ON easybuy_agent_wallets.wallet_id = easybuy_agent_savings.wallet_id) LIMIT 10");
+
+                  $count = 1;
+
+                  while($easybuy_savings_detais = $sql_easybuy_savings_query->fetch_assoc()){
+                ?>
+                <tr>
+                  <td>
+                    #<?php echo $count ?>
+                  </td>
+                  <td>
+                    <?php echo $easybuy_savings_detais['agent_last_name'] . " " . $easybuy_savings_detais['agent_first_name'] ?>
+                  </td>
+                  <td>
+                    <?php echo $easybuy_savings_detais['customer_last_name'] . " " . $easybuy_savings_detais['customer_first_name'] ?>
+                  </td>
+                  <td>
+                    <?php echo $easybuy_savings_detais['name'] ?>
+                  </td>
+                  <td>
+                    NGN <?php echo $easybuy_savings_detais['amount'] ?>
+                  </td>
+                  <td>
+                    <?php echo $easybuy_savings_detais['savings_days'] ?> days
+                  </td>
+                  <td>
+                    <?php echo date("d M, Y", strtotime($easybuy_savings_detais['start_date'])) . " - " . date("d M, Y", strtotime($easybuy_savings_detais['end_date'])) ?>
+                  </td>
+                  <td>
+                    <?php echo date("d M, Y", strtotime($easybuy_savings_detais['deposited_at'])) . "<br>" . date("H:i a", strtotime($easybuy_savings_detais['deposited_at']))?>
+                  </td>
+                </tr>
+                <?php
+                  $count++;
+                  }
+                ?>
+              </tbody>
+            </table>
+          </div>
           <div class="view-orders-container">
-            <a href="./all-orders" class="view-orders">View all orders</a>
+            <a href="./all_savings" class="view-orders">View all savings</a>
+          </div>
+        </div>
+        <div class="tab-content tab-3">
+          <h2 class="title">User Savings</h2>
+          <div class="payment-table-container">
+            <p style="text-align: center; font-size: 1.5rem; margin: 2rem 0;font-weight: bold;">Coming Soon</p>
+            <!-- <table>
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Date</th>
+                  <th>Customer</th>
+                  <th>Status</th>
+                  <th>Total</th>
+                  <th>Confirm</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    #112234
+                  </td>
+                  <td>
+                    Sept 9, 2022
+                  </td>
+                  <td>
+                    Shodiya Folorunsho
+                  </td>
+                  <td>
+                    <span class="dot pending-dot"></span>
+                    pending
+                  </td>
+                  <td>
+                    NGN6000
+                  </td>
+                  <td>
+                    <a href="order-details">View Order</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="view-orders-container">
+              <a href="./orders" class="view-orders">View all orders</a>
+            </div> -->
           </div>
         </div>
       </section>
@@ -309,6 +632,25 @@
       const dataPercent = $(this).attr("data-percent");
 
       $(this).css("width", dataPercent);
+    });
+
+    // TAB FUNCTIONALITY
+    $(".tab").each(function(){
+      $(this).on("click", function(){
+        const selectedTabNo = $(this).attr("data-tab");
+
+        $(".tab").each(function(){
+          $(this).removeClass("active");
+        })
+
+        $(this).addClass("active");
+
+        $(".tab-content").each(function(){
+          $(this).removeClass("active");
+        });
+
+        $(`.tab-${selectedTabNo}`).addClass("active")
+      });
     });
   </script>
 </body>

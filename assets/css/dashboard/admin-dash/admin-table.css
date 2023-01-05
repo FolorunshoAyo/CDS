@@ -45,7 +45,6 @@ table.dataTable tbody td{
     padding: 8px;
     border-radius: 20px;
     color: var(--white);
-    width: 70px;
     text-align: center;
 }
 
@@ -54,6 +53,14 @@ table.dataTable tbody td{
 }
 
 .status-badge.success{
+    background-color: var(--primary-color);
+}
+
+.status-badge.progress{
+    background-color: var(--primary-color);
+}
+
+.status-badge.completed{
     background-color: var(--success);
 }
 

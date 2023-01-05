@@ -46,7 +46,7 @@
             </div>
             <ul class="side-menu" id="side-menu">
                 <li class="nav-item">
-                    <a href="./">
+                    <a href="../">
                         <i class="fa fa-users"></i>
                         <span>Customers</span>
                     </a>
@@ -58,7 +58,7 @@
                     </a>
                 </li>
                 <li class="nav-item active">
-                    <a href="./easybuy/">
+                    <a href="./">
                         <i class="fa fa-money"></i>
                         <span>Easy Buy</span>
                     </a>

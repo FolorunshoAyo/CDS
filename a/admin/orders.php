@@ -98,7 +98,7 @@
                         <span>Statistics</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a href="./orders">
                         <i class="fa fa-usd"></i>
                         <span>Orders</span>
@@ -110,7 +110,7 @@
                         <span>Shipping</span>
                     </a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a href="./products">
                         <i class="fa fa-shopping-bag"></i>
                         <span>Products</span>

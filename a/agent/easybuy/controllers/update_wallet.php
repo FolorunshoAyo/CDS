@@ -1,6 +1,27 @@
 <?php
     require(dirname(dirname(dirname(dirname(__DIR__)))) . '/auth-library/resources.php');
      
+    function generateDates($start_date, $end_date){
+        $start_day = intval(date("d", strtotime($start_date)));  
+        $end_day = intval(date("d", strtotime($end_date)));  
+    
+        $date_range = ($end_day- $start_day) + 1;
+    
+        $dates = array();
+    
+        for($i = 1; $i <= $date_range; $i++){
+          if($i === 1){
+            array_push($dates, date("Y-m-d", strtotime($start_date)));
+          }elseif($i === $date_range){
+            array_push($dates, date("Y-m-d", strtotime($end_date)));
+          }else{
+            array_push($dates, date("Y-m-d", strtotime(" $start_date +" . ($i-1) . " days")));
+          }
+        }
+    
+        return $dates;
+    }
+
     if(isset($_POST['submit'])){
         $aid = $_SESSION['agent_id'];
         $wid = $db->real_escape_string($_POST['wid']);
@@ -20,24 +41,29 @@
                 $today = date("Y-m-d"); //YYYY-MM-DD
                 $calculated_amount = intval($days) * intval($daily_payment);
 
-                $sql_check_for_existing_savings = $db->query("SELECT * FROM easybuy_agent_savings WHERE start_date = '$today' OR end_date = '$today'");
-
+                $sql_check_for_existing_savings = $db->query("SELECT * from easybuy_agent_savings WHERE
+                (start_date BETWEEN '$today'AND '$today') OR 
+                (end_date BETWEEN '$today' AND '$today') OR 
+                (start_date <= '$today' AND end_date >= '$today')");
+                
+                
                 if($sql_check_for_existing_savings->num_rows > 0){
-                    $sql_check_latest_savings = $db->query("SELECT * FROM easybuy_agent_savings WHERE wallet_id = '$wid' ORDER BY savings_id DESC LIMIT 1");
+                    $sql_check_latest_savings = $db->query("SELECT * FROM easybuy_agent_savings WHERE wallet_id='$wid' ORDER BY savings_id DESC"); 
+                    $savings_details = $sql_check_latest_savings->fetch_assoc();
+                    $last_savings_start_date = $savings_details['start_date'];
+                    $last_savings_end_date = $savings_details['end_date'];
 
-                    $last_savings_date = $sql_check_latest_savings->fetch_assoc()['end_date'];
-
-                    $new_savings_start = date('Y-m-d', strtotime($last_savings_date . " + 1 days"));
+                    $new_savings_start = date('Y-m-d', strtotime($last_savings_end_date . " + 1 days"));
                     $new_savings_end = date('Y-m-d', strtotime($new_savings_start . " + " . ($days - 1) . " days"));
 
                     //INSERT MORE PAYMENTS
                     $sql_insert_savings = $db->query("INSERT INTO easybuy_agent_savings (wallet_id, amount, savings_days, start_date, end_date) VALUES ('$wid', '$calculated_amount', '$days', '$new_savings_start', '$new_savings_end')");
-
                 }else{
                     $new_savings_end = date("Y-m-d", strtotime($today . " + " . ($days - 1) . " days"));
+
                     // IF THERE ARE NO UPFRONT PAYMENT
                     $sql_insert_savings = $db->query("INSERT INTO easybuy_agent_savings (wallet_id, amount, savings_days, start_date, end_date) VALUES ('$wid', '$calculated_amount', '$days', '$today', '$new_savings_end')");
-                }
+                }       
 
 
                 if($sql_insert_savings){
@@ -59,16 +85,16 @@
                         $sql_get_product_price = $db->query("SELECT price FROM products WHERE product_id='$product_id'");
                         $product_price = intval($sql_get_product_price->fetch_assoc()['price']);
 
-                        if($product_price === $total_amount){
+                        if($total_amount >= $product_price){
                             $update_wallet_status = $db->query("UPDATE easybuy_agent_wallets SET completed='1' WHERE wallet_id='$wid'");
 
                             if($update_wallet_status){
-                                echo json_encode(array('success' => 1));
+                                echo json_encode(array('success' => 1, 'completed' => true));
                                 exit();
                             }
                         }
 
-                        echo json_encode(array('success' => 1));
+                        echo json_encode(array('success' => 1, 'completed' => false));
                     }
                 }
             }else{
