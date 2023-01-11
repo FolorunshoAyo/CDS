@@ -95,7 +95,7 @@
                         <span>Products</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a href="./agents">
                         <i class="fa fa-users"></i>
                         <span>Agents</span>
@@ -129,10 +129,10 @@
                 <div class="tabs-container">
                     <div class="tabs">
                         <div class="tab active" data-tab="1">
-                            Agent Savings
+                            DS Savings
                         </div>
                         <div class="tab" data-tab="2">
-                            User Savings
+                            EB Savings
                         </div>
                     </div>
                 </div>

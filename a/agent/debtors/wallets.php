@@ -11,12 +11,12 @@
 
     $agent_id = $_SESSION['agent_id'];
 
-    if(isset($_GET['cid']) && !empty($_GET['cid'])){
-        $cid = $_GET['cid'];
+    if(isset($_GET['did']) && !empty($_GET['did'])){
+        $did = $_GET['did'];
     
-        $sql_agent_customer_details = $db->query("SELECT * FROM easybuy_agent_customers WHERE agent_customer_id={$cid}");
+        $sql_agent_debtor_details = $db->query("SELECT * FROM debtors WHERE debtor_id={$did}");
     
-        $customer_details = $sql_agent_customer_details->fetch_assoc();
+        $debtor_details = $sql_agent_debtor_details->fetch_assoc();
     }else{
         header("Location: ./");
     }
@@ -68,7 +68,7 @@
     <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/wallets.css" />
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../../assets/css/media-queries/admin-dash-mediaqueries.css" />
-    <title>Customer Wallets - CDS AGENT</title>
+    <title>Debtor Wallets - CDS AGENT</title>
 </head>
 
 <body style="background-color: #fafafa">
@@ -98,17 +98,17 @@
                         <span>Shipping</span>
                     </a>
                 </li>
-                <li class="nav-item active">
-                    <a href="./">
+                <li class="nav-item">
+                    <a href="../easybuy/">
                         <i class="fa fa-money"></i>
                         <span>Easy Buy</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="../debtors/">
+                <li class="nav-item active">
+                    <a href="./">
                         <!-- <span class="blue-dot"></span> -->
                         <i class="fa fa-info-circle"></i>
-                        <span>Debtors</span>
+                        <span>Debtor</span>
                         <!-- <span class="nav-item-badge">1</span> -->
                     </a>
                 </li>
@@ -125,19 +125,20 @@
         </aside>
         <section class="page-wrapper">
             <div class="table-wrapper">
-                <h2 class="table-title"><?php echo ucfirst($customer_details['last_name']) . " " . ucfirst($customer_details['first_name']) ?> Easy Buy Wallets</h2>
+                <h2 class="table-title"><?php echo ucfirst($debtor_details['last_name']) . " " . ucfirst($debtor_details['first_name']) ?> Debtor Wallets</h2>
 
+                <p class="table-title">Assigned by Admin</p>
                 <?php
-                    $sql_customer_wallets = $db->query("SELECT *
-                    FROM easybuy_agent_wallets
-                    INNER JOIN products ON easybuy_agent_wallets.product_id = products.product_id
-                    WHERE agent_customer_id='$cid' AND agent_id='$agent_id';");
+                    $sql_debtor_wallets = $db->query("SELECT *
+                    FROM debtor_wallets
+                    INNER JOIN products ON debtor_wallets.product_id = products.product_id
+                    WHERE debtor_id='$did' AND agent_id='$agent_id';");
 
-                    if($sql_customer_wallets->num_rows === 0){
+                    if($sql_debtor_wallets->num_rows === 0){
                 ?>
                 <div class="no-wallet-container">
                     <span>No wallets yet</span>
-                    <a href="./new_wallet">Create new Wallet</a>
+                    <a href="./new_wallet?did=<?= $did ?>">Create new Wallet</a>
                 </div>
                 <?php
                     }else{
@@ -164,13 +165,16 @@
                                         Total Savings Days
                                     </th>
                                     <th>
+                                        Created by
+                                    </th>
+                                    <th>
                                         Wallet Status
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php 
-                                    while($wallet_details = $sql_customer_wallets->fetch_assoc()){
+                                    while($wallet_details = $sql_debtor_wallets->fetch_assoc()){
                                 ?>
                                 <tr wallet-id="<?= $wallet_details['wallet_id'] ?>">
                                     <td>
@@ -213,9 +217,14 @@
                                     <td>
                                         <?php 
                                             $wallet_id = $wallet_details['wallet_id'];
-                                            $sql_check_total_savings_days = $db->query("SELECT SUM(savings_days) as total_savings_days FROM easybuy_agent_savings WHERE wallet_id='$wallet_id'");
+                                            $sql_check_total_savings_days = $db->query("SELECT SUM(savings_days) as total_savings_days FROM debtor_savings WHERE wallet_id='$wallet_id'");
 
-                                            echo $sql_check_total_savings_days->fetch_assoc()['total_savings_days'];
+                                            echo intval($sql_check_total_savings_days->fetch_assoc()['total_savings_days']);
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                            echo $wallet_details['created_by'] === "0"? "Admin" : "You"
                                         ?>
                                     </td>
                                     <td>
@@ -410,7 +419,7 @@
 
                     $.get(`./controllers/wallet_history_check.php?wid=${selectedWalletId}`, function(response){
                         response = JSON.parse(response);
-                        if(response.containsInfo){
+                        if(response.containsInfo === 1){
                             // OBTAIN SAVINGS HISTORY OF WALLET FROM SERVER
                             $.ajax({
                                 type: "post",
@@ -514,7 +523,7 @@
                                             $(".loader-wrapper").addClass("hide");
                                             $("#curr-balance").html(response.balance.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ","));
                                             $("#product-name").html(response.name);
-                                            $("#daily-payment").html(response.daily_payment);
+                                            $("#daily-payment").html("500");
                                             daily_payment = response.daily_payment.replace(/,/g, "");
                                             $(".add-to-account-wrapper").removeClass("hide");
                                         } else {
@@ -689,11 +698,11 @@
                                                 confirmButtonColor: '#2366B5',
                                             }).then((result) => {
                                                 if(result.isConfirmed){
-                                                    location.href = "./wallets?cid=<?= $cid ?>";
+                                                    location.href = "./wallets?did=<?= $did ?>";
                                                 }
                                             });
                                         }else{
-                                            location.href = "./wallets?cid=<?= $cid ?>";
+                                            location.href = "./wallets?did=<?= $did ?>";
                                         }
                                     }
                                 })

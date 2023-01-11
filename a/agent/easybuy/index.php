@@ -63,6 +63,14 @@
                         <span>Easy Buy</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="../debtors">
+                        <!-- <span class="blue-dot"></span> -->
+                        <i class="fa fa-info-circle"></i>
+                        <span>Debtor</span>
+                        <!-- <span class="nav-item-badge">1</span> -->
+                    </a>
+                </li>
             </ul>
 
             <ul class="side-menu-bottom">

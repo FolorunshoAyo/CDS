@@ -125,6 +125,12 @@
             <span>Agents</span>
           </a>
         </li>
+        <li title="debtors" class="nav-item">
+          <a href="./debtors">
+            <i class="fa fa-info-circle"></i>
+            <span>Debtors</span>
+          </a>
+        </li>
         <li title="messages" class="nav-item">
           <a href="javascript:void(0">
             <i class="fa fa-commenting-o"></i>
@@ -168,26 +174,30 @@
 
               $sql_number_of_easybuy_wallets = $db->query("SELECT COUNT(wallet_id) as no_easybuy_wallets FROM easybuy_agent_wallets WHERE created_at LIKE '%$current_date%'");
               $sql_number_of_agent_wallets = $db->query("SELECT COUNT(wallet_id) as no_agent_wallets FROM agent_wallets WHERE created_at LIKE '%$current_date%'");
+              $sql_number_of_debtor_wallets = $db->query("SELECT COUNT(wallet_id) as no_debtor_wallets FROM debtor_wallets WHERE created_at LIKE '%$current_date%'");
               // $sql_number_of_user_wallets = $db->query("SELECT COUNT(wallet_id) as no_user_wallets FROM user_wallets");
 
               $wallets_created = array(
                 $sql_number_of_easybuy_wallets->fetch_assoc()['no_easybuy_wallets'],
-                $sql_number_of_agent_wallets->fetch_assoc()['no_agent_wallets']
+                $sql_number_of_agent_wallets->fetch_assoc()['no_agent_wallets'],
+                $sql_number_of_debtor_wallets->fetch_assoc()['no_debtor_wallets']
               );
 
               $total_wallets_created = 0;
 
               foreach($wallets_created as $wallet_created){
-                $total_wallets_created += intval($wallet_created);
+                $total_wallets_created += intval($wallet_created); // $total_wallets_created = $total_wallets_created + intval($wallet_created);
               }
 
               $sql_total_amount_easybuy_wallets = $db->query("SELECT SUM(amount) as daily_revenue FROM easybuy_agent_savings WHERE deposited_at LIKE '%$current_date%'");
               $sql_total_amount_agent_wallets = $db->query("SELECT SUM(amount) as daily_revenue FROM agent_savings WHERE deposited_at LIKE '%$current_date%'");
+              $sql_total_amount_debtor_wallets = $db->query("SELECT SUM(amount) as daily_revenue FROM debtor_savings WHERE deposited_at LIKE '%$current_date%'");
               // $sql_total_amount_user_wallets = $db->query("SELECT SUM(amount) as total_amount FROM user_wallets WHERE deposited_at LIKE '%$current_date%'");
 
               $total_amounts = array(
                 $sql_total_amount_easybuy_wallets->fetch_assoc()['daily_revenue'],
-                $sql_total_amount_agent_wallets->fetch_assoc()['daily_revenue']
+                $sql_total_amount_agent_wallets->fetch_assoc()['daily_revenue'],
+                $sql_total_amount_debtor_wallets->fetch_assoc()['daily_revenue']
               );
 
               $total_payments = 0;
@@ -203,7 +213,7 @@
                 echo number_format($total_payments);
               ?>
             </span>
-            <span class="card-more-info"><?php echo $total_wallets_created?> wallets has been created today</span>
+            <span class="card-more-info"><?php echo $total_wallets_created?> wallet(s) has been created today</span>
           </div>
           <div class="card-graph">
             <!-- GRAPH HERE -->
@@ -212,9 +222,104 @@
         </div>
         <div class="card today-card">
           <div class="card-details">
-            <h2 class="title">Today's Impressions</h2>
-            <span class="card-figure">7.9K</span>
-            <span class="card-more-info">Through click rate</span>
+            <?php
+
+              $sql_weekly_number_of_easybuy_wallets = $db->query("SELECT COUNT(wallet_id) as weekly_easybuy_wallets FROM easybuy_agent_wallets WHERE YEARWEEK(created_at, 1) = YEARWEEK(CURDATE(), 1)");
+              $sql_weekly_number_of_agent_wallets = $db->query("SELECT COUNT(wallet_id) as weekly_agent_wallets FROM agent_wallets WHERE YEARWEEK(created_at, 1) = YEARWEEK(CURDATE(), 1)");
+              $sql_weekly_number_of_debtor_wallets = $db->query("SELECT COUNT(wallet_id) as weekly_debtor_wallets FROM debtor_wallets WHERE YEARWEEK(created_at, 1) = YEARWEEK(CURDATE(), 1)");
+              // $sql_number_of_user_wallets = $db->query("SELECT COUNT(wallet_id) as no_user_wallets FROM user_wallets");
+
+              $wallets_created = array(
+                $sql_weekly_number_of_easybuy_wallets->fetch_assoc()['weekly_easybuy_wallets'],
+                $sql_weekly_number_of_agent_wallets->fetch_assoc()['weekly_agent_wallets'],
+                $sql_weekly_number_of_debtor_wallets->fetch_assoc()['weekly_debtor_wallets']
+              );
+
+              $total_weekly_wallets_created = 0;
+
+              foreach($wallets_created as $wallet_created){
+                $total_weekly_wallets_created += intval($wallet_created);
+              }
+
+              $sql_total_amount_weekly_easybuy_wallets = $db->query("SELECT SUM(amount) as weekly_revenue FROM easybuy_agent_savings WHERE YEARWEEK(deposited_at, 1) = YEARWEEK(CURDATE(), 1)");
+              $sql_total_amount_weekly_agent_wallets = $db->query("SELECT SUM(amount) as weekly_revenue FROM agent_savings WHERE YEARWEEK(deposited_at, 1) = YEARWEEK(CURDATE(), 1)");
+              $sql_total_amount_weekly_debtor_wallets = $db->query("SELECT SUM(amount) as weekly_revenue FROM debtor_savings WHERE YEARWEEK(deposited_at, 1) = YEARWEEK(CURDATE(), 1)");
+              // $sql_total_amount_user_wallets = $db->query("SELECT SUM(amount) as total_amount FROM user_wallets WHERE deposited_at LIKE '%$current_date%'");
+
+              $total_amounts = array(
+                $sql_total_amount_weekly_easybuy_wallets->fetch_assoc()['weekly_revenue'],
+                $sql_total_amount_weekly_agent_wallets->fetch_assoc()['weekly_revenue'],
+                $sql_total_amount_weekly_debtor_wallets->fetch_assoc()['weekly_revenue']
+              );
+
+              $total_weekly_payments = 0;
+
+              foreach($total_amounts as $total_amount){
+                $total_weekly_payments += intval($total_amount);
+              }
+            ?>
+            <h2 class="title">This week's payment</h2>
+            <span class="card-figure">NGN 
+              <?php
+                // echo($human_readable->format($total_payments)) 
+                echo number_format($total_weekly_payments);
+              ?>
+            </span>
+            <span class="card-more-info"><?php echo $total_weekly_wallets_created?> wallet(s) has been created this week</span>
+          </div>
+          <div class="card-graph">
+            <!-- GRAPH HERE -->
+            GRAPH HERE
+          </div>
+        </div>
+        <div class="card today-card">
+          <?php
+            // GETTING THIS MONTH
+            $this_month = date("Y-m");
+
+            $sql_monthly_number_of_easybuy_wallets = $db->query("SELECT COUNT(wallet_id) as weekly_easybuy_wallets FROM easybuy_agent_wallets WHERE created_at LIKE '%$this_month%'");
+            $sql_monthly_number_of_agent_wallets = $db->query("SELECT COUNT(wallet_id) as weekly_agent_wallets FROM agent_wallets WHERE created_at LIKE '%$this_month%'");
+            $sql_monthly_number_of_debtor_wallets = $db->query("SELECT COUNT(wallet_id) as weekly_debtor_wallets FROM debtor_wallets WHERE created_at LIKE '%$this_month%'");
+            // $sql_number_of_user_wallets = $db->query("SELECT COUNT(wallet_id) as no_user_wallets FROM user_wallets");
+
+            $wallets_created = array(
+              $sql_monthly_number_of_easybuy_wallets->fetch_assoc()['weekly_easybuy_wallets'],
+              $sql_monthly_number_of_agent_wallets->fetch_assoc()['weekly_agent_wallets'],
+              $sql_monthly_number_of_debtor_wallets->fetch_assoc()['weekly_debtor_wallets']
+            );
+
+            $total_monthly_wallets_created = 0;
+
+            foreach($wallets_created as $wallet_created){
+              $total_monthly_wallets_created += intval($wallet_created);
+            }
+
+            $sql_total_amount_monthly_easybuy_wallets = $db->query("SELECT SUM(amount) as monthly_revenue FROM easybuy_agent_savings WHERE deposited_at LIKE '%$this_month%'");
+            $sql_total_amount_monthly_agent_wallets = $db->query("SELECT SUM(amount) as monthly_revenue FROM agent_savings WHERE deposited_at LIKE '%$this_month%'");
+            $sql_total_amount_monthly_debtor_wallets = $db->query("SELECT SUM(amount) as monthly_revenue FROM debtor_savings WHERE deposited_at LIKE '%$this_month%'");
+            // $sql_total_amount_user_wallets = $db->query("SELECT SUM(amount) as total_amount FROM user_wallets WHERE deposited_at LIKE '%$current_date%'");
+
+            $total_amounts = array(
+              $sql_total_amount_monthly_easybuy_wallets->fetch_assoc()['monthly_revenue'],
+              $sql_total_amount_monthly_agent_wallets->fetch_assoc()['monthly_revenue'],
+              $sql_total_amount_monthly_debtor_wallets->fetch_assoc()['monthly_revenue']
+            );
+
+            $total_monthly_payments = 0;
+
+            foreach($total_amounts as $total_amount){
+              $total_monthly_payments += intval($total_amount);
+            }
+          ?>
+          <div class="card-details">
+            <h2 class="title">This month's payment</h2>
+            <span class="card-figure">NGN 
+              <?php
+                // echo($human_readable->format($total_payments)) 
+                echo number_format($total_monthly_payments);
+              ?>
+            </span>
+            <span class="card-more-info"><?php echo $total_monthly_wallets_created?> wallet(s) has been created this month</span>
           </div>
           <div class="card-graph">
             <!-- GRAPH HERE -->
@@ -246,10 +351,14 @@
               // REVENUE FROM EASY BUY
               $sql_this_month_revenue_easybuy = $db->query("select SUM(total_amount) as month_revenue from easybuy_agent_wallets where created_at LIKE '%$this_month%'");
               $sql_last_month_revenue_easybuy = $db->query("select SUM(total_amount) as month_revenue from easybuy_agent_wallets where created_at LIKE '%$last_month%'");
-
+            
               // REVENUE FROM AGENT WALLETS
               $sql_this_month_revenue_agents = $db->query("select SUM(total_amount) as month_revenue from agent_wallets where created_at LIKE '%$this_month%'");
               $sql_last_month_revenue_agents = $db->query("select SUM(total_amount) as month_revenue from agent_wallets where created_at LIKE '%$last_month%'");
+
+              // REVENUE FROM AGENT WALLETS
+              $sql_this_month_revenue_debtors = $db->query("select SUM(total_amount) as month_revenue from debtor_wallets where created_at LIKE '%$this_month%'");
+              $sql_last_month_revenue_debtors = $db->query("select SUM(total_amount) as month_revenue from debtor_wallets where created_at LIKE '%$last_month%'");
 
               //REVENUE FROM USER WALLETS
               // $sql_this_month_revenue_users = $db->query("select SUM(total_amount) as monthly_revenue from user_wallets where monthname(created_at)='$this_month'");
@@ -258,8 +367,8 @@
               $last_month_total = 0;
               $this_month_total = 0;
 
-              $last_month_revenues = array($sql_last_month_revenue_agents->fetch_assoc()['month_revenue'], $sql_last_month_revenue_easybuy->fetch_assoc()['month_revenue']);
-              $this_month_revenues = array($sql_this_month_revenue_agents->fetch_assoc()['month_revenue'], $sql_this_month_revenue_easybuy->fetch_assoc()['month_revenue']);
+              $last_month_revenues = array($sql_last_month_revenue_agents->fetch_assoc()['month_revenue'], $sql_last_month_revenue_easybuy->fetch_assoc()['month_revenue'], $sql_last_month_revenue_debtors->fetch_assoc()['month_revenue']);
+              $this_month_revenues = array($sql_this_month_revenue_agents->fetch_assoc()['month_revenue'], $sql_this_month_revenue_easybuy->fetch_assoc()['month_revenue'], $sql_this_month_revenue_debtors->fetch_assoc()['month_revenue']);
 
               foreach($this_month_revenues as $this_month_revenue){
                 $this_month_total += intval($this_month_revenue);
@@ -363,6 +472,65 @@
               </div>
             </div>
           </div>
+        </div>
+      </section>
+      <section class="card payment-table-section all-agents-card">
+        <h2 class="title">All agents</h2>
+        <div class="all-agents-container">
+          <table>
+            <thead>
+              <tr>
+                <th>S/N</th>
+                <th>Name</th>
+                <th>Total DS savings</th>
+                <th>No. of DS customers</th>
+                <th>Total EB savings</th>
+                <th>No. of EB customers</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+                $sql_all_agents = $db->query("SELECT * FROM agents");
+
+                $count = 1;
+                while($agent_details = $sql_all_agents->fetch_assoc()){
+                  $aid = $agent_details['agent_id'];
+
+                  $sql_easybuy_customers = $db->query("SELECT COUNT(agent_customer_id) as no_of_easybuy_customers FROM easybuy_agent_customers WHERE agent_id = '$aid'");
+                  $sql_savings_customers = $db->query("SELECT COUNT(agent_customer_id) as no_of_savings_customers FROM agent_customers WHERE agent_id = '$aid'");
+
+                  $all_agent_customers = array(
+                    $sql_easybuy_customers->fetch_assoc()['no_of_easybuy_customers'],
+                    $sql_savings_customers->fetch_assoc()['no_of_savings_customers']
+                  );
+
+                  $sql_total_agent_easybuy_savings = $db->query("SELECT SUM(total_amount) as total_easybuy_savings FROM easybuy_agent_wallets WHERE agent_id = '$aid'");
+                  $sql_total_agent_normal_savings = $db->query("SELECT SUM(total_amount) as total_normal_savings FROM agent_wallets WHERE agent_id = '$aid'");
+
+                  $all_agent_savings = array(
+                    $sql_total_agent_easybuy_savings->fetch_assoc()['total_easybuy_savings'],
+                    $sql_total_agent_normal_savings->fetch_assoc()['total_normal_savings']
+                  );
+
+                  $total_easybuy_customers = intval($all_agent_customers[0]);
+                  $total_normal_customers = intval($all_agent_customers[1]);
+                  $total_easybuy_savings = intval($all_agent_savings[0]);
+                  $total_normal_savings = intval($all_agent_savings[1]);
+                ?>
+              <tr>
+                <td>#<?php echo $count ?></td>
+                <td><?php echo $agent_details['last_name'] . " " . $agent_details['first_name']?></td>
+                <td>NGN <?php echo  number_format($total_normal_savings) ?></td>
+                <td><?php echo $total_normal_customers ?></td>
+                <td>NGN <?php echo number_format($total_easybuy_savings) ?></td>
+                <td><?php echo $total_easybuy_customers ?></td>
+              </tr>
+              <?php
+                $count++;
+                }
+              ?>
+            </tbody>
+          </table>
         </div>
       </section>
       <section class="payment-table-section card">

@@ -58,3 +58,7 @@
     font-size: 1.5rem;
     color: #6dbd28;
 }
+
+.debt-data{
+    color: var(--danger);
+}

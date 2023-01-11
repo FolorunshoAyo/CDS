@@ -1,22 +1,22 @@
 <?php
-  require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
-  AdminAuth::User("a/login");
-  
-  if(isset($_GET['pid']) && !empty($_GET['pid'])){
-    $pid = $_GET['pid'];
+    require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+    AdminAuth::User("a/login");
 
-    $sql_product = $db->query("SELECT * FROM products WHERE product_id={$pid}");
-    $sql_product_meta = $db->query("SELECT * FROM product_meta WHERE product_id={$pid}");
+    $admin_id = $_SESSION['admin_id'];
 
-    $product_details = $sql_product->fetch_assoc();
-    $product_meta_details = $sql_product_meta->fetch_assoc();
-  }else{
-    header("Location: ./products");
-  }
+    if(isset($_GET['did']) && !empty($_GET['did'])){
+        $did = $_GET['did'];
+    
+        $sql_agent_debtor_details = $db->query("SELECT * FROM debtors WHERE debtor_id={$did}");
+    
+        $debtor_details = $sql_agent_debtor_details->fetch_assoc();
+    }else{
+        header("Location: ./");
+    }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash-menu.css" />
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
-    <title>Edit <?php echo($product_details['name']); ?> - CDS ADMIN</title>
+    <title>Add a new debtor - CDS ADMIN</title>
 </head>
 
 <body style="background-color: #fafafa">
@@ -42,12 +42,12 @@
         <aside class="dash-menu">
             <div class="logo">
                 <div class="menu-icon">
-                <i class="fa fa-bars"></i>
-                <i class="fa fa-times"></i>
+                    <i class="fa fa-bars"></i>
+                    <i class="fa fa-times"></i>
                 </div>
                 <a href="./" class="logo">
-                <i class="fa fa-home"></i>
-                <span> CDS ADMIN </span>
+                    <i class="fa fa-home"></i>
+                    <span> CDS ADMIN </span>
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
@@ -75,29 +75,29 @@
                     <span>Shipping</span>
                 </a>
                 </li>
-                <li title="products" class="nav-item active">
+                <li title="products" class="nav-item">
                 <a href="./products">
                     <i class="fa fa-shopping-bag"></i>
                     <span>Products</span>
                 </a>
                 </li>
                 <li title="agents" class="nav-item">
-                    <a href="./agents">
-                        <i class="fa fa-users"></i>
-                        <span>Agents</span>
-                    </a>
+                <a href="./agents">
+                    <i class="fa fa-users"></i>
+                    <span>Agents</span>
+                </a>
                 </li>
-                <li title="debtors" class="nav-item">
-                    <a href="./debtors">
-                        <i class="fa fa-info-circle"></i>
-                        <span>Debtors</span>
-                    </a>
+                <li title="debtors" class="nav-item active">
+                <a href="./debtors">
+                    <i class="fa fa-info-circle"></i>
+                    <span>Debtors</span>
+                </a>
                 </li>
                 <li title="messages" class="nav-item">
-                    <a href="javascript:void(0">
-                        <i class="fa fa-commenting-o"></i>
-                        <span>Messages</span>
-                    </a>
+                <a href="javascript:void(0">
+                    <i class="fa fa-commenting-o"></i>
+                    <span>Messages</span>
+                </a>
                 </li>
             </ul>
 
@@ -118,92 +118,94 @@
         </aside>
         <section class="page-wrapper">
             <header class="dash-header">
-                <a href="products" class="back-link">
+                <a href="./debtors" class="back-link">
                     <i class="fa fa-arrow-left"></i>
                 </a>
             </header>
             <div class="product-form-wrapper">
-                <h2 class="product-form-title">Edit Product Details</h2>
+                <h2 class="product-form-title">Edit Debtor</h2>
 
                 <div class="product-form-container">
-                    <form id="product-upload-form">
+                    <form id="customer-upload-form">
                         <div class="form-groupings">
                             <div class="form-group-container">
                                 <div class="form-group-container">
-                                    <div class="form-group animate">
-                                        <input type="text" name="pname" id="pname" class="form-input" placeholder=" "
-                                            required value="<?php echo($product_details['name']); ?>" />
-                                        <label for="pname">Product Name</label>
+                                    <div class="image-upload-container">
+                                        <img src="../agent/customer-images/<?php echo $debtor_details['image']?>" alt="profile" />
+                                        <div class="action-container">
+                                            <input type="file" name="customer-img" id="customer-img" onchange="previewImage(event)"/>
+                                            <label for="customer-img"><i class="fa fa-pen"></i> Change image</label>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <input type="text" name="pprice" id="pprice" class="form-input format"
-                                            placeholder=" " required value="<?php echo(round(intval($product_details['price']), 0)); ?>" />
-                                        <label for="pprice">Price</label>
+                                        <input type="text" name="fname" id="fname" class="form-input"
+                                            placeholder=" " value="<?= $debtor_details['first_name'] ?>" required />
+                                        <label for="fname">First Name</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <input type="text" name="daily_payment" id="daily_payment"
-                                            class="form-input format" placeholder=" " required value="<?php echo($product_meta_details['daily_payment']); ?>" />
-                                        <label for="daily_payment">Daily Payment</label>
+                                        <input type="text" name="lname" id="lname" class="form-input"
+                                            placeholder=" " value="<?= $debtor_details['last_name'] ?>" required />
+                                        <label for="lname">Last Name</label>
+                                    </div>
+                                </div>
+
+
+                                <!-- <div class="form-group-container">
+                                    <div class="form-group animate">
+                                        <input type="text" name="oname" id="oname"
+                                            class="form-input" placeholder=" " value="Ayomide" required />
+                                        <label for="oname">Other Name</label>
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="form-group-container">
+                                    <h3 class="static-label">Email</h3>
+                                    <span class="static-value">folushoayomide11@gmail.com</span>
+                                </div> -->
+                                <div class="form-group-container">
+                                    <div class="form-group animate">
+                                        <input type="text" name="oaddress" id="oaddress" value="<?= $debtor_details['office_address'] ?>" class="form-input" placeholder=" " />
+                                        <label for="oaddress">Office Address</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <input type="number" name="duration" id="duration" class="form-input"
-                                            placeholder=" " required value="<?php echo($product_meta_details['duration_in_months']); ?>" />
-                                        <label for="duration">Duration in months</label>
-                                    </div>
-                                </div>
-
-                                <div class="form-group-container">
-                                    <div class="form-group textarea animate">
-                                        <textarea name="pdesc" id="pdesc" class="form-input" placeholder=" " required><?php echo($product_details['details']); ?></textarea>
-                                        <label for="pdesc">Enter product details here</label>
+                                        <input type="text" name="haddress" id="haddress" value="<?= $debtor_details['home_address'] ?>" class="form-input" placeholder=" " />
+                                        <label for="haddress">Home Address</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <input type="file" multiple name="pimages[]" id="pimages" class="form-input"
-                                            placeholder=" " required />
-                                        <label for="pimages">Upload media</label>
+                                        <input type="text" name="email" id="email"
+                                            class="form-input" placeholder=" " value="<?php echo $debtor_details['email']? $debtor_details['email'] : "" ?>" />
+                                        <label for="email">Email</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <select name="category" id="category">
-                                            <option value="">Choose category</option>
-                                            <?php 
-                                                $sql_categories = $db->query("SELECT * FROM product_categories");
-                                                while($row_category = $sql_categories->fetch_assoc()){
-                                            ?>
-                                                <option <?php echo($product_details['category'] === $row_category['category_id']? "selected" : "");?> value="<?php echo($row_category['category_id']); ?>"><?php echo($row_category['category_name']); ?></option>
-                                            <?php
-                                                }
-                                            ?>
-                                        </select>
-                                        <label for="active">Active</label>
+                                        <input type="number" name="phoneno" id="phoneno" class="form-input" placeholder=" " value="<?= $debtor_details['phone_no'] ?>" required />
+                                        <label for="phoneno">Phone</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                       <select name="active" id="active">
-                                        <option value="">Choose option</option>
-                                        <?php
-                                            $isProductActive = $product_details['active'];
-                                        ?>
-                                        <option <?php echo($isProductActive == 1? "selected" : ""); ?> value="1">Yes</option>
-                                        <option <?php echo($isProductActive == 0? "selected" : ""); ?> value="0">No</option>
-                                       </select>
-                                        <label for="active">Active</label>
+                                        <input type="text" name="bvn" id="bvn" class="form-input" value="<?php echo $debtor_details['bvn'] ?>" placeholder=" " required />
+                                        <label for="bvn">BVN (Bank Verification Number)</label>
+                                        <div class="confirmation-container hide">
+                                            <img src="../../assets/images/loading-gif.gif" class="" alt="loader">
+                                            <i class="fa fa-check hide" title="This BVN is valid"></i>
+                                            <i class="fa fa-times hide" title="Not a valid BVN"></i>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -228,158 +230,107 @@
     <script src="../../assets/js/metismenujs/metismenujs.js"></script>
     <!-- SWEET ALERT PLUGIN -->
     <script src="../../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
-      <!-- JUST VALIDATE LIBRARY -->
-  <script src="../../assets/js/just-validate/just-validate.js"></script>
+    <!-- JUST VALIDATE LIBRARY -->
+    <script src="../../assets/js/just-validate/just-validate.js"></script>
     <!-- DASHBOARD SCRIPT -->
     <script src="../../assets/js/admin-dash.js"></script>
     <script>
-        // CHANGE DEFAULT NUMBER TO READABLE FORM 
-        $("input.format").val(function (index, value) {
-            return value
-                .replace(/\D/g, "")
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        });
+        function previewImage(e){
+            const [file] = e.target.files;
 
-        // COVERT NUMBER TO READABLE FORM
-        $('input.format').keyup(function (event) {
-            // skip for arrow keys
-            if (event.which >= 37 && event.which <= 40) return;
-
-            // format number
-            $(this).val(function (index, value) {
-                return value
-                    .replace(/\D/g, "")
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            });
-        });
-
-        //RESET TEXTAREA CURSOR
-        function setSelectionRange(input, selectionStart, selectionEnd) {
-            if (input.setSelectionRange) {
-                input.focus();
-                input.setSelectionRange(selectionStart, selectionEnd);
-            }
-            else if (input.createTextRange) {
-                var range = input.createTextRange();
-                range.collapse(true);
-                range.moveEnd('character', selectionEnd);
-                range.moveStart('character', selectionStart);
-                range.select();
+            if(file){
+                $(".image-upload-container img").attr("src", URL.createObjectURL(file));
             }
         }
-
-        function setCaretToPos (input, pos) {
-            setSelectionRange(input, pos, pos);
-        }
-
-        $("#pdesc").on("click", function(){
-            if($("#pdesc").val().trim().length === 0) {
-                setCaretToPos(document.getElementById("pdesc"));
-            }
-        });
 
         //FORM VALIDATION WITH VALIDATE.JS
 
-        const validation = new JustValidate("#product-upload-form", {
+        const validation = new JustValidate("#customer-upload-form", {
             errorFieldCssClass: "is-invalid",
         });
 
         validation
-            .addField("#pname", [
+            .addField("#fname", [
                 {
                     rule: "required",
                     errorMessage: "Field is required",
                 },
             ])
-            .addField("#pprice", [
+            .addField("#lname", [
                 {
                     rule: "required",
                     errorMessage: "Field is required",
                 },
             ])
-            .addField("#daily_payment", [
+            .addField("#oaddress", [
                 {
                     rule: "required",
                     errorMessage: "Field is required",
                 },
             ])
-            .addField("#duration", [
+            .addField("#haddress", [
                 {
                     rule: "required",
                     errorMessage: "Field is required",
                 },
             ])
-            .addField("#pdesc", [
+            .addField('#email', [
+                {
+                    rule: 'email',
+                    errorMessage: 'Email is invalid!',
+                },
+            ])
+            .addField("#phoneno", [
                 {
                     rule: "required",
                     errorMessage: "Field is required",
                 },
             ])
-            .addField("#active", [
+            .addField("#bvn", [
                 {
                     rule: "required",
                     errorMessage: "Field is required",
                 },
             ])
-            .addField("#pimages", [
+            .addField("#customer-img", [
                 {
                     rule: 'minFilesCount',
                     value: 1,
                 },
                 {
                     rule: 'maxFilesCount',
-                    value: 3,
+                    value: 1,
                 },
                 {
                     rule: 'files',
                     value: {
                         files: {
-                            extensions: ['jpeg', 'png', "jpg"],
+                            extensions: ['jpeg', 'png', 'jpg'],
                             maxSize: 3000000,
                             minSize: 1000,
-                            types: ['image/jpeg', 'image/png'],
+                            types: ['image/jpeg', 'image/jpg', 'image/png'],
                         },
                     },
                 },
             ])
             .onSuccess((event) => {
-                const form = document.getElementById("product-upload-form");
+                const form = document.getElementById("customer-upload-form");
 
                 // GATHERING FORM DATA
                 const formData = new FormData(form);
                 formData.append("submit", true);
-                formData.append("product_id", <?php echo($product_details['product_id']); ?>)
-
-                // CONVERTING FORMATTED(HUMAN READABLE) FIELDS BACK TO NUMBER 
-                const formatedFields = [];
-
-                for (let [key, value] of formData.entries()) {
-                    if (key === "daily_payment" || key === "pprice") {
-                        formatedFields.push(value);
-                    }
-                }
-
-                const modifiedFormatedFields = formatedFields.map(value => value.replace(/,/g, ""));
-
-                formData.set("pprice", modifiedFormatedFields[0]);
-                formData.set("daily_payment", modifiedFormatedFields[1]);
-
-                for (let [key, value] of formData.entries()) {
-                    console.log(`${key}: ${value}`);
-                }
+                formData.append("cid", <?php echo $cid ?>);
 
                 //SENDING FORM DATA TO THE SERVER
                 $.ajax({
                     type: "post",
-                    url: "controllers/edit_product.php",
+                    url: "./controllers/edit_debtor.php",
                     data: formData,
-                    cache: false,
                     contentType: false,
-                    enctype: "multipart/form-data",
                     processData: false,
                     dataType: "json",
                     beforeSend: function () {
-                        $(".submit-btn-container button").html("Editing...");
+                        $(".submit-btn-container button").html("Updating...");
                         $(".submit-btn-container button").attr("disabled", true);
                     },
                     success: function (response) {
@@ -387,15 +338,15 @@
                             if (response.success === 1) {
                                 // ALERT USER UPON SUCCESSFUL UPLOAD
                                 Swal.fire({
-                                    title: "Product Edited",
+                                    title: "Debtor Updated",
                                     icon: "success",
-                                    text: `You've Edited ${response.product_name} successfully`,
+                                    text: "Your debtor details has been updated successfully",
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
                                     confirmButtonColor: '#2366B5',
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.href = "products"
+                                        location.href = "./"
                                     }
                                 })
                             } else {
@@ -410,7 +361,7 @@
                                     Swal.fire({
                                         title: response.error_title,
                                         icon: "error",
-                                        text: response.error_msg,
+                                        text: response.error_message,
                                         allowOutsideClick: false,
                                         allowEscapeKey: false,
                                     });

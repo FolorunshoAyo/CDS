@@ -1,15 +1,24 @@
 <?php
-    require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+    require(dirname(dirname(dirname(__DIR__))) . '/auth-library/resources.php');
     AgentAuth::User("a/login");
 
     $agent_id = $_SESSION['agent_id'];
 
-    if(isset($_GET['cid']) && !empty($_GET['cid'])){
-        $cid = $_GET['cid'];
+    if(isset($_GET['did']) && !empty($_GET['did'])){
+        $did = $_GET['did'];
+
+        // CONFIRM IF A WALLET IS EXISTING
+        $sql_check_existing_wallet = $db->query("SELECT * FROM debtor_wallets WHERE debtor_id = {$did} AND completed='0'");
+        $can_create_wallet = ($sql_check_existing_wallet->num_rows === 0);
+
+        if(!$can_create_wallet){
+            header("Location: ./");
+        }
+
+        
+        $sql_debtor_details = $db->query("SELECT * FROM debtors WHERE debtor_id={$did}");
     
-        $sql_agent_customer_details = $db->query("SELECT * FROM agent_customers WHERE agent_customer_id={$cid}");
-    
-        $customer_details = $sql_agent_customer_details->fetch_assoc();
+        $debtor_details = $sql_debtor_details->fetch_assoc();
     }else{
         header("Location: ./");
     }
@@ -24,25 +33,25 @@
     <!-- JQUERY DATATABLES CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     <!-- DROP DOWN MENU CSS -->
-    <link rel="stylesheet" href="../../assets/css/dropdown.css" />
+    <link rel="stylesheet" href="../../../assets/css/dropdown.css" />
     <!-- Custom Fonts (Inter) -->
-    <link rel="stylesheet" href="../../assets/fonts/fonts.css" />
+    <link rel="stylesheet" href="../../../assets/fonts/fonts.css" />
     <!-- BASE CSS -->
-    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <link rel="stylesheet" href="../../../assets/css/base.css" />
     <!-- FORMS CSS -->
-    <link rel="stylesheet" href="../../assets/css/form.css">
+    <link rel="stylesheet" href="../../../assets/css/form.css">
     <!-- ADMIN DASHBOARD MENU CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash-menu.css" />
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash-menu.css" />
     <!-- ADMIN TABLE CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/admin-table.css">
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/admin-table.css">
     <!-- ADMIN AGENT CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/agents.css">
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/agents.css">
     <!-- ADMIN PRODUCTS CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/products.css">
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/products.css">
     <!-- MAIN TABLE CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/main-table.css">
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/main-table.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
-    <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
+    <link rel="stylesheet" href="../../../assets/css/media-queries/admin-dash-mediaqueries.css" />
     <style>
         .form-container {
             width: 95%;
@@ -69,14 +78,14 @@
                     <i class="fa fa-bars"></i>
                     <i class="fa fa-times"></i>
                 </div>
-                <a href="./" class="logo">
+                <a href="#" class="logo">
                     <i class="fa fa-home"></i>
                     <span> CDS AGENT </span>
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
-                <li class="nav-item active">
-                    <a href="./">
+                <li class="nav-item">
+                    <a href="../">
                         <i class="fa fa-users"></i>
                         <span>Customers</span>
                     </a>
@@ -88,13 +97,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="./easybuy/">
+                    <a href="../easybuy/">
                         <i class="fa fa-money"></i>
                         <span>Easy Buy</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="./debtors/">
+                <li class="nav-item active">
+                    <a href="./">
                         <!-- <span class="blue-dot"></span> -->
                         <i class="fa fa-info-circle"></i>
                         <span>Debtors</span>
@@ -105,7 +114,7 @@
 
             <ul class="side-menu-bottom">
                 <li class="nav-item logout">
-                    <a href="../logout">
+                    <a href="../../logout">
                         <i class="fa fa-sign-out"></i>
                         <span>Logout</span>
                     </a>
@@ -114,7 +123,7 @@
         </aside>
         <section class="page-wrapper">
             <div class="table-wrapper">
-                <h2 class="table-title">Create New wallet for <?php echo ucfirst($customer_details['last_name']) . " " . ucfirst($customer_details['first_name']) ?></h2>
+                <h2 class="table-title">Create a Debt wallet for <?php echo ucfirst($debtor_details['last_name']) . " " . ucfirst($debtor_details['first_name']) ?></h2>
 
                 <div class="table-container">
                     <table class="generic-table">
@@ -133,6 +142,9 @@
                                     Customer ID
                                 </th>
                                 <th>
+                                    BVN
+                                </th>
+                                <th>
                                     Date added
                                 </th>
                             </tr>
@@ -143,19 +155,22 @@
                             ?>
                             <tr>
                                 <td>
-                                    <?php echo $customer_details['last_name'] . " " . $customer_details['first_name'] ?>
+                                    <?php echo $debtor_details['last_name'] . " " . $debtor_details['first_name'] ?>
                                 </td>
                                 <td>
-                                    <?php echo $customer_details['email']? $customer_details['email'] : "No email yet"  ?>
+                                    <?php echo $debtor_details['email']? $debtor_details['email'] : "No email yet"  ?>
                                 </td>
                                 <td>
-                                    <?= $customer_details['phone_no'] ?>
+                                    <?= $debtor_details['phone_no'] ?>
                                 </td>
                                 <td>
-                                    <span class="id-number">#<?php echo str_pad($customer_details['agent_customer_id'], 4, "0", STR_PAD_LEFT) ?></span>
+                                    <span class="id-number">#<?php echo str_pad($debtor_details['debtor_id'], 4, "0", STR_PAD_LEFT) ?></span>
                                 </td>
                                 <td>
-                                <?php echo date("M d, Y", strtotime($customer_details['created_at'])) ?>
+                                    <?= $debtor_details['bvn'] ?>
+                                </td>
+                                <td>
+                                <?php echo date("M d, Y", strtotime($debtor_details['created_at'])) ?>
                                 </td>
                             </tr>
                         </tbody>
@@ -168,14 +183,14 @@
                             <div class="form-group-container">
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <select name="productId" id="productId" class="form-input">\\
+                                        <select name="productId" id="productId" class="form-input">
                                             <option value="">Select product</option>
                                             <?php
                                                 $sql_all_products = $db->query("SELECT * FROM products");
 
                                                 while($product = $sql_all_products->fetch_assoc()){
                                             ?>
-                                                <option value="<?php echo $product['product_id'] ?>"><?php echo $product['name'] ?></option>
+                                                <option value="<?php echo $product['product_id'] ?>"><?php echo $product['name'] . " (" . "NGN " . number_format($product['price']) . ")"?></option>
                                             <?php
                                                 }
                                             ?>
@@ -183,10 +198,20 @@
                                         <label for="productId">Pick Item</label>
                                     </div>
                                 </div>
+                                <div class="form-group-container">
+                                    <div class="form-group animate">
+                                        <input type="text" name="amount_paid" id="amount_paid" class="form-input" placeholder=" " required />
+                                        <label for="amount_paid">Amount Paid</label>
+                                    </div>
+                                </div>
 
                                 <div class="submit-btn-container">
                                     <button type="submit" class="admin-submit-btn">Generate Item details</button>
                                 </div>
+
+                                <p class="note-text">
+                                    <i class="fa fa-info-circle"></i> Creating this wallet would add the specified initial amount to this wallet.
+                                </p>
                             </div>
                         </div>
                     </form>
@@ -255,7 +280,7 @@
                     </div>
 
                     <div class="add-container">
-                        <a href="javascript:void(0)">Add New Wallet</a>
+                        <a href="javascript:void(0)">Create Debt Wallet</a>
                     </div>
                 </div>
             </div>
@@ -265,25 +290,40 @@
     <!-- FONT AWESOME JIT SCRIPT-->
     <script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
     <!-- JQUERY SCRIPT -->
-    <script src="../../assets/js/jquery/jquery-3.6.min.js"></script>
+    <script src="../../../assets/js/jquery/jquery-3.6.min.js"></script>
     <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
-    <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
+    <script src="../../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!-- METIS MENU JS -->
-    <script src="../../assets/js/metismenujs/metismenujs.js"></script>
+    <script src="../../../assets/js/metismenujs/metismenujs.js"></script>
     <!-- Sweet Alert JS -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- JQUERY DATATABLE SCRIPT -->
     <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     <!-- DROP DOWN JS -->
-    <script type="text/javascript" src="../../assets/js/dropdown/dropdown.min.js"></script>
+    <script type="text/javascript" src="../../../assets/js/dropdown/dropdown.min.js"></script>
     <!-- JUST VALIDATE LIBRARY -->
-    <script src="../../assets/js/just-validate/just-validate.js"></script>
+    <script src="../../../assets/js/just-validate/just-validate.js"></script>
     <!-- DASHBOARD SCRIPT -->
-    <script src="../../assets/js/admin-dash.js"></script>
+    <script src="../../../assets/js/admin-dash.js"></script>
     <script>
         $(function () {
+            let selectedProductPrice, amountAdded, amountAddedNum;
+
             $("#view-item-table").DataTable({
                 "pageLength": 10
+            });
+
+            // COVERT NUMBER TO READABLE FORM
+            $('input.format').keyup(function (event) {
+                // skip for arrow keys
+                if (event.which >= 37 && event.which <= 40) return;
+
+                // format number
+                $(this).val(function (index, value) {
+                    return value
+                        .replace(/\D/g, "")
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                });
             });
 
             const formatCash = n => {
@@ -307,12 +347,34 @@
                         errorMessage: "Field is required",
                     },
                 ])
+                .addField("#amount_paid", [
+                    {
+                        rule: "required",
+                        errorMessage: "Field is required",
+                    },
+                ])
                 .onSuccess((event) => {
-                    const  form = document.getElementById("view-item-form");
+                    const form = document.getElementById("view-item-form");
 
                     const formData = new FormData(form);
-
                     formData.append("submit", true);
+
+                    amountAdded = formData.get("amount_paid");
+
+                    // CONVERTING FORMATTED(HUMAN READABLE) FIELDS BACK TO NUMBER 
+                    const formatedFields = [];
+
+                    for (let [key, value] of formData.entries()) {
+                        if (key === "amount_paid") {
+                            formatedFields.push(value);
+                        }
+                    }
+
+                    const modifiedFormatedFields = formatedFields.map(value => value.replace(/,/g, ""));
+
+                    formData.set("amount_paid", modifiedFormatedFields[0]);
+
+                    amountAddedNum = modifiedFormatedFields[0];
 
                     const productImageEl = $(".product-img-container img"),
                         productNameEl = $(".product-title"),
@@ -325,16 +387,18 @@
 
                     $(".loader-container").removeClass("hide");
                     itemView.addClass("hide");
+                    // DISABLE ALL INPUT
+                    $("#amount_paid").attr("disabled", true);
+                    $(".submit-btn-container button").attr("disabled", true);
                     setTimeout(() => {
-
                         $(".loader-container").addClass("hide");
                         itemView.removeClass("hide");
-                    }, 5000);
+                    }, 3000);
 
                     //SENDING FORM DATA TO THE SERVER
                     $.ajax({
                         type: "post",
-                        url: "controllers/fetch_product_details.php",
+                        url: "../controllers/fetch_product_details.php",
                         data: formData,
                         contentType: false,
                         processData: false,
@@ -346,12 +410,13 @@
                         success: function (response) {
                             setTimeout(() => {
                                 if (response.success === 1) {
-                                    productImageEl.attr("src", `../admin/images/${response.image}`);
+                                    productImageEl.attr("src", `../../admin/images/${response.image}`);
                                     productNameEl.html(response.name);
                                     productIdEl.html(`#${response.pid}`);
                                     productPriceEl.html(formatCash(response.price));
+                                    selectedProductPrice = (response.price/2).toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                     productDurationEl.html(response.duration_in_months);
-                                    productDailyAmount.html(formatCash(response.daily_payment));
+                                    productDailyAmount.html("500");
                                     productStatusEl.attr("class", `product-status ${response.product_status? "success" : "danger"}`);
                                     productStatusEl.html(response.product_status ? "active" : "inactive");
 
@@ -386,59 +451,59 @@
 
                 formData.append("product_id", productID);
                 formData.append("submit", true);
-                formData.append("customer_id", "<?= $cid ?>");
+                formData.append("debtor_id", "<?= $did ?>");
+                formData.append("amount", amountAddedNum)
 
                 addWalletBtn.on("click", function (e) {
-
-                    $.ajax({
-                        type: "post",
-                        url: "controllers/add_wallet.php",
-                        data: formData,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        beforeSend: function () {
-                            addWalletBtn.html("Adding...");
-                        },
-                        success: function (response) {
-                            if (response.success == 1) {
-                                // ALERT AND REDIRECT AGENT TO USER WALLETS
-                                Swal.fire({
-                                    width: '60%',
-                                    imageUrl: `../admin/images/${response.product_image}`,
-                                    imageWidth: 400,
-                                    imageHeight: 200,
-                                    imageAlt: 'Selected product',
-                                    title: 'Wallet created successfully',
-                                    html:
-                                        `<b>Price</b>: NGN ${response.price} <br><br>` +
-                                        <?php echo $customer_details['first_name'] ?> ` would be making a daily savings of ₦${response.daily_payment} daily over a period of ${response.duration_in_months} months`,
-                                    showCloseButton: true,
-                                    showCancelButton: true,
-                                    focusConfirm: false,
-                                    confirmButtonText: 'View wallets',
-                                    cancelButtonText: 'Ok',
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        location.href = `./wallets?cid=${response.cid}`;
+                        if(confirm(`Creating this wallet automatically adds NGN ${amountAdded} to this wallet \n Continue?`)){
+                            $.ajax({
+                                type: "post",
+                                url: "controllers/add_wallet.php",
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                dataType: "json",
+                                beforeSend: function () {
+                                    addWalletBtn.html("Adding...");
+                                },
+                                success: function (response) {
+                                    if (response.success == 1) {
+                                        // ALERT AND REDIRECT AGENT TO USER WALLETS
+                                        Swal.fire({
+                                            width: '60%',
+                                            imageUrl: `../../admin/images/${response.product_image}`,
+                                            imageWidth: 400,
+                                            imageHeight: 200,
+                                            imageAlt: 'Selected product',
+                                            title: 'Wallet created successfully',
+                                            html:
+                                                `<b>Price</b>: NGN ${response.price.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")} <br><br>` +
+                                                "<?php echo $debtor_details['first_name'] ?>"  + ` would be making a daily savings of ₦500 daily over a period of ${response.duration_in_months} months`,
+                                            showCloseButton: true,
+                                            showCancelButton: true,
+                                            focusConfirm: false,
+                                            confirmButtonText: 'View wallet',
+                                            cancelButtonText: 'Ok',
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                location.href = `./wallets?did=<?= $did ?>`;
+                                            }else{
+                                                location.href = "./";
+                                            }
+                                        });
+                                    } else {
+                                        // ALERT THE AGENT UPON ERROR
+                                        Swal.fire({
+                                            title: response.error_title,
+                                            icon: "error",
+                                            text: response.error_msg,
+                                            allowOutsideClick: false,
+                                            allowEscapeKey: false,
+                                        });
                                     }
-
-                                    if(result.isCancelled){
-                                        location.href = `./`;
-                                    }
-                                });
-                            } else {
-                                // ALERT THE AGENT UPON ERROR
-                                Swal.fire({
-                                    title: response.error_title,
-                                    icon: "error",
-                                    text: response.error_msg,
-                                    allowOutsideClick: false,
-                                    allowEscapeKey: false,
-                                });
-                            }
+                                }
+                            });
                         }
-                    })
                 });
             }
         });

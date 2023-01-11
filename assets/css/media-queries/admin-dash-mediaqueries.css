@@ -46,6 +46,7 @@
 @media only screen and (max-width: 46.875em){ 
     .card-widgets{
         display: block;
+        overflow-x: hidden;
     }
 
     .card{

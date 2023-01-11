@@ -7,6 +7,14 @@
     if(isset($_GET['cid']) && !empty($_GET['cid'])){
         $cid = $_GET['cid'];
         
+        // CONFIRM IF A WALLET IS EXISTING
+        $sql_check_existing_wallet = $db->query("SELECT * FROM easybuy_wallets WHERE agent_customer_id = {$cid} AND completed='0'");
+        $can_create_wallet = ($sql_check_existing_wallet->num_rows === 0);
+
+        if(!$can_create_wallet){
+            header("Location: ./");
+        }
+
         $sql_agent_customer_details = $db->query("SELECT * FROM easybuy_agent_customers WHERE agent_customer_id={$cid}");
     
         $customer_details = $sql_agent_customer_details->fetch_assoc();
@@ -91,6 +99,14 @@
                     <a href="./">
                         <i class="fa fa-money"></i>
                         <span>Easy Buy</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="../debtors/">
+                        <!-- <span class="blue-dot"></span> -->
+                        <i class="fa fa-info-circle"></i>
+                        <span>Debtor</span>
+                        <!-- <span class="nav-item-badge">1</span> -->
                     </a>
                 </li>
             </ul>
@@ -352,7 +368,10 @@
                                     productPriceEl.html(formatCash(response.price));
                                     selectedProductPrice = (response.price/2).toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                     productDurationEl.html(response.duration_in_months);
-                                    productDailyAmount.html(formatCash(response.daily_payment));
+                                    productDailyAmount.html(
+                                        //formatCash(response.daily_payment)
+                                        "500"
+                                    );
                                     productStatusEl.attr("class", `product-status ${response.product_status? "success" : "danger"}`);
                                     productStatusEl.html(response.product_status ? "active" : "inactive");
 
@@ -414,7 +433,7 @@
                                         title: 'Wallet created successfully',
                                         html:
                                             `<b>Price</b>: NGN ${response.price.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")} <br><br>` +
-                                            "<?php echo $customer_details['first_name'] ?>"  + ` would be making a daily savings of ₦${response.daily_payment} daily over a period of ${response.duration_in_months} months`,
+                                            "<?php echo $customer_details['first_name'] ?>"  + ` would be making a daily savings of ₦500 daily over a period of ${response.duration_in_months} months`,
                                         showCloseButton: true,
                                         showCancelButton: true,
                                         focusConfirm: false,

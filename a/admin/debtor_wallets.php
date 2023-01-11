@@ -1,6 +1,6 @@
 <?php
-    require(dirname(dirname(dirname(__DIR__))) . '/auth-library/resources.php');
-    AgentAuth::User("a/login");
+    require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+    AdminAuth::User("a/login");
 
     
   // NUMBER FORMATTER
@@ -9,18 +9,19 @@
   //   \NumberFormatter::PADDING_POSITION
   // );
 
-    $agent_id = $_SESSION['agent_id'];
+    $admin_id = $_SESSION['admin_id'];
 
-    if(isset($_GET['cid']) && !empty($_GET['cid'])){
-        $cid = $_GET['cid'];
+    if(isset($_GET['did']) && !empty($_GET['did']) && isset($_GET['aid']) && !empty($_GET['aid'])){
+        $did = $_GET['did'];
+        $aid = $_GET['aid'];
     
-        $sql_agent_customer_details = $db->query("SELECT * FROM easybuy_agent_customers WHERE agent_customer_id={$cid}");
+        
+        $sql_debtor_details = $db->query("SELECT debtors.first_name, debtors.last_name, agents.first_name as agent_first_name, agents.last_name as agent_last_name FROM debtors INNER JOIN agents ON debtors.agent_id = agents.agent_id WHERE debtor_id={$did}");
     
-        $customer_details = $sql_agent_customer_details->fetch_assoc();
+        $customer_details = $sql_debtor_details->fetch_assoc();
     }else{
         header("Location: ./");
     }
-
 
     function showStatus($status){
         $html = "";
@@ -49,26 +50,26 @@
     <!-- JQUERY DATATABLES CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     <!-- Custom Fonts (Inter) -->
-    <link rel="stylesheet" href="../../../assets/fonts/fonts.css" />
+    <link rel="stylesheet" href="../../assets/fonts/fonts.css" />
     <!-- BASE CSS -->
-    <link rel="stylesheet" href="../../../assets/css/base.css" />
+    <link rel="stylesheet" href="../../assets/css/base.css" />
     <!-- FORM CSS -->
-    <link rel="stylesheet" href="../../../assets/css/form.css" />
+    <link rel="stylesheet" href="../../assets/css/form.css" />
     <!-- ADMIN DASHBOARD MENU CSS -->
-    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash-menu.css" />
+    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash-menu.css" />
     <!-- ADMIN TABLE CSS -->
-    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/admin-table.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/admin-table.css">
     <!-- ADMIN AGENT CSS -->
-    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/agents.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/agent.css">
     <!-- ADMIN PRODUCTS CSS -->
-    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/products.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/products.css">
     <!-- MAIN TABLE CSS -->
-    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/main-table.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/main-table.css">
     <!-- WALLETS CSS -->
-    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/wallets.css" />
+    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/wallets.css" />
     <!-- DASHHBOARD MEDIA QUERIES -->
-    <link rel="stylesheet" href="../../../assets/css/media-queries/admin-dash-mediaqueries.css" />
-    <title>Customer Wallets - CDS AGENT</title>
+    <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
+    <title>Debtor Wallets - CDS AGENT</title>
 </head>
 
 <body style="background-color: #fafafa">
@@ -77,61 +78,91 @@
         <aside class="dash-menu">
             <div class="logo">
                 <div class="menu-icon">
-                    <i class="fa fa-bars"></i>
-                    <i class="fa fa-times"></i>
+                <i class="fa fa-bars"></i>
+                <i class="fa fa-times"></i>
                 </div>
-                <a href="#" class="logo">
-                    <i class="fa fa-home"></i>
-                    <span> CDS AGENT </span>
+                <a href="./" class="logo">
+                <i class="fa fa-home"></i>
+                <span> CDS ADMIN </span>
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
-                <li class="nav-item">
-                    <a href="../">
+                <li title="dashboard" class="nav-item">
+                <a href="./">
+                    <i class="fa fa-tachometer"></i>
+                    <span>Dashboard</span>
+                </a>
+                </li>
+                <li title="statistics" class="nav-item">
+                <a href="javascript:void(0">
+                    <i class="fa fa-signal"></i>
+                    <span>Statistics</span>
+                </a>
+                </li>
+                <li title="orders" class="nav-item">
+                <a href="./orders">
+                    <i class="fa fa-usd"></i>
+                    <span>Orders</span>
+                </a>
+                </li>
+                <li title="shipping" class="nav-item">
+                <a href="javascript:void(0">
+                    <i class="fa fa-recycle"></i>
+                    <span>Shipping</span>
+                </a>
+                </li>
+                <li title="products" class="nav-item">
+                <a href="./products">
+                    <i class="fa fa-shopping-bag"></i>
+                    <span>Products</span>
+                </a>
+                </li>
+                <li title="agents" class="nav-item">
+                    <a href="./agents">
                         <i class="fa fa-users"></i>
-                        <span>Customers</span>
+                        <span>Agents</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="javascript:void(0)">
-                        <i class="fa fa-truck"></i>
-                        <span>Shipping</span>
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a href="./">
-                        <i class="fa fa-money"></i>
-                        <span>Easy Buy</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="../debtors/">
-                        <!-- <span class="blue-dot"></span> -->
+                <li title="debtors" class="nav-item active">
+                    <a href="./debtors">
                         <i class="fa fa-info-circle"></i>
                         <span>Debtors</span>
-                        <!-- <span class="nav-item-badge">1</span> -->
+                    </a>
+                </li>
+                <li title="messages" class="nav-item">
+                    <a href="javascript:void(0">
+                        <i class="fa fa-commenting-o"></i>
+                        <span>Messages</span>
                     </a>
                 </li>
             </ul>
 
-            <ul class="side-menu-bottom">
-                <li class="nav-item logout">
-                    <a href="../../logout">
-                        <i class="fa fa-sign-out"></i>
-                        <span>Logout</span>
-                    </a>
+            <ul title="settings" class="side-menu-bottom">
+                <li class="nav-tem">
+                <a href="javascript:void(0)">
+                    <i class="fa fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+                </li>
+                <li title="logout" class="nav-item logout">
+                <a href="../logout">
+                    <i class="fa fa-sign-out"></i>
+                    <span>Logout</span>
+                </a>
                 </li>
             </ul>
         </aside>
         <section class="page-wrapper">
             <div class="table-wrapper">
-                <h2 class="table-title"><?php echo ucfirst($customer_details['last_name']) . " " . ucfirst($customer_details['first_name']) ?> Easy Buy Wallets</h2>
+                <h2 class="table-title"><?php echo ucfirst($customer_details['last_name']) . " " . ucfirst($customer_details['first_name']) ?> Wallets</h2>
+
+                <p class="table-title">Assigned to Agent. <?php echo ucfirst($customer_details['agent_last_name']) . " " . ucfirst($customer_details['agent_first_name']) ?></p>
 
                 <?php
                     $sql_customer_wallets = $db->query("SELECT *
-                    FROM easybuy_agent_wallets
-                    INNER JOIN products ON easybuy_agent_wallets.product_id = products.product_id
-                    WHERE agent_customer_id='$cid' AND agent_id='$agent_id';");
+                    FROM debtor_wallets
+                    INNER JOIN products ON debtor_wallets.product_id = products.product_id
+                    WHERE debtor_id='$did' AND agent_id='$aid';");
 
                     if($sql_customer_wallets->num_rows === 0){
                 ?>
@@ -160,8 +191,14 @@
                                     <th>
                                         Target
                                     </th>
+                                    <!-- <th>
+                                        Debt
+                                    </th> -->
                                     <th>
                                         Total Savings Days
+                                    </th>
+                                    <th>
+                                        Created by
                                     </th>
                                     <th>
                                         Wallet Status
@@ -179,7 +216,7 @@
                                                 <?php
                                                     $product_image = explode(",", $wallet_details['pictures'])[0];
                                                 ?>
-                                                <img src="../../admin/images/<?= $product_image ?>" alt="Product Image">
+                                                <img src="../admin/images/<?= $product_image ?>" alt="Product Image">
                                             </div>
                                             <div class="product-details">
                                                 <span class="product-title"><?= $wallet_details['name'] ?></span>
@@ -213,15 +250,20 @@
                                     <td>
                                         <?php 
                                             $wallet_id = $wallet_details['wallet_id'];
-                                            $sql_check_total_savings_days = $db->query("SELECT SUM(savings_days) as total_savings_days FROM easybuy_agent_savings WHERE wallet_id='$wallet_id'");
+                                            $sql_check_total_savings_days = $db->query("SELECT SUM(savings_days) as total_savings_days FROM debtor_savings WHERE wallet_id='$wallet_id'");
 
-                                            echo $sql_check_total_savings_days->fetch_assoc()['total_savings_days'];
+                                            echo intval($sql_check_total_savings_days->fetch_assoc()['total_savings_days']);
                                         ?>
                                     </td>
                                     <td>
-                                       <?php
-                                        echo showStatus($wallet_details['completed']);
-                                       ?>
+                                        <?php 
+                                            echo $wallet_details['created_by'] === "0"? "You" : "Agent"; 
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                            echo showStatus($wallet_details['completed']);
+                                        ?>
                                     </td>
                                 </tr>
                                 <?php
@@ -232,10 +274,10 @@
                         </table>
                     </div>
 
-                    <div class="add-container">
+                    <!-- <div class="add-container">
                         <a href="javascript:void(0)" class="add-btn">Add to Savings</a>
-                        <!-- <a href="javascript:void(0)" class="delete-btn">Delete Wallet</a> -->
-                    </div>
+                        <a href="javascript:void(0)" class="delete-btn">Delete Wallet</a>
+                    </div> -->
                 </div>
             </div>
 
@@ -368,19 +410,19 @@
     <!-- FONT AWESOME JIT SCRIPT-->
     <script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
     <!-- JQUERY SCRIPT -->
-    <script src="../../../assets/js/jquery/jquery-3.6.min.js"></script>
+    <script src="../../assets/js/jquery/jquery-3.6.min.js"></script>
     <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
-    <script src="../../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
+    <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!-- METIS MENU JS -->
-    <script src="../../../assets/js/metismenujs/metismenujs.js"></script>
+    <script src="../../assets/js/metismenujs/metismenujs.js"></script>
     <!-- Sweet Alert JS -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- JQUERY DATATABLE SCRIPT -->
     <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
         <!-- JUST VALIDATE LIBRARY -->
-        <script src="../../../assets/js/just-validate/just-validate.js"></script>
+        <script src="../../assets/js/just-validate/just-validate.js"></script>
     <!-- DASHBOARD SCRIPT -->
-    <script src="../../../assets/js/admin-dash.js"></script>
+    <script src="../../assets/js/admin-dash.js"></script>
     <script>
         $(function () {
             let daily_payment = null, selectedWalletId = null;
@@ -408,13 +450,14 @@
                     formData.append("submit", true);
                     formData.append("wid", selectedWalletId);
 
-                    $.get(`./controllers/wallet_history_check.php?wid=${selectedWalletId}`, function(response){
+
+                    $.get(`./controllers/debtor_wallet_history_check.php?wid=${selectedWalletId}`, function(response){
                         response = JSON.parse(response);
                         if(response.containsInfo){
                             // OBTAIN SAVINGS HISTORY OF WALLET FROM SERVER
                             $.ajax({
                                 type: "post",
-                                url: "controllers/fetch_wallet_history.php",
+                                url: "./controllers/fetch_debtor_wallet_history.php",
                                 data: formData,
                                 contentType: false,
                                 processData: false,
@@ -479,7 +522,7 @@
                     });
                 } else {
                     // CHECK IF COMPLETED
-                    $.get(`./controllers/check_completed_wallet.php?wid=${selectedWalletId}`, function (response){
+                    $.get(`./controllers/check_debtor_completed_wallet.php?wid=${selectedWalletId}`, function (response){
                         response = JSON.parse(response);
 
                         if(response.completed === "1"){
@@ -500,7 +543,7 @@
                             // SENDING FORM DATA TO THE SERVER
                             $.ajax({
                                 type: "post",
-                                url: "controllers/fetch_wallet_details.php",
+                                url: "controllers/fetch_debtor_wallet_details.php",
                                 data: formData,
                                 contentType: false,
                                 processData: false,
@@ -607,7 +650,7 @@
             // });
 
             $("#days").on("input", function(){
-                const daily_payment = 500;
+                const daily_payment = Number($("#daily-payment").text().trim().replace(/,/g, ""));
                 const no_of_days = Number($("#days").val());
 
                 const totalAmtToBeSaved = (daily_payment * no_of_days).toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -689,11 +732,11 @@
                                                 confirmButtonColor: '#2366B5',
                                             }).then((result) => {
                                                 if(result.isConfirmed){
-                                                    location.href = "./wallets?cid=<?= $cid ?>";
+                                                    location.href = "./debtor_wallets?did=<?= $did ?>&aid=<?= $aid ?>";
                                                 }
                                             });
                                         }else{
-                                            location.href = "./wallets?cid=<?= $cid ?>";
+                                            location.href = "./debtor_wallets?did=<?= $did ?>&aid=<?= $aid ?>";
                                         }
                                     }
                                 })

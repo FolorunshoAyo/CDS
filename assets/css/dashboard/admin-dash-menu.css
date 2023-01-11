@@ -131,7 +131,18 @@ li a i{
     text-align: center;
 }
 
-li a span{
+.nav-item .blue-dot{
+    position: absolute;
+    top: -8px;
+    left: 0px;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+}
+
+li a span, 
+li a span.nav-item-badge{
     width: 0px;
     font-size: 16px;
     overflow: hidden;
@@ -139,6 +150,18 @@ li a span{
     transition: 0.5s;
 }
 
+
+li a span.nav-item-badge{
+    background-color: var(--secondary-color);
+    border-radius: 5px;
+    display: inline-block;
+    padding: 10px;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+ 
 .fa-chevron-right{
     position: absolute;
     right: 0;
@@ -180,6 +203,7 @@ li a span{
 .side-menu-bottom{
     margin-top: auto;
 }
+
 /* Aside */
 
 aside.expand{
@@ -220,6 +244,11 @@ li.active{
     color: var(--white);
 }
 
+li.active a span.nav-item-badge{
+    background-color: var(--white);
+    color: var(--primary-color);
+}
+
 li.active .sub-menu{
     max-height: 320px;
 }
@@ -228,6 +257,10 @@ li.active a > .fa-chevron-right{
     transform: rotate(90deg);
 }
 
+
+aside.expand li a span.nav-item-badge{
+    width: 20px !important;
+}
 
 li.mm-active{
     background-color: var(--primary-color);

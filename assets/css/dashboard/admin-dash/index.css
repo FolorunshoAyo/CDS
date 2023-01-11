@@ -1,7 +1,25 @@
 .card-widgets{
     margin: 20px 0;
     display: flex;
+    padding: 20px 10px;
+    overflow-x: auto;
 }
+
+/* .card-widgets::-webkit-scrollbar {
+    width: 5px;
+}
+  
+.card-widgets::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+  
+.card-widgets::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+}
+  
+.card-widgets::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+} */
 
 .card{
     background-color: var(--white);
@@ -11,7 +29,7 @@
 }
 
 .today-card{
-    flex: 0 0 40%;
+    flex: 0 0 32%;
     display: flex;
 }
 
@@ -115,13 +133,21 @@
     color: var(--danger);
 }
 
-.top-categories-card{
+.top-categories-card, 
+.all-agents-card{
     flex: 1;
 }
 
-.top-categories-card .title{
+.top-categories-card .title, 
+.all-agents-card .title{
     font-size: 1.3rem;
     font-weight: 400;
+}
+
+.all-agents-container{
+    width: 100%;
+    height: 330px;
+    overflow: auto;
 }
 
 .top-categories-container{
@@ -211,11 +237,13 @@
     color: var(--primary-color);
 }
 
-.payment-table-container{
+.payment-table-container, 
+.all-agents-container{
     margin-top: 10px;
 }
 
-.payment-table-container table{
+.payment-table-container table,
+.all-agents-container table{
     border-collapse: collapse;
     width: 100%;
     overflow: hidden;

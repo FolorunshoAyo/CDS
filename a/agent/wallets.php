@@ -103,6 +103,14 @@
                         <span>Easy Buy</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="./">
+                        <!-- <span class="blue-dot"></span> -->
+                        <i class="fa fa-info-circle"></i>
+                        <span>Debtor</span>
+                        <!-- <span class="nav-item-badge">1</span> -->
+                    </a>
+                </li>
             </ul>
 
             <ul class="side-menu-bottom">
@@ -151,6 +159,9 @@
                                     <th>
                                         Target
                                     </th>
+                                    <!-- <th>
+                                        Debt
+                                    </th> -->
                                     <th>
                                         Total Savings Days
                                     </th>
@@ -194,6 +205,13 @@
                                             echo number_format(intval($wallet_details['price']));
                                         ?>
                                     </td>
+                                    <!-- <td class="debt-data">
+                                        - NGN 
+                                        <?php 
+                                            // echo($human_readable->format(intval($wallet_details['price']))) 
+                                            // echo number_format(intval($wallet_details['price']) - intval($wallet_details['price']));
+                                        ?>
+                                    </td> -->
                                     <td>
                                         <?php 
                                             $wallet_id = $wallet_details['wallet_id'];

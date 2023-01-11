@@ -56,52 +56,58 @@
         <aside class="dash-menu">
             <div class="logo">
                 <div class="menu-icon">
-                    <i class="fa fa-bars"></i>
-                    <i class="fa fa-times"></i>
+                <i class="fa fa-bars"></i>
+                <i class="fa fa-times"></i>
                 </div>
                 <a href="./" class="logo">
-                    <i class="fa fa-home"></i>
-                    <span> CDS ADMIN </span>
+                <i class="fa fa-home"></i>
+                <span> CDS ADMIN </span>
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
-                <li class="nav-item">
-                    <a href="./">
-                        <i class="fa fa-tachometer"></i>
-                        <span>Dashboard</span>
-                    </a>
+                <li title="dashboard" class="nav-item">
+                <a href="./">
+                    <i class="fa fa-tachometer"></i>
+                    <span>Dashboard</span>
+                </a>
                 </li>
-                <li class="nav-item">
-                    <a href="javascript:void(0">
-                        <i class="fa fa-signal"></i>
-                        <span>Statistics</span>
-                    </a>
+                <li title="statistics" class="nav-item">
+                <a href="javascript:void(0">
+                    <i class="fa fa-signal"></i>
+                    <span>Statistics</span>
+                </a>
                 </li>
-                <li class="nav-item">
-                    <a href="./orders">
-                        <i class="fa fa-usd"></i>
-                        <span>Orders</span>
-                    </a>
+                <li title="orders" class="nav-item">
+                <a href="./orders">
+                    <i class="fa fa-usd"></i>
+                    <span>Orders</span>
+                </a>
                 </li>
-                <li class="nav-item">
-                    <a href="javascript:void(0">
-                        <i class="fa fa-recycle"></i>
-                        <span>Shipping</span>
-                    </a>
+                <li title="shipping" class="nav-item">
+                <a href="javascript:void(0">
+                    <i class="fa fa-recycle"></i>
+                    <span>Shipping</span>
+                </a>
                 </li>
-                <li class="nav-item active">
-                    <a href="./products">
-                        <i class="fa fa-shopping-bag"></i>
-                        <span>Products</span>
-                    </a>
+                <li title="products" class="nav-item active">
+                <a href="./products">
+                    <i class="fa fa-shopping-bag"></i>
+                    <span>Products</span>
+                </a>
                 </li>
-                <li class="nav-item">
+                <li title="agents" class="nav-item">
                     <a href="./agents">
                         <i class="fa fa-users"></i>
                         <span>Agents</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li title="debtors" class="nav-item">
+                    <a href="./debtors">
+                        <i class="fa fa-info-circle"></i>
+                        <span>Debtors</span>
+                    </a>
+                </li>
+                <li title="messages" class="nav-item">
                     <a href="javascript:void(0">
                         <i class="fa fa-commenting-o"></i>
                         <span>Messages</span>
@@ -109,18 +115,18 @@
                 </li>
             </ul>
 
-            <ul class="side-menu-bottom">
+            <ul title="settings" class="side-menu-bottom">
                 <li class="nav-tem">
-                    <a href="javascript:void(0)">
-                        <i class="fa fa-gear"></i>
-                        <span>Settings</span>
-                    </a>
+                <a href="javascript:void(0)">
+                    <i class="fa fa-gear"></i>
+                    <span>Settings</span>
+                </a>
                 </li>
-                <li class="nav-item logout">
-                    <a href="../logout">
-                        <i class="fa fa-sign-out"></i>
-                        <span>Logout</span>
-                    </a>
+                <li title="logout" class="nav-item logout">
+                <a href="../logout">
+                    <i class="fa fa-sign-out"></i>
+                    <span>Logout</span>
+                </a>
                 </li>
             </ul>
         </aside>

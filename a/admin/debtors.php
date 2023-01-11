@@ -1,8 +1,8 @@
 <?php
     require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
-    AgentAuth::User("a/login");
+    AdminAuth::User("a/login");
 
-    $agent_id = $_SESSION['agent_id'];
+    $admin_id = $_SESSION['admin_id'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,62 +36,90 @@
         <aside class="dash-menu">
             <div class="logo">
                 <div class="menu-icon">
-                    <i class="fa fa-bars"></i>
-                    <i class="fa fa-times"></i>
+                <i class="fa fa-bars"></i>
+                <i class="fa fa-times"></i>
                 </div>
-                <a href="#" class="logo">
-                    <i class="fa fa-home"></i>
-                    <span> CDS AGENT </span>
+                <a href="./" class="logo">
+                <i class="fa fa-home"></i>
+                <span> CDS ADMIN </span>
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
-                <li class="nav-item active">
-                    <a href="./">
-                        <i class="fa fa-users"></i>
-                        <span>Customers</span>
-                    </a>
+                <li title="dashboard" class="nav-item">
+                <a href="./">
+                    <i class="fa fa-tachometer"></i>
+                    <span>Dashboard</span>
+                </a>
                 </li>
-                <li class="nav-item">
-                    <a href="javascript:void(0)">
-                        <i class="fa fa-truck"></i>
-                        <span>Shipping</span>
-                    </a>
+                <li title="statistics" class="nav-item">
+                <a href="javascript:void(0">
+                    <i class="fa fa-signal"></i>
+                    <span>Statistics</span>
+                </a>
                 </li>
-                <li class="nav-item">
-                    <a href="./easybuy/">
-                        <i class="fa fa-money"></i>
-                        <span>Easy Buy</span>
-                    </a>
+                <li title="orders" class="nav-item">
+                <a href="./orders">
+                    <i class="fa fa-usd"></i>
+                    <span>Orders</span>
+                </a>
                 </li>
-                <li class="nav-item">
-                    <a href="./debtors/">
-                        <!-- <span class="blue-dot"></span> -->
-                        <i class="fa fa-info-circle"></i>
-                        <span>Debtors</span>
-                        <!-- <span class="nav-item-badge">1</span> -->
-                    </a>
+                <li title="shipping" class="nav-item">
+                <a href="javascript:void(0">
+                    <i class="fa fa-recycle"></i>
+                    <span>Shipping</span>
+                </a>
+                </li>
+                <li title="products" class="nav-item">
+                <a href="./products">
+                    <i class="fa fa-shopping-bag"></i>
+                    <span>Products</span>
+                </a>
+                </li>
+                <li title="agents" class="nav-item">
+                <a href="./agents">
+                    <i class="fa fa-users"></i>
+                    <span>Agents</span>
+                </a>
+                </li>
+                <li title="debtors" class="nav-item active">
+                <a href="./debtors">
+                    <i class="fa fa-info-circle"></i>
+                    <span>Debtors</span>
+                </a>
+                </li>
+                <li title="messages" class="nav-item">
+                <a href="javascript:void(0">
+                    <i class="fa fa-commenting-o"></i>
+                    <span>Messages</span>
+                </a>
                 </li>
             </ul>
 
-            <ul class="side-menu-bottom">
-                <li class="nav-item logout">
-                    <a href="../logout">
-                        <i class="fa fa-sign-out"></i>
-                        <span>Logout</span>
-                    </a>
+            <ul title="settings" class="side-menu-bottom">
+                <li class="nav-tem">
+                <a href="javascript:void(0)">
+                    <i class="fa fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+                </li>
+                <li title="logout" class="nav-item logout">
+                <a href="../logout">
+                    <i class="fa fa-sign-out"></i>
+                    <span>Logout</span>
+                </a>
                 </li>
             </ul>
         </aside>
         <section class="page-wrapper">
             <div class="table-wrapper">
-                <h2 class="table-title">All Customers</h2>
+                <h2 class="table-title">All Debtors</h2>
 
                 <div class="table-container">
                     <table id="agent-table" class="main-table">
                         <thead>
                             <tr>
                                 <th>
-                                    Name
+                                    Debtor name
                                 </th>
                                 <th>
                                     Email
@@ -103,29 +131,53 @@
                                     Date added
                                 </th>
                                 <th>
+                                    Assigned to 
+                                </th>
+                                <th>
 
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php 
-                                $sql_agent_customers = $db->query("SELECT * FROM agent_customers WHERE agent_id='$agent_id' ORDER BY agent_customer_id DESC");
+                                $sql_debtors = $db->query("SELECT 
+                                debtors.debtor_id,
+                                debtors.first_name as debtor_first_name, 
+                                debtors.last_name as debtor_last_name,
+                                debtors.email,
+                                debtors.phone_no,
+                                debtors.created_at,
+                                agents.agent_id,
+                                agents.first_name as agent_first_name,
+                                agents.last_name as agent_last_name
+                                FROM debtors 
+                                INNER JOIN agents ON debtors.agent_id = agents.agent_id 
+                                ORDER BY debtor_id DESC");
 
                                 $count = 1;
-                                while($customer = $sql_agent_customers->fetch_assoc()){
+                                while($debtor = $sql_debtors->fetch_assoc()){
+
+                                    // CHECK FOR EXISTING WALLET
+                                    $debtor_id = $debtor['debtor_id'];
+                                    $agent_id = $debtor['agent_id'];
+                                    $sql_check_existing_wallet = $db->query("SELECT * FROM debtor_wallets WHERE debtor_id = {$debtor_id} AND completed='0'");
+                                    $can_create_wallet = ($sql_check_existing_wallet->num_rows === 0);
                             ?>
                             <tr>
                                 <td>
-                                    <?php echo $customer['last_name'] . " " . $customer['first_name'] ?>
+                                    <?php echo $debtor['debtor_last_name'] . " " . $debtor['debtor_first_name'] ?>
                                 </td>
                                 <td>
-                                    <?php echo $customer['email']? $customer['email'] : "No email" ?>
+                                    <?php echo $debtor['email']? $debtor['email'] : "No email" ?>
                                 </td>
                                 <td>
-                                   <?php echo $customer['phone_no'] ?>
+                                   <?php echo $debtor['phone_no'] ?>
                                 </td>
                                 <td>
-                                    <?php echo date("j M, Y", strtotime($customer['created_at'])) ?>
+                                    <?php echo date("j M, Y", strtotime($debtor['created_at'])) ?>
+                                </td>
+                                <td>
+                                    <?php echo $debtor['agent_last_name'] . " " . $debtor['agent_first_name'] ?>
                                 </td>
                                 <td>
                                     <div class="dropdown" style="font-size: 10px;">
@@ -133,9 +185,9 @@
                                            o<br>o<br>o
                                         </button>
                                         <div class="dropdown-menu" data-dd-path="<?php echo $count ?>">
-                                            <a class="dropdown-menu__link" href="edit_customer?cid=<?php echo $customer['agent_customer_id'] ?>">Edit Customer</a>
-                                            <a class="dropdown-menu__link" href="./new_wallet?cid=<?php echo $customer['agent_customer_id'] ?>">New wallet</a>
-                                            <a class="dropdown-menu__link" href="wallets?cid=<?php echo $customer['agent_customer_id'] ?>">Existing wallets</a>
+                                            <a class="dropdown-menu__link" href="./edit_debtor?did=<?php echo $debtor_id ?>">Edit debtor</a>
+                                            <a class="dropdown-menu__link" href="<?php echo $can_create_wallet? "./new_debtor_wallet?did=$debtor_id&aid=$agent_id" : "javascript:void(0)"?>">New wallet</a>
+                                            <a class="dropdown-menu__link" href="./debtor_wallets?did=<?php echo $debtor_id ?>&aid=<?php echo $agent_id ?>">Existing wallets</a>
                                         </div>
                                     </div>
                                 </td>
@@ -148,7 +200,7 @@
                     </table>
                 </div>
                 <div class="add-container">
-                    <a href="./add_customer">Add Customer</a>
+                    <a href="./add_debtor">Add Debtor</a>
                 </div>
             </div>
         </section>
@@ -176,20 +228,31 @@
                 "pageLength": 10
             });
 
+
+            $("a[href='javascript:void(0)'].dropdown-menu__link").on("click", function(){
+                Swal.fire({
+                    title: "Unable to create new wallet",
+                    icon: "info",
+                    text: "A wallet is existing please complete the existing wallet and try again",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                });
+            });
+
             // HANDLE PRODUCT DELETION
             $(".deleteEl").each(function () {
                 $(this).on("click", function (e) {
 
-                    const selectedCustomerId = $(this).attr("data-cusId");
+                    const selecteddebtorId = $(this).attr("data-cusId");
 
-                    if(confirm("Delete this agent? \n NB: Deleting this customer would wipe out all it's details.")){
-                        $.post("controllers/delete-agent-customer.php", { cid: selectedCustomerId, submit: true }, function (response) {
+                    if(confirm("Delete this agent? \n NB: Deleting this debtor would wipe out all it's details.")){
+                        $.post("controllers/delete-agent-debtor.php", { cid: selecteddebtorId, submit: true }, function (response) {
                             if (reponse.success === 1) {
                                 // ALERT ADMIN
                                 Swal.fire({
-                                    title: "Customer Delete",
+                                    title: "debtor Delete",
                                     icon: "success",
-                                    text: "Customer deleted successfully",
+                                    text: "debtor deleted successfully",
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
                                 });
