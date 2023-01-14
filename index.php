@@ -181,7 +181,7 @@
                     The <br> <span>Smarter</span> way to spend and look <b>good doing it.</b>
                 </div>
                 <div class="hero-img-container">
-                    <img src="assets/images/bigger.png" alt="Male jollying with money in his hands">
+                    <img src="assets/images/banner-main.png" alt="Male jollying with money in his hands">
                 </div>
                 <div class="hero-logo-container">
                     <img src="assets/images/logo-small.png" alt="#">
@@ -237,7 +237,7 @@
                 </div>
             </div>
         </section>
-        <section class="services-section">
+        <!-- <section class="services-section">
             <div class="services-container">
                 <h1 class="services-title main-title">
                     Why save and spend with us?
@@ -271,7 +271,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
         <section class="banner-section">
             <div class="banner-section-container">
                 <div class="banner-img-container">

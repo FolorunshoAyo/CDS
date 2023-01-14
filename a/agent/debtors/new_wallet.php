@@ -167,7 +167,7 @@
                                     <span class="id-number">#<?php echo str_pad($debtor_details['debtor_id'], 4, "0", STR_PAD_LEFT) ?></span>
                                 </td>
                                 <td>
-                                    <?= $debtor_details['bvn'] ?>
+                                    <?php echo empty($debtor_details['bvn'])? "N/A" : $debtor_details['bvn'] ?>
                                 </td>
                                 <td>
                                 <?php echo date("M d, Y", strtotime($debtor_details['created_at'])) ?>
@@ -198,9 +198,10 @@
                                         <label for="productId">Pick Item</label>
                                     </div>
                                 </div>
+
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <input type="text" name="amount_paid" id="amount_paid" class="form-input" placeholder=" " required />
+                                        <input type="text" name="amount_paid" id="amount_paid" class="form-input format" placeholder=" " required />
                                         <label for="amount_paid">Amount Paid</label>
                                     </div>
                                 </div>
@@ -360,6 +361,7 @@
                     formData.append("submit", true);
 
                     amountAdded = formData.get("amount_paid");
+                    selected_agent_id = formData.get("agent_id");
 
                     // CONVERTING FORMATTED(HUMAN READABLE) FIELDS BACK TO NUMBER 
                     const formatedFields = [];
@@ -387,7 +389,10 @@
 
                     $(".loader-container").removeClass("hide");
                     itemView.addClass("hide");
+
                     // DISABLE ALL INPUT
+                    $("#productId").attr("disabled", true);
+                    $("#agent_id").attr("disabled", true);
                     $("#amount_paid").attr("disabled", true);
                     $(".submit-btn-container button").attr("disabled", true);
                     setTimeout(() => {
@@ -410,6 +415,7 @@
                         success: function (response) {
                             setTimeout(() => {
                                 if (response.success === 1) {
+                                    $(".submit-btn-container button").css("display", "none");
                                     productImageEl.attr("src", `../../admin/images/${response.image}`);
                                     productNameEl.html(response.name);
                                     productIdEl.html(`#${response.pid}`);
@@ -452,7 +458,7 @@
                 formData.append("product_id", productID);
                 formData.append("submit", true);
                 formData.append("debtor_id", "<?= $did ?>");
-                formData.append("amount", amountAddedNum)
+                formData.append("amount", amountAddedNum);
 
                 addWalletBtn.on("click", function (e) {
                         if(confirm(`Creating this wallet automatically adds NGN ${amountAdded} to this wallet \n Continue?`)){

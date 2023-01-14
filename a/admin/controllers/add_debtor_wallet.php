@@ -7,19 +7,25 @@
         $did = $db->real_escape_string($_POST['debtor_id']);
         $amount = $db->real_escape_string($_POST['amount']);
 
-        if(empty($pid) || empty($did) || empty($amount)){
+        if(empty($pid) || empty($did) || empty($amount) || empty($aid)){
             echo json_encode(array('success' => 0, 'error_title' => "Edit Customer", 'error_msg' => 'One or more fields are empty'));
         }else{
            $sql_get_product = $db->query("SELECT * FROM products WHERE product_id='$pid'");
            $sql_get_meta_details = $db->query("SELECT * FROM product_meta WHERE product_id='$pid'");
+           $sql_get_agent_details = $db->query("SELECT first_name, last_name, email FROM agents WHERE agent_id='$aid'");
+
+           $agent_details = $sql_get_agent_details->fetch_assoc();
+
+           $agent_full_name = "Agent " . $agent_details['first_name'] . " " . $agent_details['last_name'];
 
            $product_details = $sql_get_product->fetch_assoc();
            $product_meta_details = $sql_get_meta_details->fetch_assoc();
 
-           $sql_add_new_wallet = $db->query("INSERT INTO debtor_wallets (agent_id, debtor_id, product_id, total_amount, created_by) VALUES('$aid', '$did', '$pid', '$amount', '0')");
+           $sql_add_new_wallet = $db->query("INSERT INTO debtor_wallets (agent_id, debtor_id, product_id, total_amount, created_by) VALUES('$aid', '$did', '$pid', '$amount', '$agent_full_name', '0')");
 
             if($sql_add_new_wallet){
                 // $subject = "CDS DEBTOR ASSIGNMENT";
+                // $email = $agent_details['email'];
                 // SEND MAIL
                 // $message = "<div class='container'>
                 //   <div class='image-container'>

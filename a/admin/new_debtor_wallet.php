@@ -4,11 +4,11 @@
 
     $admin_id = $_SESSION['admin_id'];
 
-    if(isset($_GET['did']) && !empty($_GET['did'] && isset($_GET['aid']) && !empty($_GET['aid']))){
+    if(isset($_GET['did']) && !empty($_GET['did'])){
         $did = $_GET['did'];
-        $aid = $_GET['aid'];
 
-        $sql_debtor_details = $db->query("SELECT *, agents.first_name as agent_first_name, agents.last_name as agent_last_name FROM debtors INNER JOIN agents ON debtors.agent_id = agents.agent_id WHERE debtor_id={$did}");
+        $sql_debtor_details = $db->query("SELECT * FROM debtors WHERE debtor_id={$did}");
+
     
         $debtor_details = $sql_debtor_details->fetch_assoc();
     }else{
@@ -145,8 +145,6 @@
             <div class="table-wrapper">
                 <h2 class="table-title">Create a Debt wallet for <?php echo ucfirst($debtor_details['last_name']) . " " . ucfirst($debtor_details['first_name']) ?></h2>
 
-                <p class="table-title">Assigned to Agent. <?php echo ucfirst($debtor_details['agent_last_name']) . " " . ucfirst($debtor_details['agent_first_name']) ?></p>
-
                 <div class="table-container">
                     <table class="generic-table">
                         <thead>
@@ -189,7 +187,7 @@
                                     <span class="id-number">#<?php echo str_pad($debtor_details['debtor_id'], 4, "0", STR_PAD_LEFT) ?></span>
                                 </td>
                                 <td>
-                                    <?= $debtor_details['bvn'] ?>
+                                    <?php echo empty($debtor_details['bvn'])? "N/A" : $debtor_details['bvn'] ?>
                                 </td>
                                 <td>
                                 <?php echo date("M d, Y", strtotime($debtor_details['created_at'])) ?>
@@ -220,6 +218,25 @@
                                         <label for="productId">Pick Item</label>
                                     </div>
                                 </div>
+
+                                <div class="form-group-container">
+                                    <div class="form-group animate">
+                                        <select name="agent_id" id="agent_id" class="form-input">
+                                            <option value="">Select agent</option>
+                                            <?php
+                                                $sql_all_agents = $db->query("SELECT * FROM agents WHERE deleted='0'");
+
+                                                while($agent = $sql_all_agents->fetch_assoc()){
+                                            ?>
+                                                <option value="<?php echo $agent['agent_id'] ?>"><?php echo $agent['last_name'] . " " . $agent['first_name']  ?></option>
+                                            <?php
+                                                }
+                                            ?>
+                                        </select>
+                                        <label for="agent_id">Assign to</label>
+                                    </div>
+                                </div>
+
                                 <div class="form-group-container">
                                     <div class="form-group animate">
                                         <input type="text" name="amount_paid" id="amount_paid" class="form-input format" placeholder=" " required />
@@ -329,7 +346,7 @@
     <script src="../../assets/js/admin-dash.js"></script>
     <script>
         $(function () {
-            let selectedProductPrice, amountAdded, amountAddedNum;
+            let selectedProductPrice, amountAdded, amountAddedNum, selected_agent_id;
 
             $("#view-item-table").DataTable({
                 "pageLength": 10
@@ -375,6 +392,12 @@
                         errorMessage: "Field is required",
                     },
                 ])
+                .addField("#agent_id", [
+                    {
+                        rule: "required",
+                        errorMessage: "Field is required",
+                    },
+                ])
                 .onSuccess((event) => {
                     const form = document.getElementById("view-item-form");
 
@@ -382,6 +405,7 @@
                     formData.append("submit", true);
 
                     amountAdded = formData.get("amount_paid");
+                    selected_agent_id = formData.get("agent_id");
 
                     // CONVERTING FORMATTED(HUMAN READABLE) FIELDS BACK TO NUMBER 
                     const formatedFields = [];
@@ -410,6 +434,8 @@
                     $(".loader-container").removeClass("hide");
                     itemView.addClass("hide");
                     // DISABLE ALL INPUT
+                    $("#productId").attr("disabled", true);
+                    $("#agent_id").attr("disabled", true);
                     $("#amount_paid").attr("disabled", true);
                     $(".submit-btn-container button").attr("disabled", true);
                     setTimeout(() => {
@@ -432,6 +458,7 @@
                         success: function (response) {
                             setTimeout(() => {
                                 if (response.success === 1) {
+                                    $(".submit-btn-container button").css("display", "none");
                                     productImageEl.attr("src", `./images/${response.image}`);
                                     productNameEl.html(response.name);
                                     productIdEl.html(`#${response.pid}`);
@@ -474,11 +501,11 @@
                 formData.append("product_id", productID);
                 formData.append("submit", true);
                 formData.append("debtor_id", "<?= $did ?>");
-                formData.append("agent_id", "<?= $aid ?>");
                 formData.append("amount", amountAddedNum);
+                formData.append("agent_id", selected_agent_id);
 
                 addWalletBtn.on("click", function (e) {
-                        if(confirm(`Creating this wallet automatically adds NGN ${amountAdded} to this wallet \n Continue?`)){
+                        if(confirm(`Creating this wallet automatically adds NGN ${amountAdded} to this wallet and is assigned to the selected agent \n Continue?`)){
                             $.ajax({
                                 type: "post",
                                 url: "controllers/add_debtor_wallet.php",
@@ -509,7 +536,7 @@
                                             cancelButtonText: 'Ok',
                                         }).then((result) => {
                                             if (result.isConfirmed) {
-                                                location.href = `./debtor_wallets?did=<?= $did ?>&aid=<?= $aid ?>`;
+                                                location.href = `./debtor_wallets?did=<?= $did ?>`;
                                             }else{
                                                 location.href = "./debtors";
                                             }

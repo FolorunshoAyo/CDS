@@ -131,41 +131,25 @@
                                     Date added
                                 </th>
                                 <th>
-                                    Assigned to 
-                                </th>
-                                <th>
 
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php 
-                                $sql_debtors = $db->query("SELECT 
-                                debtors.debtor_id,
-                                debtors.first_name as debtor_first_name, 
-                                debtors.last_name as debtor_last_name,
-                                debtors.email,
-                                debtors.phone_no,
-                                debtors.created_at,
-                                agents.agent_id,
-                                agents.first_name as agent_first_name,
-                                agents.last_name as agent_last_name
-                                FROM debtors 
-                                INNER JOIN agents ON debtors.agent_id = agents.agent_id 
-                                ORDER BY debtor_id DESC");
+                                $sql_debtors = $db->query("SELECT * FROM debtors ORDER BY debtor_id DESC");
 
                                 $count = 1;
                                 while($debtor = $sql_debtors->fetch_assoc()){
 
                                     // CHECK FOR EXISTING WALLET
                                     $debtor_id = $debtor['debtor_id'];
-                                    $agent_id = $debtor['agent_id'];
                                     $sql_check_existing_wallet = $db->query("SELECT * FROM debtor_wallets WHERE debtor_id = {$debtor_id} AND completed='0'");
                                     $can_create_wallet = ($sql_check_existing_wallet->num_rows === 0);
                             ?>
                             <tr>
                                 <td>
-                                    <?php echo $debtor['debtor_last_name'] . " " . $debtor['debtor_first_name'] ?>
+                                    <?php echo $debtor['last_name'] . " " . $debtor['first_name'] ?>
                                 </td>
                                 <td>
                                     <?php echo $debtor['email']? $debtor['email'] : "No email" ?>
@@ -177,17 +161,14 @@
                                     <?php echo date("j M, Y", strtotime($debtor['created_at'])) ?>
                                 </td>
                                 <td>
-                                    <?php echo $debtor['agent_last_name'] . " " . $debtor['agent_first_name'] ?>
-                                </td>
-                                <td>
                                     <div class="dropdown" style="font-size: 10px;">
                                         <button class="dropdown-toggle" data-dd-target="<?php echo $count ?>" aria-label="Dropdown Menu">
                                            o<br>o<br>o
                                         </button>
                                         <div class="dropdown-menu" data-dd-path="<?php echo $count ?>">
                                             <a class="dropdown-menu__link" href="./edit_debtor?did=<?php echo $debtor_id ?>">Edit debtor</a>
-                                            <a class="dropdown-menu__link" href="<?php echo $can_create_wallet? "./new_debtor_wallet?did=$debtor_id&aid=$agent_id" : "javascript:void(0)"?>">New wallet</a>
-                                            <a class="dropdown-menu__link" href="./debtor_wallets?did=<?php echo $debtor_id ?>&aid=<?php echo $agent_id ?>">Existing wallets</a>
+                                            <a class="dropdown-menu__link" href="<?php echo $can_create_wallet? "./new_debtor_wallet?did=$debtor_id" : "javascript:void(0)"?>">New wallet</a>
+                                            <a class="dropdown-menu__link" href="./debtor_wallets?did=<?php echo $debtor_id ?>">Existing wallets</a>
                                         </div>
                                     </div>
                                 </td>

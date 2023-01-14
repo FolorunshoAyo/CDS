@@ -112,8 +112,8 @@
                         </thead>
                         <tbody>
                             <?php 
-                                $sql_debtors = $db->query("SELECT * FROM 
-                                debtors WHERE agent_id='$agent_id' ORDER BY debtor_id DESC");
+                                $sql_debtors = $db->query("SELECT debtors.* FROM 
+                                debtors INNER JOIN debtor_wallets ON debtors.debtor_id = debtor_wallets.debtor_id WHERE agent_id='$agent_id' ORDER BY debtor_id DESC");
 
                                 $count = 1;
                                 while($debtor = $sql_debtors->fetch_assoc()){

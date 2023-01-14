@@ -192,49 +192,6 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group-container">
-                                    <div class="form-group animate">
-                                        <select name="agent_id" id="agent_id" class="form-input">
-                                            <option value="">Select agent</option>
-                                            <?php
-                                                $sql_all_agents = $db->query("SELECT * FROM agents WHERE deleted='0'");
-
-                                                while($agent = $sql_all_agents->fetch_assoc()){
-                                            ?>
-                                                <option value="<?php echo $agent['agent_id'] ?>"><?php echo $agent['last_name'] . " " . $agent['first_name'] ?></option>
-                                            <?php
-                                                }
-                                            ?>
-                                        </select>
-                                        <label for="agent_id">Assign to</label>
-                                    </div>
-                                </div>
-
-                                <div class="form-group-container">
-                                    <div class="form-group animate">
-                                        <select name="product_id" id="product_id" class="form-input">
-                                            <option value="">Select product</option>
-                                            <?php
-                                                $sql_all_products = $db->query("SELECT * FROM products");
-
-                                                while($product = $sql_all_products->fetch_assoc()){
-                                            ?>
-                                                <option value="<?php echo $product['product_id'] ?>"><?php echo $product['name'] . " (" . "NGN ". number_format($product['price']) . ")" ?></option>
-                                            <?php
-                                                }
-                                            ?>
-                                        </select>
-                                        <label for="product_id">Select Product</label>
-                                    </div>
-                                </div>
-
-                                <div class="form-group-container">
-                                    <div class="form-group animate">
-                                        <input type="text" name="amount_paid" id="amount_paid" class="form-input format" placeholder=" " required />
-                                        <label for="amount_paid">Amount paid</label>
-                                    </div>
-                                </div>
-
                                 <div class="submit-btn-container">
                                     <button type="submit" class="admin-submit-btn">Register Debtor</button>
                                 </div>
@@ -288,27 +245,6 @@
         });
 
         validation
-            .addField("#customer-img", [
-                {
-                    rule: 'minFilesCount',
-                    value: 1,
-                },
-                {
-                    rule: 'maxFilesCount',
-                    value: 1,
-                },
-                {
-                    rule: 'files',
-                    value: {
-                        files: {
-                            extensions: ['jpeg', 'png', 'jpg'],
-                            maxSize: 3000000,
-                            minSize: 1000,
-                            types: ['image/jpeg', 'image/jpg', 'image/png'],
-                        },
-                    },
-                },
-            ])
             .addField("#fname", [
                 {
                     rule: "required",
@@ -339,12 +275,6 @@
                     errorMessage: "Field is required",
                 },
             ])
-            .addField("#bvn", [
-                {
-                    rule: "required",
-                    errorMessage: "Field is required",
-                },
-            ])
             .addField("#haddress", [
                 {
                     rule: "required",
@@ -352,24 +282,6 @@
                 },
             ])
             .addField("#oaddress", [
-                {
-                    rule: "required",
-                    errorMessage: "Field is required",
-                },
-            ])
-            .addField("#agent_id", [
-                {
-                    rule: "required",
-                    errorMessage: "Field is required",
-                },
-            ])
-            .addField("#product_id", [
-                {
-                    rule: "required",
-                    errorMessage: "Field is required",
-                },
-            ])
-            .addField("#amount_paid", [
                 {
                     rule: "required",
                     errorMessage: "Field is required",

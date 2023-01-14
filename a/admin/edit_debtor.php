@@ -131,10 +131,10 @@
                             <div class="form-group-container">
                                 <div class="form-group-container">
                                     <div class="image-upload-container">
-                                        <img src="../agent/customer-images/<?php echo $debtor_details['image']?>" alt="profile" />
+                                        <img src=<?php echo empty($debtor_details['image'])? "../../assets/images/default-picture.png" : "../agent/customer-images/" . $debtor_details['image'] ?> alt="profile" />
                                         <div class="action-container">
                                             <input type="file" name="customer-img" id="customer-img" onchange="previewImage(event)"/>
-                                            <label for="customer-img"><i class="fa fa-pen"></i> Change image</label>
+                                            <label for="customer-img"><i class="fa fa-pen"></i> <?php echo empty($debtor_details['image'])? "Add Image" : "Change Image" ?></label>
                                         </div>
                                     </div>
                                 </div>
@@ -199,7 +199,7 @@
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <input type="text" name="bvn" id="bvn" class="form-input" value="<?php echo $debtor_details['bvn'] ?>" placeholder=" " required />
+                                        <input type="text" name="bvn" id="bvn" class="form-input" value="<?php echo $debtor_details['bvn'] ?>" placeholder=" " />
                                         <label for="bvn">BVN (Bank Verification Number)</label>
                                         <div class="confirmation-container hide">
                                             <img src="../../assets/images/loading-gif.gif" class="" alt="loader">
@@ -286,40 +286,13 @@
                     errorMessage: "Field is required",
                 },
             ])
-            .addField("#bvn", [
-                {
-                    rule: "required",
-                    errorMessage: "Field is required",
-                },
-            ])
-            .addField("#customer-img", [
-                {
-                    rule: 'minFilesCount',
-                    value: 1,
-                },
-                {
-                    rule: 'maxFilesCount',
-                    value: 1,
-                },
-                {
-                    rule: 'files',
-                    value: {
-                        files: {
-                            extensions: ['jpeg', 'png', 'jpg'],
-                            maxSize: 3000000,
-                            minSize: 1000,
-                            types: ['image/jpeg', 'image/jpg', 'image/png'],
-                        },
-                    },
-                },
-            ])
             .onSuccess((event) => {
                 const form = document.getElementById("customer-upload-form");
 
                 // GATHERING FORM DATA
                 const formData = new FormData(form);
                 formData.append("submit", true);
-                formData.append("cid", <?php echo $cid ?>);
+                formData.append("did", <?php echo $did ?>);
 
                 //SENDING FORM DATA TO THE SERVER
                 $.ajax({
@@ -346,7 +319,7 @@
                                     confirmButtonColor: '#2366B5',
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.href = "./"
+                                        location.href = "./debtors"
                                     }
                                 })
                             } else {

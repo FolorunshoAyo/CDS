@@ -11,12 +11,10 @@
 
     $admin_id = $_SESSION['admin_id'];
 
-    if(isset($_GET['did']) && !empty($_GET['did']) && isset($_GET['aid']) && !empty($_GET['aid'])){
+    if(isset($_GET['did']) && !empty($_GET['did'])){
         $did = $_GET['did'];
-        $aid = $_GET['aid'];
     
-        
-        $sql_debtor_details = $db->query("SELECT debtors.first_name, debtors.last_name, agents.first_name as agent_first_name, agents.last_name as agent_last_name FROM debtors INNER JOIN agents ON debtors.agent_id = agents.agent_id WHERE debtor_id={$did}");
+        $sql_debtor_details = $db->query("SELECT * FROM debtors WHERE debtor_id={$did}");
     
         $customer_details = $sql_debtor_details->fetch_assoc();
     }else{
@@ -156,19 +154,18 @@
             <div class="table-wrapper">
                 <h2 class="table-title"><?php echo ucfirst($customer_details['last_name']) . " " . ucfirst($customer_details['first_name']) ?> Wallets</h2>
 
-                <p class="table-title">Assigned to Agent. <?php echo ucfirst($customer_details['agent_last_name']) . " " . ucfirst($customer_details['agent_first_name']) ?></p>
-
                 <?php
                     $sql_customer_wallets = $db->query("SELECT *
                     FROM debtor_wallets
                     INNER JOIN products ON debtor_wallets.product_id = products.product_id
-                    WHERE debtor_id='$did' AND agent_id='$aid';");
+                    INNER JOIN agents ON debtor_wallets.agent_id = agents.agent_id
+                    WHERE debtor_id='$did'");
 
                     if($sql_customer_wallets->num_rows === 0){
                 ?>
                 <div class="no-wallet-container">
                     <span>No wallets yet</span>
-                    <a href="./new_wallet">Create new Wallet</a>
+                    <a href="./new_debtor_wallet?did=<?= $did ?>">Create new Wallet</a>
                 </div>
                 <?php
                     }else{
@@ -198,7 +195,7 @@
                                         Total Savings Days
                                     </th>
                                     <th>
-                                        Created by
+                                        Assigned to
                                     </th>
                                     <th>
                                         Wallet Status
@@ -257,7 +254,8 @@
                                     </td>
                                     <td>
                                         <?php 
-                                            echo $wallet_details['created_by'] === "0"? "You" : "Agent"; 
+                                            $agent_name = "Agt. " . $wallet_details['first_name'] . " " . $wallet_details['last_name'];
+                                            echo $wallet_details['created_by'] === "0"? $agent_name : "$agent_name (assigned himself)"; 
                                         ?>
                                     </td>
                                     <td>
@@ -732,11 +730,11 @@
                                                 confirmButtonColor: '#2366B5',
                                             }).then((result) => {
                                                 if(result.isConfirmed){
-                                                    location.href = "./debtor_wallets?did=<?= $did ?>&aid=<?= $aid ?>";
+                                                    location.href = "./debtor_wallets?did=<?= $did ?>";
                                                 }
                                             });
                                         }else{
-                                            location.href = "./debtor_wallets?did=<?= $did ?>&aid=<?= $aid ?>";
+                                            location.href = "./debtor_wallets?did=<?= $did ?>";
                                         }
                                     }
                                 })

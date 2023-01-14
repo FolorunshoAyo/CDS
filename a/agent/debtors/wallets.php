@@ -127,7 +127,6 @@
             <div class="table-wrapper">
                 <h2 class="table-title"><?php echo ucfirst($debtor_details['last_name']) . " " . ucfirst($debtor_details['first_name']) ?> Debtor Wallets</h2>
 
-                <p class="table-title">Assigned by Admin</p>
                 <?php
                     $sql_debtor_wallets = $db->query("SELECT *
                     FROM debtor_wallets
@@ -223,9 +222,7 @@
                                         ?>
                                     </td>
                                     <td>
-                                        <?php
-                                            echo $wallet_details['created_by'] === "0"? "Admin" : "You"
-                                        ?>
+                                        <?php echo ($wallet_details['created_by'] === "0")? "Admin" : "You"?>
                                     </td>
                                     <td>
                                        <?php
