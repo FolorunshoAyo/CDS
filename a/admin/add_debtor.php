@@ -294,19 +294,6 @@
                 const formData = new FormData(form);
                 formData.append("submit", true);
 
-                // CONVERTING FORMATTED(HUMAN READABLE) FIELDS BACK TO NUMBER 
-                const formatedFields = [];
-
-                for (let [key, value] of formData.entries()) {
-                    if (key === "amount_paid") {
-                        formatedFields.push(value);
-                    }
-                }
-
-                const modifiedFormatedFields = formatedFields.map(value => value.replace(/,/g, ""));
-
-                formData.set("amount_paid", modifiedFormatedFields[0]);
-
                 //SENDING FORM DATA TO THE SERVER
                 $.ajax({
                     type: "post",
