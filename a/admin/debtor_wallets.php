@@ -92,7 +92,7 @@
                 </a>
                 </li>
                 <li title="statistics" class="nav-item">
-                <a href="javascript:void(0">
+                <a href="javascript:void(0)">
                     <i class="fa fa-signal"></i>
                     <span>Statistics</span>
                 </a>
@@ -104,7 +104,7 @@
                 </a>
                 </li>
                 <li title="shipping" class="nav-item">
-                <a href="javascript:void(0">
+                <a href="javascript:void(0)">
                     <i class="fa fa-recycle"></i>
                     <span>Shipping</span>
                 </a>
@@ -128,7 +128,7 @@
                     </a>
                 </li>
                 <li title="messages" class="nav-item">
-                    <a href="javascript:void(0">
+                    <a href="javascript:void(0)">
                         <i class="fa fa-commenting-o"></i>
                         <span>Messages</span>
                     </a>

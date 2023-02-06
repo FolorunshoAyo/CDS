@@ -146,7 +146,8 @@
 
 .all-agents-container{
     width: 100%;
-    height: 330px;
+    min-height: 200px;
+    max-height: 300px;
     overflow: auto;
 }
 
