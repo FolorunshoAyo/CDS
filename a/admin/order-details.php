@@ -1,6 +1,6 @@
 <?php
   require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
-  AdminAuth::User("a/login");
+  AdminAuth::User("a/");
 
   if(isset($_GET['oid']) && !empty($_GET['oid'])){
     $oid = $_GET['oid'];
